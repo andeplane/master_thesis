@@ -1,7 +1,8 @@
 \section{Surface interactions}
+
 The effects of surface interactions become significant as the pore sizes decrease. For very small pores, the number of atoms near the surface is comparable with total number of atoms. In MD, these effects are automatically taken care of through the atomic forces, but in DSMC, we need a surface interaction model. We investigate four different models in this section.
 \subsection{Specular wall}
-The specular wall behaves just like a classical mirror; the colliding objects are reflected so that the normal component of the velocity is reversed whereas the tangential components remain unchanged. 
+The specular wall behaves just like a classical mirror. The colliding objects are reflected so that the normal component of the velocity is reversed whereas the tangential components remain unchanged. 
 
 \subsection{Thermal wall}
 If we instead think of the wall as an object with a given temperature $T_w$, we can imagine that the molecules go into the wall, collide with the wall atoms as a random walk, and return with no correlation with the incoming velocity. We can then choose a new, random velocity vector from a distribution so that the gas temperature converges to the wall temperature. We can find this by looking at the velocity distribution of particles going through an imaginary wall during a time $\Delta t$.
