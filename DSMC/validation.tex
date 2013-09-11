@@ -1,9 +1,10 @@
 \section{Code validation}
 Every time a physicist implement a model, it is important to verify that the implementation is correct. New models that describe unknown areas of physics (such as new length scales) might be difficult to confirm if there are no experiments or comparable models available. 
 \subsection{Velocity distribution}
-The simplest 
-\subsubsection{Specular wall}
-\subsubsection{Thermal wall}
-\subsubsection{Maxwell kernel}
-\subsubsection{Cercignani Lampis kernel}
-\subsubsection{Random surface}
+A simple validation can be performed by looking at the velocity distribution across a channel of length $L$ and height $h$, see figure \ref{fig:dsmc_validation_velocity_distribution_system}. The channel consists of two parallel plates that the particles collide with. We expect the velocity to be dependent of the distance to the plates where surface collisions occur. 
+
+The Knudsen number will also affect the velocity distribution through the slip length, since a high Knudsen number means fewer inter-molecular collisions. A low collision rate will make the surface effects propagate slower through the system. THIS IS A LIE! TODO!
+
+We will also see a difference between the gravity driven flow and the pressure driven flow. The gravity driven flow has periodic boundary conditions in the flow direction, so the system appears as an infinitely long channel. The pressure driven flow has two reservoirs where the velocities are zero on average. This causes the particles to move slowly near each of the reservoirs, so the channel must be long enough to get rid of these boundary effects. 
+
+\subsubsection{Gravity driven flow}

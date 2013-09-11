@@ -1,1 +1,25 @@
-\section{Origin}
+The kinetic theory of gases is a microscopic theory that describes the behaviour of a gas on the molecular level. A system of $N$ particles is fully described by the $3N$ momentum components combined with the $3N$ spatial coordinates. Together, this forms a $6N$ dimensional phase space where each point represents the state of the system. In this chapter we will discuss this formalism and how such a system evolves through time by deriving the Boltzmann equation. 
+
+\section{The distribution function}
+A point in the phase space is called a \textit{microstate} and contains a massive amount of information. You would know the position and velocity to every particle in the system. In a liter of ideal gas, the number of particles is of order $10^{22}$ \cite{book:generell_fysikk_2}, so if we represent each of these coordinates as an 8 byte double, this would require about $10^11$ terabytes of memory. This approach is very inconvenient and not at all necessary. What's really interesting in a system is the macroscopic properties like energy, temperature, pressure, volume, velocity, etc. The total energy for a gas consisting of $N$ particles is given as
+\begin{align*}
+	E = \sum_{i=1}^N \frac{1}{2} m_i v_i^2 + V(\vec q),
+\end{align*}
+where $m_i$ is the mass of particle $i$, $v_i$ is its scalar velocity and $V(\vec q)$ is the total potential energy in the system. If all masses are equal, any permutation of particles won't change the energy. This however, does not count as different microstates because we think of the particles as identical. But if we increase the velocity of particle $i$, we can reduce another particle $j$'s velocity so that the total energy remains constant. The set of all microstates that have the same macroscopic state variables (a \textit{macrostate}) forms an ensemble of systems. In a typical system, the number of microstates in a macrostate is so huge that the phase space points can be described by a density function $f_N(\vec p, \vec q, t)$ without losing any important information \cite{book:statistical_mechanics_mc_quarrie}. The input parameters are the $3N$ momentum components and the $3N$ spatial coordinates and time. This function is often called a \textit{distribution function}, and is often just written as $f_N(p, q, t)$. The distribution function is normalized so that
+\begin{align}
+	\int f_N(p, q, t) dpdq = 1,
+\end{align}
+where $dpdq=dp_1dp_2...dq_{3N}$ is the $6N$ dimensional phase space volume element. 
+
+\subsection{Ensemble averages}
+Given the distribution function $f_N$, we can calculate any ensemble average value by interpreting $f_N$ as a probability distribution and using the standard expectation value expression
+\begin{align}
+	\langle A(t) \rangle = \int A(p, q, t)f_N(p, q, t)dpdq.
+\end{align}
+
+\section{Louville equation}
+The particles, and hence the phase point, moves in time following the equations of motion determined by the system. The distribution function itself will also evolve through time following some sort of equation of motion. By conservation of phase points, one can derive the Liouville equation
+\begin{align}
+	\dpart{f_N}{t} + \{H, f_N\},
+\end{align}
+where $H$ is the Hamiltonian of the system and $\{H, f_N\}$ is the Poisson bracket. This equation tells us how the system will evolve and is often referred to as the most fundamental equation of statistical mechanics. The equation does not take 

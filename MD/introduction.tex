@@ -7,10 +7,10 @@ In general, the potential energy is given as a function summing over the configu
 \begin{align}
 	U(\textbf{r}) = \sum_{i<j}U_2(r_{ij}) + \sum_{i<j<k} U_r(\vec r_i, \vec r_j, \vec r_k) + ...,
 \end{align}
-where $\vec r$ is the phase space point, $U_n$ is a function of the positions of $n$ atoms, $r_{ij}$ is the relative distance between atom $i$ and $j$, $\vec r_i$ is the position of atom $i$. Advanced potentials, such as ReaxFF, have 5-atom contributions, or more, to the energy. The reason for this is simple; when three atoms are close to each other, their electrons are positioned differently as if there were only two atoms. These effects play a large role in forming molecules, such as water. In this thesis, we will only use potentials using two- and three-particle terms.\\
+where $\vec r$ is the phase space point, $U_n$ is a function of the positions of $n$ atoms, $r_{ij}$ is the relative distance between atom $i$ and $j$, $\vec r_i$ is the position of atom $i$. Advanced potentials, such as ReaxFF, have 5-atom contributions, or more, to the energy. The reason for this is simple; when three atoms are close to each other, their electrons are positioned differently compared to if there were only two atoms. These effects play a large role in forming molecules, such as water. In this thesis, we will only use potentials using two- and three-particle terms.\\
 Numerically, force calculations are the most expensive part of the whole program, so for simple systems, or for educationally purposes, we might not need the most advanced ones. The simplest, yet remarkable for many purposes, potential students often meet is the Lennard-Jones potential.
 \subsubsection{Lennard-Jones potential}
-We often see this potential referred to as the 6-12 potential, which is a simple function that contains the main properties of atomic forces, the short-ranged Pauli repulsion and the long-ranged van der Waals force. The potential is between pairs of atoms only
+We often see this potential referred to as the 6-12 potential, which is a function that contains the main properties of atomic forces; the short-ranged Pauli repulsion and the long-ranged van der Waals force. The potential is only between pairs of atoms
 \begin{align}
 	\label{eq:md_potential_energy}
 	U_{LJ}(r) = 4\epsilon\left[\left(\frac{\sigma}{r_{ij}}\right)^{12} - \left(\frac{\sigma}{r_{ij}}\right)^{6}\right],
@@ -26,13 +26,60 @@ where the coupling constants are specified for interacting atom pairs of type $A
 where $\vec u_r$ is the unit vector pointing from atom $i$ to atom $j$. 
 \subsubsection{Silica-water potential}
 \subsection{Time integration}
-As mentioned in the introduction, the system is evolved following Newton's equations of motion. These equations are integrated by some integration scheme.
-\subsection{Time integration}
+Once we know how to calculate the forces, we have everything we need to evolve the system through time. The system is integrated with Newton's laws with some integration scheme. 
+
 \section{Physical properties}
-Molecular dynamics is used to evolve the system in time, and the phase space variables can then be used to sample statistical properties of the system. Properties of interest are kinetic and potential energy, temperature, pressure, diffusion constant and different correlation functions (such as the pair correlation function, cage-correlation function, static and the dynamic structure factor). In this section, we will define these properties and discuss how to measure them.
+The phase space variables can be used to sample statistical properties of the system. Properties of interest are kinetic and potential energy, temperature, pressure, diffusion constant and different correlation functions (such as the pair correlation function, cage-correlation function, static and the dynamic structure factor). In this section, we will define these properties and discuss how to measure them.
 \subsection{Kinetic and potential energy}
 We measure the kinetic energy directly through its definition for point particle objects
 \begin{align}
 	E_k = \sum_i \frac{1}{2} m_iv_i^2,
 \end{align}
-and the potential energy through \eqref{eq:md_potential_energy}. 
+and the potential energy through \eqref{eq:md_potential_energy}. We define temperature by the equipartition theorem using the momentum degrees of freedom
+\begin{align*}
+	E_k = \frac{f}{2}kT,
+\end{align*}
+where $f=3N$ are the three momentum variables per particle, $T$ is the temperature and $k$ is Boltzmann's constant. If we solve this for the temperature, we get 
+\begin{align}
+	T = \frac{2E_k}{3Nk},
+\end{align}
+which is how we will measure temperature in this model. 
+\subsection{Pressure}
+We will derive an expression for the pressure by using Clausius' virial function
+\begin{align}
+    W(\textbf{r}) = \sum_{i=1}^N \vec r_i \cdot \vec F_i^{TOT},
+\end{align}
+where $F_i^{TOT}$ is the total force acting on atom $i$, including external forces. Again we assume equilibrium, so that the kinetic energy is constant. We measure the statistical average of $W$ by calculating
+\begin{align}
+    \langle W \rangle &= \lim_{t\rightarrow\infty} {1\over t} \int_0^t d\tau \sum_{i=1}^N \vec r_i(\tau) \cdot m_i \vec{\ddot r}_i(\tau).
+\end{align}
+Integrating by parts gives
+\begin{align}
+    \label{eq:virial_and_equi}
+    \langle W \rangle &= -\lim_{t\rightarrow\infty} {1\over t} \int_0^t d\tau \sum_{i=1}^N m_i |\vec{\dot r}_i(\tau)|^2 = -2E_k = -3Nk_bT,
+\end{align}
+by again using equipartition. Now, assume that the atoms live inside a parallelepipedic container of size $L_x, L_y, Lz$ with hard walls, with origo in one of its corners. If we divide the force into external and interatomic forces, $\vec F_i^{TOT} = \vec F_i + \vec F_i^{EXT}$, and assume that the external forces are forces from the container (no gravity or electric fields), we can calculate $W^{EXT}$. The atoms near the walls apply a pressure on the wall $P = F/A$. As an example, we look at all the atoms that are near the wall located at $x=L_x$. The virial function gives
+\begin{align}
+    W^{EXT}_x = \sum_{n=1}^{N_x}\vec r_n\cdot \vec F_n^{EXT},
+\end{align}
+where $n$ now sums over all atoms that are near the container wall at $x=L_x$. The position vectors are $\vec r_n = (L_x, y_n, z_n)$ and the force only has a component normal to the wall $F_n^{EXT} = 1/N_x(-PL_yL_z, 0, 0)$. We then get
+\begin{align}
+    W^{EXT}_x = -L_xPL_yL_z = -PV,
+\end{align}
+and by doing the same for the other dimensions, we get
+\begin{align}
+    W = -3PV.
+\end{align}
+Inserting this result into \eqref{eq:virial_and_equi} yields
+\begin{align}
+    \left\langle \sum_{i=1}^N \vec r_i \cdot \vec F_i\right\rangle - 3PV = -3Nk_bT
+\end{align}
+which can be rearranged to
+\begin{align}
+    PV = Nk_bT - \frac{1}{3}\left\langle \sum_{i=1}^N \vec r_i \cdot \vec F_i\right\rangle.
+\end{align}
+Using this result, we can define the pressure
+\begin{align}
+	P = \rho k_bT - \frac{1}{3V}\left\langle \sum_{i=1}^N \vec r_i \cdot \vec F_i\right\rangle,
+\end{align}
+where $\rho$ is the density.
