@@ -1,10 +1,21 @@
 \section{Code validation}
 Every time a physicist implement a model, it is important to verify that the implementation is correct. New models that describe unknown areas of physics (such as new length scales) might be difficult to confirm if there are no experiments or comparable models available. 
 \subsection{Velocity distribution}
-A simple validation can be performed by looking at the velocity distribution across a channel of length $L$ and height $h$, see figure \ref{fig:dsmc_validation_velocity_distribution_system}. The channel consists of two parallel plates that the particles collide with. We expect the velocity to be dependent of the distance to the plates where surface collisions occur. 
+The Poiseuille flow through a long channel is a standard and fundamental problem that is wideley studied in the gas dynamics literature. The system consists of two infinite parallel plates, displaced by a distance $h$. A pressure gradient is applied in the $z$-direction by a constant force $g$, see figure \ref{fig:dsmc_validation_poiseuille}. 
 
-The Knudsen number will also affect the velocity distribution through the slip length, since a high Knudsen number means fewer inter-molecular collisions. A low collision rate will make the surface effects propagate slower through the system. THIS IS A LIE! TODO!
+\begin{figure}[htp]
+\centering
+%\includegraphics[scale=0.25]{figures/validation_poiseuille.pdf}
+\label{fig:dsmc_validation_poiseuille}
+\caption{Gravity driven Poiseuille flow}
+\end{figure}
 
-We will also see a difference between the gravity driven flow and the pressure driven flow. The gravity driven flow has periodic boundary conditions in the flow direction, so the system appears as an infinitely long channel. The pressure driven flow has two reservoirs where the velocities are zero on average. This causes the particles to move slowly near each of the reservoirs, so the channel must be long enough to get rid of these boundary effects. 
+The channel is periodic in the $x-$ and $z-$direction, emulating a large system with negligible boundary effects. The gas molecules collide with the plates through the thermal wall model, so the reflected particles will have zero tangential velocity on average. In the continuum limit, $Kn\rightarrow 0$, we expect the velocity profile to approach the parabolic solution \cite{batchelor2000introduction}
+\begin{align}
+	v_z(y) = \nabla P\frac{1}{2\mu}y(y-h).
+\end{align}
+However, in the transition flow regime, $0.1 \leq Kn \leq 10$, we expect a non zero slip velocity\cite{morris1992slip}. 
+
+The Knudsen number will affect the velocity distribution through the fact that a high Knudsen number means a larger mean free path, hence fewer inter-molecular collisions. A low collision rate will make the surface effects propagate slower through the system. We therefor expect a larger difference 
 
 \subsubsection{Gravity driven flow}

@@ -10,7 +10,7 @@
 
 % \usepackage{autocite}
 \usepackage[]{biblatex}
-\bibliography{Bibliography/bibliography.bib}
+\bibliography{Bibliography/master.bib}
 
 \begin{document}
 
@@ -58,16 +58,16 @@ This is an abstract text.
 \begin{part}{Direct Simulation Monte Carlo}
 
 \begin{chapter}{Kinetic theory}
-  \input{kinetic_theory/origin}
+  \input{kinetic_theory/introduction}
   \input{kinetic_theory/boltzmann_equation}
-  \input{kinetic_theory/chapman_enskog}
 \end{chapter}
 
 \begin{chapter}{Direct Simulation Monte Carlo}
   \input{DSMC/introduction}
+  \input{DSMC/model}
   \input{DSMC/surface_interactions}
-  \input{DSMC/geometry}
   \input{DSMC/pressure}
+  \input{DSMC/geometry}
   \input{DSMC/parallelization}
   \input{DSMC/code}
   \input{DSMC/validation}

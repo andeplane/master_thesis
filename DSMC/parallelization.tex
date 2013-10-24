@@ -1,1 +1,4 @@
 \section{Parallelization}
+% Keywords: MPI, spatial domain geometry, communication surface, 6 facets, world geometry, 
+During each timestep, since there are no long range forces, each collision cell is completely independent which makes the model ideal to parallelize. We divide the spatial domain into subdomains, each fully controlled by one processor. 
+\subsection{}

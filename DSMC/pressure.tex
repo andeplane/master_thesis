@@ -1,4 +1,25 @@
 \section{Pressure driven flows}
+In order to induce flow in a system, we will apply some sort of pressure gradient. In continuum models like the NSE, the pressure is incorporated as boundary conditions where you specify the pressure at the inlet and the outlet. In DSMC, however, the pressure must be implemented more physically, in which there are two standard methods to do so.
+\subsection{Real pressure}
+Pressure is defined through the ideal gas law
+\begin{align}
+	P = \rho k T,
+\end{align}
+where we can obtain a given pressure by controlling either the number density $\rho$ or the temperature $T$. By adding two pressure reservoirs $A$ and $B$, we can maintain the pressure $P_A$ and $P_B$ in these reservoirs which will induce flow in the negative gradient direction. If we regularly measure the pressure in each reservoir, we can add or remove particles to control the pressure through the density, and hence obtain a specific pressure difference. When we apply a pressure difference on i.e. a tube, we will notice some boundary effects near the reservoirs. The particles in the reservoirs have close-to-zero average velocity, so particles going through the tube will need some time, or some length, to reach the steady state solution that applies for infinitely long tubes. This length will be discussed with the results later. The boundary effect is illustrated in figure \ref{fig:velocity_profiles_pressure}. 
 
 \subsection{Gravity}
-\subsection{Real pressure}
+Another approach is to apply a constant force on all the particles in the wanted flow direction. As gravity does, this will accelerate all the particles indefinitely with a constant acceleration $g$, but surface collisions will make the system reach a steady state. If we study a tube with periodic boundary conditions, we can interpret this as an infinitely long tube where we expect translational symmetry in the flow direction - the velocity profile should only be a function of the distance to the surface. We can calculate what force $F$ we need to apply to get the same behaviour (the same amount of work) as a given pressure gradient $\nabla P \approx \Delta P / \Delta x$.
+\subsubsection{$\nabla P$ equivalent gravity}
+We look at a volume element of size $\Delta x\Delta y\Delta z$ in a channel with a continuous fluid and a pressure gradient in the $x$-direction, see figure \ref{fig:pressure_gravity_equivalent}. The force acting on the volume element is
+\begin{align}
+	F = P_1\Delta y\Delta z - P_2\Delta y\Delta z = \Delta y\Delta z\Delta P,
+\end{align}
+where $\Delta P = P_1 - P_2$. We aim to find a constant force $F=ma$ being equivalent to that of the pressure difference. With an applied gravity $g$, the force is then
+\begin{align}
+	F = mg = \rho_m \Delta V g = \Delta y\Delta z\Delta P = \Delta V \frac{P}{\Delta x},
+\end{align}
+which gives the relation
+\begin{align}
+	g = \frac{P}{\rho_m\Delta x}.
+\end{align}
+In simple systems like a tube, the steady state velocity profiles for both pressure models should be comparable. However, for disordered systems with regions that can \textit{trap} particles (see figure \ref{fig:gravity_trap}), we will see that the gravity model has some effects that will affect the fluid flow in a non-physical way. 

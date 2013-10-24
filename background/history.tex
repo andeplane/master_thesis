@@ -1,13 +1,34 @@
-\section{History}
-The history of any physical field is interesting in several ways. Physical questions usually start with one or more observations, the \textit{what}, and then the urge to understand \textit{why} it happened. In science, \textit{why} is of course the question we ideally want to answer, but in many cases that is not achievable at first. An example is the statement of Kepler's three laws of planetary motion \ref{book:kepler}. Kepler had observations that he confirmed were indeed correct, but he did not know \textit{why} the planets behave like they do. Some 50 years later, Newton explained Kepler's three laws by his universal law og gravitation.\ref{TODO} This is the beauty of science, the \textit{why} is not required, just desired.\\
-Another interesting part of the history is the amount of available information they had at the time, which strongly affected their ability to develop new theories. Newton needed to create a theory that were in agreement with Kepler's laws, and Kepler needed his laws to agree with the observations that were done. 
+\section{History of fluid mechanics}
+The history of any physical field is interesting in several ways. Physical questions usually start with one or more observations, the \textit{what}, and then the urge to understand \textit{why}. In science, \textit{why} is of course the question we ideally want to answer, but in many cases that is not achievable at first. An example is the statement of Kepler's three laws of planetary motion. Kepler had observations that he confirmed were indeed correct, but he did not know \textit{why} the planets behave like they do. Some 50 years later, Newton explained Kepler's three laws by his universal law og gravitation. This is the beauty of science, the \textit{why} is not required, just desired.\\
+Another interesting part of the history is the amount of available information at the time of discoveries, which strongly affects their ability to develop new theories. Newton needed to create a theory that were in agreement with Kepler's laws, and Kepler needed his laws to agree with the observations that were done.\\
+In this section, we will briefly discuss how the discoveries in fluid mechanics were done, and the questions that lead up to our current knowledge of the field. 
 
-\subsection{Fluid mechanics}
+\subsection{The beginning in Greece}
+The first scientific describtions of fluid mechanics dates back to Aristotle (384-322 B.C.) when he identified the continuum and dynamic drag in fluids.\cite{book:fluid_history} He wrote
+\begin{quotation}
+The continuous may be defined as that which is divisible into parts which are themselves divisible to infinity, as a body which is divisible in all ways. Magnitude divisible in one direction is a line, in three directions a body. And magnitudes which are divisible in this fashion are continuous. 
+\end{quotation}
+The idea of continuum is fundamental in most fluid mechanics theories and is a rather abstract concept that makes the mathematics work out beautifully. At the time of Aristotle, the mathematical framework was not yet established, so it was an impressive contribution to the field. The more intuitive drag force was described as
+\begin{quotation}
+It is impossible to say why a body that has been set in motion in a vacuum should ever come to rest. Why, indeed, should it come to rest at one place rather than another. As a consequence, it will either necessarily stay at rest, or if in motion, will move indefinitely unless some obstacle comes into collision with it.
+\end{quotation}
+For fluids in movement, the obstacle is the thing creating the drag force preventing the fluid to move freely. About a hundred years later, Archimedes (287-212 B.C.) published \textit{On Floating Bodies} where he discussed what is now known as \textit{Archimedes' principle} that states
+\begin{quotation}
+Any object, wholly or partially immersed in a fluid, is buoyed up by a force equal to the weight of the fluid displaced by the object.
+\end{quotation}
+Even today, more than 2000 years later, every high school student taking a physics course learn about Archimedes' principle. It is a simple and intuitive, yet remarkably powerful statement that can easily be proved. 
+
+\subsection{Conservation laws and the Navier-Stokes equations}
 
 
 \subsection{The breakdown of contiinum}
-A fundamental assumption in the NSE is that the space is continuous so that every point in space has well defined physical properties such as density, velocity, temperature and pressure. This is known as the \textit{continuum hypothesis} and is invalid when the \textit{mean free path}, the average distance a particle moves between collisions, becomes large compared to some characteristic length in the system, i.e. the diameter of a channel. \ref{TODO} 
+A fundamental assumption in the NSE is that the space is continuous so that every point in space has well defined physical properties like density, velocity, temperature and pressure. This is known as the \textit{continuum hypothesis} and is invalid when the \textit{mean free path} $\lambda$, the average distance a particle moves between collisions, becomes large compared to some characteristic length $L$ in the system, i.e. the diameter of a channel. This properti is quantified through the \textit{Knudsen number} which is defined as
+\begin{align}
+	Kn = \frac{\lambda}{L}.
+\end{align}
+For small Knudsen numbers (of order $10^{-2}$ or less), the contiinum hypthosis is valid and we can apply the Navier-Stokes equations.
 \subsection{Kinetic theory}
 Instead of using conservation of mass, momentum and energy, one can use statistical mechanics and apply conservation of probability to derive the Boltzmann equation, which is an equation describing how a system evolve through time in the phase space. 
 \subsection{Porous media}
+
 \subsection{Nanoporous media}

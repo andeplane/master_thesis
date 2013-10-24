@@ -1,0 +1,27 @@
+\section{The model}
+\subsection{Intermolecular collision}
+The collision frequency can be calculated through the mean free path, which is the average distance a molecule travels between colisions. The mean free path for a gas is estimated by looking at the \textit{effective collision area}, see figure \ref{fig:effective_collision_area}. The effective collision area is then
+\begin{align}
+	A = \pi d^2,
+\end{align}
+where $d$ is the molecular diameter. Two molecules with velocities $\vec v_1$ and $\vec v_2$ have the relative velocity $\vec v_{rel} = \vec v_1 - \vec v_2$. The norm is given by
+\begin{align}
+	v_{rel} &= \sqrt{\vec v_{rel}\cdot \vec v_{rel} } = \sqrt{ (\vec v_1 - \vec v_2)(\vec v_1 - \vec v_2)}\\
+	&= \sqrt{\vec v_1\cdot \vec v_1 - 2\vec v_1\vec v_2 + \vec v_2\vec v_2}.
+\end{align}
+The average relative velocity is calculated by assuming that the velocities are completely random and hence not correlated, and that the molecules have the same mean speed
+\begin{align}
+	\bar v_{rel} &= \sqrt{\vec v_1^2 + \vec v_2^2} = \sqrt 2 \bar v,
+\end{align}
+During a time $\tau$ and average relative molecular velocity $\sqrt 2 \bar v$, the total volume sweeped out by the particle is given as
+\begin{align}
+	V = \sqrt 2 \pi d^2\bar v \tau,
+\end{align}
+which in turn gives the number of collisions during such a volume
+\begin{align}
+	n_{coll} = V\rho_n = \sqrt 2 \pi d^2\bar v \tau \rho_n,
+\end{align}
+where $\rho_n$ is the number density. The mean free path is then calculated as the length of the path divided by the number of collisions
+\begin{align}
+	\lambda = {\bar v \tau\over \sqrt 2 \pi d^2\bar v \tau \rho_n} = {1 \over \sqrt 2 \pi d^2 \rho_n}
+\end{align}
