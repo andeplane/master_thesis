@@ -43,16 +43,17 @@ This is an abstract text.
 \begin{chapter}{Background}
   \input{background/history}
   \input{background/applications}
-  \input{background/multiscale}
+%  \input{background/multiscale}
 \end{chapter}
 \end{part}
 
 \begin{part}{Molecular Dynamics}
   \begin{chapter}{Introduction}
   \input{MD/introduction}
+  \input{MD/model}
+  \input{MD/physicalproperties}
   \end{chapter}
   \input{MD/cppcode}
-  \input{MD/fortrancode}
 \end{part}
 
 \begin{part}{Direct Simulation Monte Carlo}
@@ -60,6 +61,7 @@ This is an abstract text.
 \begin{chapter}{Kinetic theory}
   \input{kinetic_theory/introduction}
   \input{kinetic_theory/boltzmann_equation}
+  \input{kinetic_theory/gasdynamics}
 \end{chapter}
 
 \begin{chapter}{Direct Simulation Monte Carlo}
@@ -75,7 +77,9 @@ This is an abstract text.
 \end{part}
 
 \begin{part}{Visualization}
-
+  \input{visualization/introduction}
+  \input{visualization/qt}
+  \input{visualization/opengl}
 \end{part}
 %---------------------------------------------------------------------------------------
 % Appendices
