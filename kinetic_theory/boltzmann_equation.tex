@@ -1,5 +1,6 @@
 \section{The Boltzmann equation}
-In the previous sections, we introduced the distribution function $f_N$ that describes the density in a $6N+1$ dimensional phase space. Another representation is the distribution function $f(\vec x, \vec v, t)$ that tells us how many particles we can find in the spatial range $\vec x + d\vec x$ with velocities in the range $\vec v + d\vec v$ at the time $t$. The function is normalized so
+\label{sec:boltzmann_equation}
+In the previous sections, we introduced the distribution function $f_N$ that describes the density in a $6N+1$ dimensional phase space. Another representation is the distribution function $f(\vec x, \vec v, t)$ that tells us \textit{how many particles we can find in the spatial range $\vec x + d\vec x$ with velocities in the range $\vec v + d\vec v$ at the time $t$}. The function is normalized so
 \begin{align}
 	\int d\vec x d\vec v f(\vec x, \vec v, t) = N
 \end{align}
@@ -89,5 +90,38 @@ where $f = f(\vec x, \vec v, t)$ and $f_1 = f(\vec x, \vec v_1, t)$. The full Bo
 	\dpart{f}{t} + \vec v\cdot \nabla_\vec r f + \nabla_\vec v\cdot{\vec F\over m} f = J[f].
 \end{align}
 In the derivation of the collision operator $J[f]$, we assumed binary collisions only. This is a decent approximation that holds for low densities. By defining the force range $D$ and the dimensionless parameter $\nu = \rho_n D^3$, the Boltzmann equation is valid when $\nu$ is small \cite{mclennan1989introduction}. 
-\section{H-theorem}
-\section{Maxwell-Boltzmann distribution as equilibrium}
+\subsection{H-theorem}
+\subsection{Maxwell-Boltzmann distribution as equilibrium}
+\subsection{Mean free path $\lambda$}
+\label{sec:mean_free_path_calculation}
+The collision frequency can be calculated through the mean free path, which is the average distance a molecule travels between collisions. The mean free path for a gas is estimated by looking at the \textit{effective collision area}, see figure \ref{fig:effective_collision_area}. The effective collision area is then
+\begin{align}
+	A = \pi d^2,
+\end{align}
+where $d$ is the molecular diameter. Two molecules with velocities $\vec v_1$ and $\vec v_2$ have the relative velocity $\vec v_{rel} = \vec v_1 - \vec v_2$. The norm is given by
+\begin{align}
+	v_{rel} &= \sqrt{\vec v_{rel}\cdot \vec v_{rel} } = \sqrt{ (\vec v_1 - \vec v_2)(\vec v_1 - \vec v_2)}\\
+	&= \sqrt{\vec v_1\cdot \vec v_1 - 2\vec v_1\vec v_2 + \vec v_2\vec v_2}.
+\end{align}
+The average relative velocity is calculated by assuming that the velocities are completely random and hence not correlated, and that the molecules have the same mean speed $\langle v\rangle$
+\begin{align}
+	\bar v_{rel} &= \sqrt{\vec v_1^2 + \vec v_2^2} = \sqrt 2 \langle v\rangle,
+\end{align}li
+During a time $\tau$ and average relative molecular velocity $\sqrt 2 \langle v\rangle$, the total volume sweeped out by the particle is given as
+\begin{align}
+	V = \sqrt 2 \pi d^2\langle v\rangle \tau,
+\end{align}
+which in turn gives the number of collisions during such a volume
+\begin{align}
+	\label{eq:num_collisions}
+	n_{coll} = V\rho_n = \sqrt 2 \pi d^2\langle v\rangle \rho_n \tau,
+\end{align}
+where $\rho_n$ is the number density. The mean free path is then calculated as the length of the path divided by the number of collisions
+\begin{align}
+	\lambda = {\langle v\rangle \tau\over \sqrt 2 \pi d^2\langle v\rangle \rho_n\tau} = {1 \over \sqrt 2 \pi d^2 \rho_n}
+\end{align}
+\subsection{Mean collision time $\tau_{coll}$}
+\begin{align}
+	\label{eq:coll_frequency}
+	f_{coll} = \rho_n \pi \sigma^2 \langle v_r \rangle
+\end{align}

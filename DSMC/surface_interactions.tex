@@ -1,4 +1,5 @@
 \section{Surface interactions}
+\label{sec:surface_interactions}
 The effects of surface interactions become significant as the pore sizes decrease. For very small pores, the number of atoms near the surface is comparable with total number of atoms. In MD, these effects are already taken care of through the atomic forces, but in DSMC, we need a surface interaction model. We investigate four different models in this section. The main property of these models is to perform a statistically correct energy and momentum transfer between the wall and the colliding particles. In DSMC, we are only interested in the macroscopic details of these collisions. There are two important parameters that are used, the momentum and thermal accomodation coefficients.
 \subsection{Accomodation coefficients}
 When a particle hits a wall with energy $E_i$, some of the energy might be transferred to the wall resulting in an energy change $\Delta E$. On average, we can define the \textit{thermal accomodation coefficient} 
