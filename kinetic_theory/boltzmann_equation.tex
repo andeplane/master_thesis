@@ -1,34 +1,34 @@
 \section{The Boltzmann equation}
 \label{sec:boltzmann_equation}
-In the previous sections, we introduced the distribution function $f_N$ that describes the density in a $6N+1$ dimensional phase space. Another representation is the distribution function $f(\vec x, \vec v, t)$ that tells us \textit{how many particles we can find in the spatial range $\vec x + d\vec x$ with velocities in the range $\vec v + d\vec v$ at the time $t$}. The function is normalized so
+In the previous section, we introduced the distribution function $f_N$ that describes the density in a $6N+1$ dimensional phase space. Another representation is the \textit{single particle distribution function} $f(\vec r, \vec v, t)$ that tells us \textit{how many particles we will find within $\vec r + d\vec r$ with velocities in the range $\vec v + d\vec v$ at the time $t$}. The term single particle means that we look at the phase space components of a single particle. The function is normalized so
 \begin{align}
-	\int d\vec x d\vec v f(\vec x, \vec v, t) = N
+	\int d\vec r d\vec v f(\vec r, \vec v, t) = N
 \end{align}
-for all times $t$. The Boltzmann equation is nothing more than a conservation law for the distribution function $f$. It describes how $f$ evolves through time by using that any change of probability in a point $(\vec x, \vec v, t)$ must be due to one of the following
+for all times $t$. The Boltzmann equation is nothing more than a conservation law for the distribution function $f$. It describes how $f$ evolves through time by assuming that any change of probability in a point $(\vec r, \vec v, t)$ must be due to one of the following
 \begin{itemize}
-	\item flow through a surface
+	\item flow through a surface in the phase space
 	\item an external force
-	\item internal collisions
+	\item internal collisions.
 \end{itemize}
-All three will change $f$ in different ways. We will first assume no collisions between molecules and derive the collisionless Boltzmann equation. 
+All three will change $f$ in different ways. We will first assume no collisions between molecules and derive the \textit{collisionless Boltzmann equation}. 
 \subsection{The collisionless Boltzmann equation}
-Consider particles around the point $(\vec x,\vec v, t)$. If we assume that the total number of particles has not changed, a time $dt$ later, all the particles have moved to $(\vec x + \vec vdt, \vec v, t + dt)$. Conservation of probability states that
+Consider particles around the point $(\vec r,\vec v)$ at the time $t$. If we assume no forces and that the total number of particles has not changed, a time $dt$ later, all particles have moved to $(\vec r + \vec vdt, \vec v)$. Conservation of probability states that any change of $f$ within a volume $\Omega$ must flow through the boundary $\partial \Omega$
 \begin{align}
-	f(\vec x, \vec v, t) d^3xd^3v = f(\vec x + \vec v dt, \vec v, t + dt)d^3xd^3v,
+	{d\over dt}\int_\Omega f d\vec r d\vec v &= -\int_{\Omega_v}d\vec v\int_{\partial \Omega_r} f\vec v \vec n_r dS_r\\
+	&= -\int_{\Omega_v}d\vec v\int_{\Omega_r} \nabla_\vec r\cdot(f\vec v) d\vec r = -\int_{\Omega} \nabla_\vec r\cdot(f\vec v) d\vec vd\vec r
 \end{align}
-which can be written as
+which becomes
 \begin{align}
-	\dpart{f}{t} + v\cdot\nabla f = 0.
+	\dpart{f}{t} + \nabla_r \cdot(f\vec v) = \dpart{f}{t} + \vec v\cdot\nabla_\vec r f = 0
 \end{align}
-We can extend this equation by including an external force $\vec F$ that only affects the momentum through the velocity
+since $\vec v$ is independent of $\vec r$. We can extend this equation by including an external force $\vec F$ that changes the velocity in exactly the same way as the position was changed above
 \begin{align}
 	\label{eq:collisionless_boltzmann}
-	\dpart{f}{t} + \vec v\cdot\nabla_\vec r f + \nabla_\vec v \cdot {\vec F\over m}f = 0.
+	\dpart{f}{t} + \vec v\cdot\nabla_\vec r f + \nabla_\vec v \cdot {\vec F\over m}f = 0,
 \end{align}
-where we have indicated which derivatives the Del operator acts with. This equation is a good approximation to very dilute gases where intermolecular collisions occur rarely. Collisions between particles will appear as an additional term in \eqref{eq:collisionless_boltzmann}.
+which is called the collisionless Boltzmann equation. It is a good approximation to describe the dynamics of very dilute gases where intermolecular collisions occur rarely. Collisions between particles will change the velocity and appear as an additional term.
 \subsection{The collision operator}
-Suppose that the gas is dilute so that all collisions are assumed to be binary collisions, i.e. no three-particle collisions, and that the total energy and momentum is conserved. Then consider two particles $i$ and $j$ moving towards each other with velocities $\vec v$, $\vec v_1$ and relative velocity $\vec g = \vec v - \vec v_1$. In order to make the calculations easier, we will change the frame of reference. We define particle $i$ as the \textit{incident} particle and $j$ as the \textit{target} particle. After the collision, the particles will have velocities $\vec v'$ and $\vec v_1'$ with relative velocity $\vec g' = \vec v' - \vec v_1'$. If we then choose the target particle as initial frame of reference, we see that the velocity of the incident particle becomes $\tilde {\vec v} = \vec g$ and $\tilde {\vec v}' = \vec g'$.\\
-Since momentum is conserved, we have that the relative velocity must remain constant $|\vec g| = |\vec g'|$ during the collision. The direction of $\vec g'$ is given by the angles $\phi$ and $\theta$ with $\hat {\vec z}$ along $\vec g$ and $\phi \in [0, 2\pi], \theta \in [0, \pi]$. We can express $\vec g'$ as
+Since the gas is dilute, we assume binary collisions only since the probability of three particles colliding is negligible. We also assume that the total energy and momentum is conserved in all collisions. Then consider two particles $i$ and $j$ moving towards each other with velocities $\vec v$, $\vec v_1$ and relative velocity $\vec g = \vec v - \vec v_1$. In order to make the calculations easier, we will change the frame of reference. We define particle $i$ as the \textit{incident} particle and $j$ as the \textit{target} particle. After the collision, the particles will have velocities $\vec v'$ and $\vec v_1'$ with relative velocity $\vec g' = \vec v' - \vec v_1'$. If we then choose the target particle as initial frame of reference, we see that the velocity of the incident particle becomes $\tilde {\vec v} = \vec g$ and $\tilde {\vec v}' = \vec g'$. Since momentum is conserved, we know that the relative velocity must remain constant $|\vec g| = |\vec g'|$ during the collision. The direction of $\vec g'$ is given by the angles $\phi$ and $\theta$ with $\hat {\vec z}$ along $\vec g$ and $\phi \in [0, 2\pi], \theta \in [0, \pi]$. We can express $\vec g'$ as
 \begin{align}
 	\vec g' = \vec g - 2\unit e(\unit e\cdot\vec g),
 \end{align}
