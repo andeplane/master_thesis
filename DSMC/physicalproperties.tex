@@ -1,0 +1,62 @@
+\section{Physical properties}
+Once the simulation program is written, we can create states with all the information needed to know any physical property about the system. However, most macroscopic quantities are of statistical nature and require a time average in a steady state to reach the real expectation value. 
+\subsection{Steady state}
+
+\subsection{Energy}
+The total energy of a system is as usual given by the sum of the kinetic and potential energy. Since we are using the hard sphere model, we remember that the potential energy is given as
+\begin{align}
+	V(\vec r_1, \vec r_2) = \left\{
+	\begin{array}{lr}
+	0 & \text{if} |\vec r_1  - \vec r_2| \leq d\\
+	\infty & \text{if} |\vec r_1  - \vec r_2| < d\\
+	\end{array}
+	\right .
+\end{align}
+where collisions will make sure that the relative distance between any particle pair always remains larger than the diameter. The total energy of our entire system will then be the kinetic energy
+\begin{align}
+	E = E_K = \sum_{n=1}^N {1\over 2}m_iv_i^2
+\end{align}
+where $m_i$ is the mass of particle $i$ and $v_i$ is its scalar velocity. An example implementation of how the kinetic energy is calculated is given in listing \ref{lst:dsmc_kinetic_energy}. Remember that in DSMC, each particle represents a given number of real atoms.
+
+\begin{lstlisting}[caption=Calculation of kinetic energy., label=lst:dsmc_kinetic_energy]
+double calculate_kinetic_energy(vector<vector<double> > &velocities, vector<double> &masses, int atoms_per_particle) {
+	double kinetic_energy = 0;
+	int num_particles = velocities.size();
+	for(int i=0; i<num_particles; i++) {
+		vector<double> &velocity = velocities.at(i);
+		double velocity_squared = velocity.at(0)*velocity.at(0) + velocity.at(1)*velocity.at(1) + velocity.at(2)*velocity.at(2);
+		double mass = masses.at(i);
+		kinetic_energy += 0.5*mass*atoms_per_particle*velocity_squared;
+	}
+
+	return kinetic_energy;
+}
+\end{lstlisting}
+
+\subsection{Temperature}
+The temperature is defined through the equipartition theorem using the three momentum degrees of freedom
+\begin{align}
+	\langle E_k \rangle = {3\over 2}NkT,
+\end{align}
+where $\langle E_k \rangle$ is the average kinetic energy, $N$ is the number of particles, $k$ is Boltzmann's constant and $T$ is the temperature. The only unknown property in this equation is the temperature
+\begin{align}
+	T = \frac{2E_k}{3Nk},
+\end{align}
+where we have dropped the average value brackets of the kinetic energy because we use this to define the \textit{instantaneous} temperature which in turn must be averaged in order to get the actual gas temperature over time. In listing \ref{lst:dsmc_temperature}, we show how to calculate the temperature in a DSMC model.
+
+\begin{lstlisting}[caption=Calculation of instantaneous temperature., label=lst:dsmc_temperature]
+double calculate_temperature(vector<vector<double> > &velocities, vector<double> &masses, int atoms_per_particle) {
+	double kinetic_energy = calculate_kinetic_energy(velocities, masses, atoms_per_particle);
+	int num_particles = velocities.size();
+	int num_real_atoms = num_particles*atoms_per_particle;
+	
+	double temperature = 2*kinetic_energy / (3*num_real_atoms*boltzmann_constant);
+	
+	return temperature;
+}
+\end{lstlisting}
+
+\subsection{Pressure}
+
+\subsection{Density}
+\subsection{Permeability}

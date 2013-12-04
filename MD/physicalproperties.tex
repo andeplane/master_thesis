@@ -19,7 +19,7 @@ We will derive an expression for the pressure by using Clausius' virial function
 \begin{align}
     W(\textbf{r}) = \sum_{i=1}^N \vec r_i \cdot \vec F_i^{TOT},
 \end{align}
-where $F_i^{TOT}$ is the total force acting on atom $i$, including external forces. We assume equilibrium, so that the kinetic energy has reached an approximately constant value. We measure the statistical average of $W$ by calculating
+where $\vec F_i^{TOT}$ is the total force acting on atom $i$, including external forces. We assume equilibrium, so that the kinetic energy has reached an approximately constant value. We measure the statistical average of $W$ by calculating
 \begin{align}
     \langle W \rangle &= \lim_{t\rightarrow\infty} {1\over t} \int_0^t d\tau \sum_{i=1}^N \vec r_i(\tau) \cdot m_i \vec{\ddot r}_i(\tau).
 \end{align}
@@ -51,7 +51,7 @@ which can be rearranged to
 Using this result, we can define the pressure
 \begin{align}
     \label{eq:pressure_in_md}
-	P = \rho k_bT - \frac{1}{3V}\left\langle \sum_{i=1}^N \vec r_i \cdot \vec F_i\right\rangle,
+	P = \rho_n k_bT - \frac{1}{3V}\left\langle \sum_{i=1}^N \vec r_i \cdot \vec F_i\right\rangle,
 \end{align}
 where $\rho$ is the density.
 \subsection{Radial distribution function $g(r)$}
@@ -108,11 +108,11 @@ The example code has complexity $N^2/2$, but since $g(r)$ is interesting only fo
 \end{align}
 where $\vec q$ is the spatial frequency (reciprocal coordinate), $N$ the number of atoms and $\vec R_{ij}$ the position of particles $i$ and $j$ respectively. We will not go into more detail in what the structure factor is other than that it is related to $g(r)$ through
 \begin{align}
-    S(q) = 1 + 4\pi\rho\frac{1}{q}\int dr r\sin(qr)[g(r) - 1],
+    S(q) = 1 + 4\pi\rho_n\frac{1}{q}\int dr r\sin(qr)[g(r) - 1],
 \end{align}
 if we assume that the material is isotropic\cite{kittel1996introduction}. The $g(r)$ can then be found through the inverse fourier transform
 \begin{align}
-    g(r) = 1 + {1\over 2\pi^2\rho r} \int dq(S(q) - 1)q\sin(qr).
+    g(r) = 1 + {1\over 2\pi^2\rho_n r} \int dq(S(q) - 1)q\sin(qr).
 \end{align}
 
 \section{Diffusion constant}

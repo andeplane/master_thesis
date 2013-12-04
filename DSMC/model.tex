@@ -1,4 +1,5 @@
 \section{The model}
+\label{sec:dsmc_model}
 The Direct Simulation Monte Carlo (DSMC) can be seen as either a simplified, stochastic Molecular Dynamics algorithm, or a Monte Carlo method for solving the time-dependent nonlinear Boltzmann equation. The physical system consists of $N$ atoms in a box with volume $V$ and porosity $\phi$, where only the volume $V' = \phi V$ is available for atoms. This is illustrated in figure \ref{fig:cylinder}.
 \begin{figure}[h]
 \begin{center}
@@ -23,9 +24,9 @@ Statistical properties are sampled at the end of each timestep where most physic
 \end{figure}
 
 \subsection{Collisions}
-In an MD simulation it is not clear how one would define a \textit{collision event} since the atoms interact through a continuous force field. If two equal atoms with the same velocity move towards each other, the atoms would at some point reverse their velocity. In this case, one could define the collision event to occur at the time when their relative distance is at its minimum, but other equally valid definitions could be argued for. However, it is clear that a collision should be identified as an event that happens when the atoms are close, i.e. short ranged forces. In this thesis, we have implemented the \textit{hard sphere} model, in which each particle is assumed to be a perfect hard sphere with diameter $\sigma$ and mass $m$. Generally, two particles with radius $R_1$ and $R_2$ will undergo an elastic collision if their displacement is equal to the sum of their radii. In DSMC, we will apply a stochastic hard sphere collision model.\\
+In an MD simulation it is not clear how one would define a \textit{collision event} since the atoms interact through a continuous force field. If two equal atoms with the same velocity move towards each other, the atoms would at some point reverse their velocity. In this case, one could define the collision event to occur at the time when their relative distance is at its minimum, but other equally valid definitions could be argued for. However, it is clear that a collision should be identified as an event that happens when the atoms are close, i.e. short ranged forces. In this thesis, we have implemented the \textit{hard sphere} model, in which each particle is assumed to be a perfect hard sphere with diameter $d$ and mass $m$. Generally, two particles with radius $R_1$ and $R_2$ will undergo an elastic collision if their displacement is equal to the sum of their radii. In DSMC, we will apply a stochastic hard sphere collision model.\\
 \subsubsection{Number of collisions}
-We choose the collision pairs at random, and to ensure that only nearby particles collide, the particles are sorted into spatial cells whose volumes are typically smaller than a cubic mean free path. If we select two particles $i$ and $j$ with relative velocity $\vec v_r$ and cross section $\sigma$, each representing $N_{eff}$ real atoms in a cell with volume $V_c$, the total volume sweeped out during a timestep is
+We choose the collision pairs at random, and to ensure that only nearby particles collide, the particles are sorted into spatial cells whose volumes are typically smaller than a cubic mean free path. If we select two particles $i$ and $j$ with relative velocity $\vec v_r$ and cross section $\sigma=\pi d^2$, each representing $N_{eff}$ real atoms in a cell with volume $V_c$, the total volume sweeped out during a timestep is
 \begin{align}
 	V_{sweep} = N_{eff}\sigma^2|\vec v_r|\Delta t.
 \end{align}
@@ -94,26 +95,3 @@ void collide_molecules(Vector3 &v0, Vector3 &v1, Random *rnd) {
     v1 = v_center_of_mass - 0.5*relative_velocity;
 }
 \end{lstlisting}
-\subsubsection{Effects of finite cell size}
-
-\section{Equation of state}
-\label{sec:dsmc_eos}
-The free \textit{modules} in a DSMC simulation are the collision operator $\mathcal C$ and the move operator $\mathcal M$ which fully (stochastically) determines the time evolution of the system. For hard sphere particles, the pressure may be defined in a similar way as for MD (equation \eqref{eq:pressure_in_md})
-\begin{align}
-	P = \rho_nkT + {1\over tV}\sum_{all collisions} m\Delta \vec v_{ij}\cdot \vec r_{ij},
-\end{align}
-where $\Delta \vec v_{ij}$ is the change of velocity of one of the particles during a collision and $\vec r_{ij}$ is the distance between these two particles\cite{garcia1997direct}. If we choose the hard sphere collision model as described in the previous section, there is no correlation between the change in velocity $\Delta \vec v_{ij}$ and the displacement vector $\vec r_{ij}$
-\begin{align}
-	\langle \Delta \vec v_{ij}\cdot \vec r_{ij}\rangle = 0,
-\end{align}
-so the expression for the pressure is reduced to that of ideal gas
-\begin{align}
-	P = \rho_n kT.
-\end{align}
-Since the main focus of this thesis is to study dilute gases where the ideal gas is a good approximation, this collision model is sufficient enough. For dense gases, it is possible to apply collision models that yields other equations of state.
-\subsection{Non-ideal gas corrections}
-
-\section{Physical properties}
-
-
-\section{Numerical stability}

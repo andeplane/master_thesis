@@ -87,10 +87,28 @@ since $|\unit e\cdot \vec g| = |\unit e\cdot \vec g'|$ and $d^3 v'd^3 v_1' = d^3
 where $f = f(\vec x, \vec v, t)$ and $f_1 = f(\vec x, \vec v_1, t)$. The full Boltzmann equation is then given by
 \begin{align}
 	\label{eq:boltzmann_equation}
-	\dpart{f}{t} + \vec v\cdot \nabla_\vec r f + \nabla_\vec v\cdot{\vec F\over m} f = J[f].
+	\dpart{f}{t} + \vec v\cdot \nabla_\vec r f + {\vec F\over m}\cdot\nabla_\vec v f = J[f].
 \end{align}
 In the derivation of the collision operator $J[f]$, we assumed binary collisions only. This is a decent approximation that holds for low densities. By defining the force range $D$ and the dimensionless parameter $\nu = \rho_n D^3$, the Boltzmann equation is valid when $\nu$ is small \cite{mclennan1989introduction}. 
-\subsection{H-theorem}
+\subsection{$H$-theorem}
+Boltzmann's $H$-theorem is a powerful result that gives us all the theoretical tools we need to implement the DSMC method. We define the $H$-function as
+\begin{align}
+	H(t) = \langle \ln f \rangle = \int f(\vec r, \vec v, t)\ln f(\vec r, \vec v, t)d\vec r d\vec v
+\end{align}
+and differenciate with respect to time
+\begin{align}
+	\frac{dH}{dt} = \int \dpart{f}{t}\ln f d\vec r d\vec v + \int \dpart{f}{t} d\vec r d\vec v = \int \dpart{f}{t}\ln f d\vec r d\vec v
+\end{align}
+where we have used that the number of particles is conserved
+\begin{align}
+	\int \dpart{f}{t}d\vec r d\vec v = \frac{d}{dt} \int fd\vec r d\vec v = \frac{dN}{dt} = 0.
+\end{align}
+We multiply the Boltzmann equation by $\ln f$ and integrate
+\begin{align}
+	% \int \dpart{f}{t}\ln f d\vec r d\vec v = -\int (\ln f)\vec v\cdot \nabla_\vec r f d\vec r d\vec v - \int (\ln f) {\vec F\over m}\cdot \nable_\vec v f d\vec rd\vec v + \int \ln f J[f] d\vec r d\vec v
+	balle
+\end{align}
+
 \subsection{Maxwell-Boltzmann distribution as equilibrium}
 \subsection{Mean free path $\lambda$}
 \label{sec:mean_free_path_calculation}
