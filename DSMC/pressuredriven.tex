@@ -19,11 +19,16 @@ We will use the ideas of continuum mechanics to derive a relation between the pr
 \end{align}
 where $\Delta P = P_1 - P_2$. We aim to find a constant force $F_x=ma_x$ being equivalent to that of the pressure difference. With an applied acceleration $g$, the force is then
 \begin{align}
-	F_x = mg = \rho_m \Delta V g = \Delta y\Delta z\Delta P = \Delta V \frac{P}{\Delta x},
+	F_x = mg = \rho_m \Delta V g = \Delta y\Delta z\Delta P = \Delta V \frac{\Delta P}{\Delta x},
 \end{align}
 which gives the relation
 \begin{align}
-	g = \frac{P}{\rho_m\Delta x}.
+	g = \frac{\Delta P}{\rho_m\Delta x}
+\end{align}
+or solved for the pressure difference
+\begin{align}
+	\label{eq:acceleration_to_pressure_difference}
+	\Delta P = \rho_m g \Delta x.
 \end{align}
 This is the approach we have used to induce flow in the DSMC code, and the implementation is shown in listing \ref{lst:acceleration_driven_flow}.
 \begin{lstlisting}[caption=Acceleration of particles in the DSMC code., label=lst:acceleration_driven_flow]
@@ -43,3 +48,60 @@ One problem with this approach appears if the path through a system has larger p
 \end{center}
 \caption{Acceleration-driven flows will not reproduce correct results when the gas in a large part (marked gray) of the channel will flow in the opposite direction of the pressure gradient.}
 \end{figure}
+
+\subsection{Measuring permeability}
+\label{sec:permeability_acceleration_driven}
+The permeability was defined in section \ref{sec:permeability_dsmc} through Darcy's law
+\begin{align}
+	k = Q{2PL\mu\over A\left(P_L^2 - P_0^2\right)},
+\end{align}
+but we did not know how to correctly evaluate the pressure since $x=0$ is the same point as $x=L$ in a periodic system with length $L$. We can define the pressure at $x=0$ through the ideal gas law, and due to the acceleration $g$ there is an implied pressure at $x=L$ we can find by using equation \eqref{eq:acceleration_to_pressure_difference}
+\begin{align}
+	P_0 &= \rho_n(x=0)kT\\
+	P_L &= P_0 - \Delta P \\
+	&= \rho_n(x=0)kT - \bar{\rho}_m g L,
+\end{align}
+where $\bar{\rho}_m$ is the average density in the system and we have used that $\Delta x=L$.\\
+We still need to figure out how to measure the volumetric flow rate $Q$. The volumetric flow rate tells us how much volume that passes through a surface per time. The simplest way to measure $Q$ is to count how many particles that have passed through a surface and multiply that number with the volume per particle $\rho_n^{-1}$. Since we apply periodic boundary conditions on particles that fly out of the system, we just have to keep track of how many, this is illustrated in listing \ref{lst:dsmc_apply_periodic_boundary_conditions}.
+\begin{lstlisting}[caption=Example of how to apply periodic boundary conditions and at the same time calculate number flux., label=lst:dsmc_apply_periodic_boundary_conditions]
+void apply_periodic_boundary_conditions(vector<double>&position, vector<long> &count_periodic, vector<double> &system_length)
+{
+    if(position[0] >= system_length[0]) { 
+    	position[0] -= system_length[0]; count_periodic[0]++; 
+    }
+    else if(position[0] < 0) { 
+    	position[0] += system_length[1]; count_periodic[0]--; 
+    }
+
+    if(position[1] >= system_length[1]) { 
+    	position[1] -= system_length[1]; count_periodic[1]++;
+    }
+    else if(position[1] < 0) {
+    	position[1] += system_length[1]; count_periodic[1]--; 
+    }
+
+    if(position[2] >= system_length[2]) { 
+    	position[2] -= system_length[2]; count_periodic[2]++; 
+    }
+    else if(position[2] < 0) {
+    	position[2] += system_length[2]; count_periodic[2]--; 
+    }
+}
+\end{lstlisting}
+Now that we have the number flux, we can easily calculate the permeability as shown in listing 
+\begin{lstlisting}[caption=Calculation of permeability\, assuming that flow is in the $z$-direction., label=lst:dsmc_permeability]
+double calculate_permeability(double volume, long num_particles, double viscosity, vector<long> &count_periodic, vector<double> &system_length, double mass_density, double acceleration)
+{	
+    double volume_per_particle = volume / num_particles;
+
+    // We assuming that the flow is in z-direction
+    double volume_flow_rate = count_periodic[2]*volume_per_molecule;
+    double area = system_length[0]*system_length[1];
+
+    double pressure_0 = system->density*system->temperature;
+    double pressure_L = pressure_in_reservoir_0 - mass_density*acceleration*system_length[2];
+    double permeability = 2*pressure_0*volume_flow_rate*system_length[2]*viscosity / (area * (pressure_0*pressure_0 - pressure_L*pressure_L));
+
+    return permeability;
+}
+\end{lstlisting}

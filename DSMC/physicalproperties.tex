@@ -1,7 +1,5 @@
 \section{Physical properties}
-Once the simulation program is written, we can create states with all the information needed to know any physical property about the system. However, most macroscopic quantities are of statistical nature and require a time average in a steady state to reach the real expectation value. 
-\subsection{Steady state}
-
+Once the simulation program is written, we can create states with all the information needed to know any physical property about the system. However, most macroscopic quantities are of statistical nature and require a time average in a steady state to reach the real expectation value. In section \ref{sec:dsmc_steady_state} we will discuss how to verify that we have reached a steady state. 
 \subsection{Energy}
 The total energy of a system is as usual given by the sum of the kinetic and potential energy. Since we are using the hard sphere model, we remember that the potential energy is given as
 \begin{align}
@@ -74,4 +72,11 @@ We can also calculate the pressure tensor which can be defined as \cite{uribe199
 \end{align}
 where $\vec v = \langle m\vec c\rangle/\langle m \rangle$ and $\vec c_i$ is velocity of particle $i$. These two results may not be equivalent since the pressure tensor can be non-isotropic in some systems\cite{uribe1999burnett}. 
 \subsection{Permeability}
-The permeability is defined through Darcy's law for gases which we derived in 
+\label{sec:permeability_dsmc}
+The permeability is defined through Darcy's law for gases which was derived in section \ref{sec:darcy_gas}. We can solve for the permeability $k$
+\begin{align}
+	\label{eq:permeability_gas}
+	k = Q{2PL\mu\over A\left(P_L^2 - P_0^2\right)},
+\end{align}
+where $\mu$ is the viscosity, $Q$ is the volumetric flow rate, $A$ is the cross sectional area, $P_L$ and $P_0$ are the pressures at $x=L$ and $x=0$ and $P$ is the pressure measured at the same $x$ as $Q$. Note that most of the systems we will study are periodic in the flow direction. This implies that the point $x=0$ actually is the \textit{same point} as $x=L$, which gives $\rho_n(x=0) = \rho_n(x=L)$. If we measure the pressure through the ideal gas law, we get that $P_L = P_0$ which gives zero permeability.\\
+We will use a constant force to induce flow in the system. This will allow us to define an \textit{implied} pressure at $x=L$. We will come back to how to measure permeability in section \ref{sec:permeability_acceleration_driven} after we have discussed the acceleration driven flow.
