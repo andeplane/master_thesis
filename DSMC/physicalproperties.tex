@@ -56,7 +56,22 @@ double calculate_temperature(vector<vector<double> > &velocities, vector<double>
 }
 \end{lstlisting}
 
-\subsection{Pressure}
-
 \subsection{Density}
+Since there are no forces between particles in DSMC, all gas particles may be at the very same point. This will of course not happen, but it is possible to initiate a state in that configuration. The gas is compressible, so various density plots may be interesting. The density in any volume $V$ is easily calculated through
+\begin{align}
+	\rho_n = {N \over V},
+\end{align}
+where $N$ is the number of atoms in that volume. 
+
+\subsection{Pressure}
+As we will discuss in \ref{sec:dsmc_eos}, the a DSMC gas satisfies the ideal gas equation of state. We can then define the pressure through the ideal gas law
+\begin{align}
+	P = \rho_n kT.
+\end{align}
+We can also calculate the pressure tensor which can be defined as \cite{uribe1999burnett}
+\begin{align}
+	\vec P_{ij} = \langle m\vec c_i \vec c_j \rangle - \rho \vec v_i \vec v_j,
+\end{align}
+where $\vec v = \langle m\vec c\rangle/\langle m \rangle$ and $\vec c_i$ is velocity of particle $i$. These two results may not be equivalent since the pressure tensor can be non-isotropic in some systems\cite{uribe1999burnett}. 
 \subsection{Permeability}
+The permeability is defined through Darcy's law for gases which we derived in 
