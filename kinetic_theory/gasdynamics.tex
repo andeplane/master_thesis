@@ -1,62 +1,60 @@
-\section{Mean free path}
 \section{Slip length}
-\section{Mass continuity equation}
+\label{sec:slip_length}
+\section{Porosity}
 
-\section{Darcy's law for gases}
-\label{sec:darcy_gas}
-Darcy's law tells us what volumetric flow rate $Q$ one would expect from a liquid with viscosity $\mu$ through a material with permeability $k$ of length $L$ and volume $V$ when we apply a pressure difference $\Delta P$, see figure \ref{fig:darcys_law}. 
+\section{Permerability and Darcy's law}
+\label{sec:darcy_law}
+In 1856, H. Darcy found a linear relation between the pressure difference and the fluid flow rate. This relation is called Darcy's law and tells us what volumetric flow rate \footnote{how many cubic meters of fluid per second} $Q$ we can expect from a incompressible liquid with dynamic viscosity $\mu$ through a material with \textit{permeability} $k$ of length $L$ and volume $V$ when we apply a pressure difference $\Delta P$, see figure \ref{fig:darcys_law}. 
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{kinetic_theory/figures/darcy.eps}
 \label{fig:darcys_law}
 \end{center}
-\caption{A box with volume $V=LA$ with fixed pressure values at $x=0$ and $x=L$.}
+\caption{A box with volume $V=LA$ with fixed pressure values at $x=0$ and $x=L$. The volumetric flow rate $Q$ through a cross sectional area $A$ is given by Darcy's law.}
 \end{figure}
-Since we usually operate with flow in one direction, we will only look at the one dimensional version of Darcy's equation which is given as
+The one dimensional version of Darcy's equation which is given as
 \begin{align}
 \label{eq:darcy_1}
 	Q = A{k\over \mu}{\Delta P\over L},
 \end{align}
-where $A$ is the cross sectional area; the area of the plane orthogonal on the flow direction. By letting $L\rightarrow 0$, we get the differential form of Darcy's law
+where $\Delta P = P_0 - P_L \geq 0$, $A$ is the cross sectional area; the area of the material orthogonal on the flow direction. By letting $L\rightarrow 0$, we get the differential form of Darcy's law
 \begin{align}
 \label{eq:darcy_2}
 	Q = -A{k\over \mu}{dP\over dx},
 \end{align}
-where we picked up a minus sign because the fluid flows from high pressure to low pressure. One of the assumptions in the derivation of Darcy's law is that the liquid is incompressible.\cite{darcy_derivation} This is a bad approximation for gases, so we need a similar equation that allows non-constant densities. We rewrite Darcy's law by instead using the volumetric flux (or Darcy velocity) $u=Q/A$
+where we picked up a minus sign because the fluid flows from high pressure to low pressure. Darcy's law can be written in a form analogous to Ohm's law
 \begin{align}
-	\label{eq:darcy_3}
-	u = -{k\over \mu}{dP\over dx}.
+	u = \sigma_D \nabla P,
 \end{align}
-We then assume that the gas satisfies the ideal gas equation of state
+where $\sigma_D=k/\mu$ can be seen as a \textit{specific liquid conductivity} of the material. We see the similarities to Ohms law ($J$ being the current density and $E$ the electric field, both measured at the same point $x$) 
 \begin{align}
-	P = \rho_n kT,
+	J = \sigma E.
 \end{align}
-where $P$ is the pressure, $k_B$ is Boltzmann's constant and $T$ is the temperature. The mass continuity equation states that
+\subsection{Permeability $k$}
+The motivation of introducing the concept permeability is to separate the conductivity parameter $\sigma_D$ into two parts; one that depends on the liquid only, the viscosity $\mu$, and a material specific constant $k$ which we call permeability. This means that we can do an experiment with a liquid with known viscosity, say water, and measure the permeability of some material (Darcy studied a sand filled cylinder in his original experiment). Once you know the permeability, you are able to predict the flow rate through the material for \textit{any} other liquid if you just know the viscosity.\\
+This is of course not completely true for all fluids. While Darcy originally found the relation as an empiric equation based on experiments, it can be derived from the Navier-Stokes equations. Darcy's law is only correct if the liquid flow satisfies the no-slip boundary condition. As discussed in section \ref{sec:slip_length}, the velocity of a fluid near the surface is proportional to the mean free path $\lambda$, and is often a non-zero quantity in dilute gases. 
+\subsection{Knudsen number}
+The Knudsen number is a dimensionless quantity defined as the ratio between the mean free path $\lambda$ and some characteristic length in the material \footnote{such as pore radius $r$} $L$
 \begin{align}
-	\dpart{(\phi \rho_m)}{t} + \dpart{(u\rho_m)}{x} = 0,
+	\text{Kn} = \frac{\lambda}{L}.
 \end{align}
-which at a steady state is reduced to
+In the limit of very large Knudsen numbers (Kn$\geq 10$), the mean free path is so large that atoms collide with the surface more often than with each other. 
+\subsection{Flow regimes}
+
+
+\subsection{Klinkenberg effect}
+In 1941, L.J. Klinkenberg published a paper explaining the discrepancies between Darcy's law and experiment by applying the theory of no-slip \cite{klinkenberg1941permeability}. He introduced a linear scaling function $f_c$ that relates what he called the \textit{absolute permeability} $k_\infty$, the permeability that is measured with a liquid or a high density gas, to the \textit{apparent permeability} $k_a$ which is the permeability that satisfies Darcy's law. The relation is given as
 \begin{align}
-	\dpart{(\rho_m u)}{x} = 0,
+	k_a = f_c k_\infty = \left(1 + 4c\text{Kn}\right)k_\infty,
 \end{align}
-which in turn gives that $\rho_m u$ is a constant and can be written as
+where $c\approx 1.11$ is the no-slip factor in equation \eqref{eq:noslip}. We can rewrite Klinkenberg's equation to 
 \begin{align}
-	\rho_m u = {Pm\over k_BT} c,
+	k_a = \left(1 + {b\over P}\right)k_\infty,
 \end{align}
-where we have applied the ideal gas law. We can solve for the Darcy velocity $u$ and insert this into equation \eqref{eq:darcy_3}
+by using that
 \begin{align}
-	{ck_BT\over P m} &= -{k\over \mu}{dP\over dx}\\
-	{ck_BT\over m}dx &= -{k\over \mu}pdP,
+	4c\text{Kn} &= {4c\lambda \over L} = {b\over P},
 \end{align}
-and integrate 
-\begin{align}
-\nonumber
-	{ck_BT\over m}\int_0^L dx &= -{k\over \mu}\int_{P_0}^{P_L} pdP\\
-\nonumber
-	{ck_BT\over m}L &= -{k\over 2\mu}\left(P_L^2 - P_0^2\right)\\
-\nonumber
-	u &= {k\over 2\mu}{\left(P_0^2 - P_L^2\right)\over PL}\\
-\label{eq:darcy_gas}
-	Q &= A{k\over 2\mu}{\left(P_0^2 - P_L^2\right)\over PL}
-\end{align}
-where $u$ and $P$ is measured at the same point $x$. 
+where $b=4c\lambda P / L$ is called Klinkenberg's gas slippage factor. We see that $b$ is a constant depending on the geometry of the material and the pressure. In experiments, details about the underlying geometry is often unavailable, so other forms have been suggested \cite{ziarani2012knudsen}.
+\subsection{Knudsen's correction}
+

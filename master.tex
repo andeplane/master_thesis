@@ -48,27 +48,17 @@ This is an abstract text.
 \end{chapter}
 \end{part}
 
-\begin{part}{Molecular Dynamics}
-  \begin{chapter}{Introduction}
-  \input{MD/introduction}
-  \input{MD/model}
-  \input{MD/physicalproperties}
-  \input{DSMC/stability}
-  \input{MD/steadystate}
-  \input{MD/validation}
-  \input{MD/results}
-  \input{MD/implementation}
-  \input{MD/computationalcost}
-  \end{chapter}
-\end{part}
-
-\begin{part}{Direct Simulation Monte Carlo}
+\begin{part}{Theory}
 \begin{chapter}{Kinetic theory}
   \input{kinetic_theory/introduction}
   \input{kinetic_theory/boltzmann_equation}
+\end{chapter}
+\begin{chapter}{Gas dynamics}
   \input{kinetic_theory/gasdynamics}
 \end{chapter}
+\end{part}
 
+\begin{part}{Direct Simulation Monte Carlo}
 \begin{chapter}{Direct Simulation Monte Carlo}
   \label{chap:dsmc}
   \input{DSMC/introduction}
@@ -81,15 +71,48 @@ This is an abstract text.
   \input{DSMC/steadystate}
   \input{DSMC/geometry}
   \input{DSMC/parallelization}
+\end{chapter}
+\begin{chapter}{Validation and results}
   \input{DSMC/validation}
   \input{DSMC/results}
 \end{chapter}
 \end{part}
 
+\begin{part}{Molecular Dynamics}
+  \begin{chapter}{Introduction}
+  \input{MD/introduction}
+  \input{MD/model}
+  \input{MD/physicalproperties}
+  \input{DSMC/stability}
+  \input{MD/steadystate}
+  \input{MD/implementation}
+  \input{MD/computationalcost}
+  \end{chapter}
+
+  \begin{chapter}{Validation and results}
+    \input{MD/validation}
+    \input{MD/results}
+  \end{chapter}  
+\end{part}
+
 \begin{part}{Visualization}
   \input{visualization/introduction}
-  \input{visualization/qt}
-  \input{visualization/opengl}
+  \begin{chapter}{OpenGL}
+    \input{opengl/introduction}
+    \input{opengl/functions}
+    \input{opengl/transformations}
+    \input{opengl/textures}
+    \input{opengl/shaders}
+    \input{opengl/vbo}
+  \end{chapter}
+
+  \begin{chapter}{Results}
+    \input{opengl/marchingcubes}
+  \end{chapter}
+\end{part}
+
+\begin{part}{Conclusion}
+  
 \end{part}
 %---------------------------------------------------------------------------------------
 % Appendices
