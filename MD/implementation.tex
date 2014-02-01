@@ -1,3 +1,3 @@
 \section{Implementation}
-
-\section{Parallelization}
+\subsection{Two-body forces}
+The Lennard-Jones potential gives rise to a two-body force acting only on pairs of atoms. In principle, this means we have to sum over all pairs in the system which for $n$ atoms in the system is $O(n^2)$. This calculation can be reduced to $O(n)$ by realizing that the gradient of the potential (hence the force) is nearly zero at $r\approx 3\sigma$, see figure 
