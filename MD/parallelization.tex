@@ -1,1 +1,2 @@
 \section{Parallelization}
+The most computationally expensive part of the algorithm is the force calculation, so we need to figure out a way to divide this operation to smaller jobs that can be distributed to several processors. With the cut-off length we introduced in section \ref{sec:md_implementation_two_body_forces}, we can divide the physical space into different subvolumes, each controlled by one processor. The forces are calculated 
