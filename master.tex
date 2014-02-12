@@ -1,5 +1,6 @@
 \documentclass[twoside,english, a4paper, 12pt]{uiofysmaster}
 % \usepackage{biblatex}
+\usepackage{todonotes}
 
 \author{Anders Hafreager}
 \title{\uppercase{Flow in nanoporous media}}
@@ -36,17 +37,14 @@ This is an abstract text.
 \clearpage
 \listoftables
 
-\begin{part}{Introduction}
 \begin{chapter}{Introduction}
   \input{introduction/introduction}
 \end{chapter}
 
-\begin{chapter}{Background}
+\begin{chapter}{Theory of fluids}
   \input{background/history}
   \input{background/applications}
-%  \input{background/multiscale}
 \end{chapter}
-\end{part}
 
 \begin{part}{Theory}
 \begin{chapter}{Kinetic theory}
@@ -72,7 +70,7 @@ This is an abstract text.
 \end{chapter}
 \begin{chapter}{Implementation}
   \input{DSMC/implementation}
-  \input{DSMC/implementation}
+  \input{DSMC/collisions}
   \input{DSMC/geometry}
   \input{DSMC/parallelization}
 \end{chapter}

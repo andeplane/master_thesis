@@ -1,5 +1,5 @@
 function one_cylinder_varying_radius()
-base_folder = '/projects/data/dsmc/2013-12-10_one_cylinder/one_cylinder_varying_radius/states/';
+%base_folder = '/projects/data/dsmc/2013-12-10_one_cylinder/one_cylinder_varying_radius/states/';
 radii = [0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45];
 permeabilities = [];
 

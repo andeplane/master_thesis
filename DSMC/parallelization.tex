@@ -38,6 +38,26 @@ With the processor id $p$ given, it is easy to determine which subvolume this pr
 	y&\in[p_yl_y, (p_y+1)l_y\rangle\\
 	z&\in[p_zl_z, (p_z+1)l_z\rangle.
 \end{align}
-Collisions will be performed within the collision cells as before, but will obviously happen in parallel. 
+Since the collision cells are independent of each other, collisions will happen in parallel where each processor loops through all of its cells colliding the particles as described in section \ref{sec:dsmc_collision_cells}. 
 \subsection{Exchanging particles}
-A particle can move from one processor to one of the neighbouring 26 nodes through what is called the \textit{boundary layer}, the processor needs to send that information to the reciever. 
+During a timestep, a particle can move from one processor to one of the 26 neighbouring nodes (the middle node in a $3\times3\times3$ grid has a 26 neighbours). After each timestep, all processors loop through their particles to find the ones having moved out of the processor's spatial domain. This process is illustrated in listing \ref{lst:dsmc_detecting_particles_moved_out}.
+\begin{lstlisting}[caption=Detecting which particles having moved out of a processor's spatial domain., label=lst:dsmc_detecting_particles_moved_out]
+double mpi_move() {
+	for(int n=0; n<num_particles_local; n++) {
+		int node_id = topology->index_from_particle_index(n);
+		if(node_id != myid) {
+			// Particle belongs to another node
+		}
+	}
+}
+\end{lstlisting}
+In principle, there are 26 potential recieving nodes, so each node needs to be able to send information to all of them. The easiest way to implement this is to let each processor directly communicate with all of its neighbours. However, this approach requires a lot more communcation time than actually needed.\\
+If we instead send information about these particles through a 3-step process, we can reduce the number of neighbouring nodes from 26 to 6. This idea is best illustrated in two dimensions, but is easily generalized to the three-dimensional case, see figure \ref{fig:parallelization_facet_technique}.
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/parallelization_facet_technique.eps}
+\label{fig:parallelization_facet_technique}
+\end{center}
+\caption{The middle node (1,1) has 8 neighbours it needs to communicate with. Each node only needs to communicate with its nearest neighbours (4 in two dimensions, 6 in three dimensions), because the nearest neighbours can work as intermediate information carriers. A particle that moves from processor (1,1) to (2,2) will in step 1 be sent to (2,1), then in step 2 be sent to (2,2).}
+\end{figure}
+An analysis of the parallelization is studied in subsection \ref{sec:dsmc_parallelization_performance} where we compare how well the program performance scales with increasing number of processors. 
