@@ -16,6 +16,7 @@
 \newcommand{\dpart}[2]{\frac{\partial #1}{\partial #2}}
 \newcommand{\dd}[2]{\frac{\mathrm{d}#1}{\mathrm{d}#2}}
 \newcommand{\unit}[1]{\hat {\vec{#1}}}
+\newcommand{\dm}[1]{\mathrm{d}\mathbf{#1}}
 
 % Quantum stuff
 \newcommand{\infint}{\int_{-\infty}^{\infty}}
@@ -25,3 +26,12 @@
 \newcommand{\eea}{\end{eqnarray*}}
 \newcommand{\beq}{\begin{equation}}
 \newcommand{\eeq}{\end{equation}}
+
+\def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip2em
+  \hbox{}\nobreak\hfil(#1)%
+  \parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
+
+\newsavebox\mybox
+\newenvironment{aquote}[1]
+  {\savebox\mybox{#1}\begin{quote}}
+  {\signed{\usebox\mybox}\end{quote}}
