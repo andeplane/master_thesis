@@ -1,6 +1,7 @@
-\section{Results}
-\subsection{Parallelization performance}
+\section{Parallelization performance}
 \label{sec:dsmc_parallelization_performance}
+
+\section{Results for simple geometries}
 \subsection{Flow in a cylinder, varying Knudsen number}
 We have induced flow in a voxelized cylinder as shown in figure \ref{fig:cylinder_flow}. The cylinder has radius $0.45 \mu m$ with an applied acceleration corresponding to a pressure difference $\Delta P = 1.1P_0$, where $P_0$ is the ideal gas pressure at $T=300K$. We can choose the Knudsen number through the density
 \begin{align}
@@ -47,7 +48,7 @@ If we instead keep the Knudsen number constant ($\text{Kn}=1.0$), we can vary th
 \end{center}
 \caption{Logarithmic plot of the permeability for different cylinders with radii in the range $0.1 \mu m$ to $0.45 \mu m$ with an applied pressure difference $\Delta P = 1.1P_0$. The blue line is the Knudsen corrected analytical solution from \cite{karniadakis2005microflows}. The DSMC results show slightly higher permeability as we expect from the voxelation.}
 \end{figure}
-
+\section{Results for complicated geometries}
 \subsection{Randomly packed spheres}
 Through the Carman-Kozeny equation, we can theoretically predict the permeability for randomly packed spheres 
 \begin{align}
