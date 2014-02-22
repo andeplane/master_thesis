@@ -4,9 +4,9 @@ Since there are no long range forces, each collision cell is completely independ
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/parallelization.eps}
-\label{fig:dsmc_parallelization_1}
 \end{center}
 \caption{Illustration of how the spatial domain can be divided into four subdomains, each controlled by a processor. Each processor contains many particles that are placed in several collision cells (marked grey).}
+\label{fig:dsmc_parallelization_1}
 \end{figure}
 If we first assume that all the processors have full knowledge about the geometry of the full system, the only thing we have to take care of is when particles move from one processor to another. We have used (MPI) for the communcation between processors, and it is assumed that the reader is familiar with how MPI works. 
 \subsection{Topological structure}
@@ -14,9 +14,9 @@ The processors are divided into a three dimensional grid with $(P_x, P_y, P_z)$ 
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/parallelization_node_configuration.eps}
-\label{fig:dsmc_parallelization_2}
 \end{center}
 \caption{Processor labeling in a 3-dimensional grid. Each processor is uniquely identified through its coordinate $(p_x, p_y, p_z)$.}
+\label{fig:dsmc_parallelization_2}
 \end{figure}
 When starting a program with MPI, each process is provided a unique identification number $p$ in the range $[0, P-1]$ for $P$ processors. This can be mapped to the 3-dimensional grid coordinates through
 \begin{align}
@@ -56,8 +56,8 @@ If we instead send information about these particles through a 3-step process, w
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/parallelization_facet_technique.eps}
-\label{fig:parallelization_facet_technique}
 \end{center}
 \caption{The middle node (1,1) has 8 neighbours it needs to communicate with. Each node only needs to communicate with its nearest neighbours (4 in two dimensions, 6 in three dimensions), because the nearest neighbours can work as intermediate information carriers. A particle that moves from processor (1,1) to (2,2) will in step 1 be sent to (2,1), then in step 2 be sent to (2,2).}
+\label{fig:parallelization_facet_technique}
 \end{figure}
 An analysis of the parallelization is studied in subsection \ref{sec:dsmc_parallelization_performance} where we compare how well the program performance scales with increasing number of processors. 

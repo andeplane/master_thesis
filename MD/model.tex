@@ -2,9 +2,9 @@
 The state of a molecular dynamics system is fully described by seven variables per atom; three positions, three velocities plus the atom type. These phase variables are evolved through the laws of motion. It is common to apply periodic boundary conditions so that $r_i = r_i + L_i$, where $L_i$ is the system length in the $i$'th dimension. Applied periodic boundary conditions in all directions implies constant volume. The atomic forces are calculated as the gradient of a chosen potential that can differ quite a lot depending on the requirements of the model. A noble gas like Argon can be modelled with a simple potential called the Lennard-Jones potential which will be discussed below. With this potential, one can calculate equilibrium thermodynamic properties that are in good agreement with experimental values \cite{verlet1967computer}. System statistics are sampled as ensable averages through ergodicity over large times. A typical Molecular Dynamics algorithm is described in figure \ref{fig:flow_simple_md}.
 \begin{figure}[h]
 \framebox{\includegraphics[width=0.5\textwidth, trim=-5cm 0cm -10cm 0cm, clip]{MD/figures/SimpleMD.png}}
-\label{fig:flow_simple_md}
 \centering
-\caption{Flow chart illustrating how a typical Molecular Dynamics algorithm is written. }
+\caption{Flow chart illustrating how a typical Molecular Dynamics algorithm is performed.}
+\label{fig:flow_simple_md}
 \end{figure}
 \subsection{Force calculation - potentials}
 In general, the potential energy is given as a function of the configuration given by the atom positions
@@ -30,9 +30,9 @@ where $\vec u_{ij}$ is the unit vector pointing from atom $i$ to atom $j$. In th
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=1.0\textwidth, trim=0cm 0cm 0cm 0cm, clip]{MD/figures/lennard_jones.png}
-\label{fig:md_lennard_jones}
 \end{center}
-\caption{The Lennard-Jones potential.}
+\caption{The Lennard-Jones potential as a function of relative distance $r$ between two atoms.}
+\label{fig:md_lennard_jones}
 \end{figure}
 \subsection{Time integration}
 Once we know how to calculate the forces, we have everything we need to evolve the system through time. The system is integrated with Newton's laws with some integration scheme. In MD-simulations, it is common to chooce the Velocity Verlet algorithm. Time is discretized into timesteps, $\Delta t$, so the state variables and the acceleration $\vec a$ at $t=n\Delta t$ are written as

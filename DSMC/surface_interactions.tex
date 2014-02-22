@@ -40,8 +40,8 @@ where $v_n$ and $v_t$ are the normal and tangential components of the velocities
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/cercignani-lampis.eps}
-\label{fig:cercignani_lampis}
 \end{center}
 \caption{The Cercignani-Lampis normal component distribution for $T=100K$, $m=m_{\text{argon}}$, $\alpha_n=0.5$. We see that particles with high velocities are reflected with a slightly lower velicities converging towards the velocity corresponding to the wall temperature $T_w$, $\langle v \rangle = 144m/s$.}
+\label{fig:cercignani_lampis}
 \end{figure}
 To draw random numbers from this distribution is orders of magnitudes more expensive than the thermal wall since it isn't trivial to invert the cumulative distribution function. Instead we must use the von Neumann algorithm which is a accept-reject Monte Carlo algorithm\cite{allen1989computer}. I have implemented and tested this method, but due to the computational cost, the main focus in this thesis is the thermal wall. 

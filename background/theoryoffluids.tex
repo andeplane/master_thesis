@@ -22,11 +22,11 @@ With the concept of continuum, we think that each point in space has well define
 	\dpart{\rho \vec u}{t} + \nabla \cdot (\vec u \otimes (\rho\vec u)) + \nabla P &= 0\\
 	\dpart{E}{t} + \nabla\cdot (\vec u(E + p)) &= 0,
 \end{align}
-where $\rho_m$ is the mass density, $\vec u(\vec x, t)$ is the velocity field, $E$ is the total energy per unit volume, $\otimes$ is the tensor product and $P(\vec x, t)$ is the pressure field. In the original paper, Euler only derived the first two equations, but the full set is usually referred to as the Euler equations. They describe the motion of fluids with negligible viscosity which is a decent approximation for many fluids.\\
-About 80 years later, in the 1840s, Sir George Stokes published the Navier-Stokes equation which can be seen as an extension of the Euler equations where effects caused by the viscosity of the fluid are included \cite{batchelor2000introduction}. The Navier-Stokes equations (NSE) for an incompressible fluid can be written as
+where $\rho_m$ is the mass density, $\vec u(\vec x, t)$ is the velocity field, $E$ is the total energy per unit volume, $\otimes$ is the tensor product and $P(\vec x, t)$ is the pressure field. These can be combined to one vector equation, but the idea of conservation laws are more clear when they are separated. In the original paper, Euler only derived the first two equations, but the full set is usually referred to as the Euler equations. They describe the motion of fluids with negligible viscosity which is a decent approximation for many fluids.\\
+About 80 years later, in the 1840s, Sir George Stokes published the Navier-Stokes equations (NSE) which can be seen as an extension of the Euler equations where effects caused by the viscosity of the fluid are included \cite{batchelor2000introduction}. The Navier-Stokes equations for an incompressible fluid can be written as one vector equation
 \begin{align}
 	\label{eq:nse_incompressible}
-	\rho {D\vec u\over Dt} = \rho \vec F - \nabla p + \mu\nabla^2\vec u,
+	\rho \frac{D\vec u}{Dt} = \rho \vec F - \nabla p + \mu\nabla^2\vec u,
 \end{align}
 where $\vec F$ is an external force (i.e. gravity or an electrostatic field), $\mu$ is the viscosity and $D/Dt$ is the material derivative defined as
 \begin{align}
@@ -96,9 +96,9 @@ It is convenient to introduce the concept of \textit{slip length} $l_s$ to be ab
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/slip_length.eps}
-\label{fig:slip_length}
 \end{center}
 \caption{Slip length is the distance into the wall we would have to extrapolate a velocity profile for it to reach zero value. We have the no-slip condition on the left, where the slip length is zero whereas we have a non-zero slip length on the right.}
+\label{fig:slip_length}
 \end{figure}
 Maxwell theory predicts the following relation between the slip length and the mean free path
 \begin{align}

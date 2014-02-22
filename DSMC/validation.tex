@@ -7,11 +7,14 @@ A good model should be in agreement with already existing theories (at least tho
 \subsection{Maxwell-Boltzmann velocity distribution}
 We showed in section \ref{sec:maxwell_boltzmann_distribution} that the particles in a gas in equilibrium will have velocities according to the Maxwell-Boltzmann distribution. We have run a simulation with $N$ simulated particles with initial velocities given for each particle $n$ as
 \begin{align}
+	\nonumber
 	\dot x_n &= v_0(1 - 2 (n\bmod 2))\\
+	\label{eq:weird_velocity_distribution}
 	\dot y_n &= v_0(1 - 2 ((n+1)\bmod 2))\\
+	\nonumber
 	\dot z_n &= \dot x_n,
 \end{align}
-where $v_0$ is some velocity that is chosen so that $T\approx 300K$. The reason we have chosen this initial velocity distribution is that the net momentum will be zero if $N$ is an even number (each particle's velocity components are cancelled out by the next particle). This is is of course not the Maxwell-Boltzmann distribution - we are not in an equilibrium state. We expect that after some time, the system will thermalize and approach the Maxwell-Boltzmann distribution which is given as
+where $v_0$ is some velocity that is chosen so that $T\approx 300K$. There are no walls that the particles can exchange energy with, so the total energy is conserved. The reason we have chosen this initial velocity distribution is that the net momentum will be zero if $N$ is an even number (each particle's velocity components is cancelled out by the next particle). This is is of course not the Maxwell-Boltzmann distribution - we are not in an equilibrium state. We expect that after some time, the system will thermalize and approach the Maxwell-Boltzmann distribution which is given as
 \begin{align}
 	P(v_i)\dm {v_i} = \sqrt{m\over 2\pi kT}e^{-mv_i^2\over 2kT}\dm {v_i},
 \end{align}
@@ -19,9 +22,9 @@ where $i\in \{x,y,z\}$ indicates the velocity component. We see in figure \ref{f
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/velocity_distribution.eps}
-\label{fig:velocity_distribution}
 \end{center}
-\caption{asd}
+\caption{The system clearly reaches the Maxwell-Boltzmann distribution when the initial velocity distribution follows equation \ref{eq:weird_velocity_distribution}. }
+\label{fig:velocity_distribution}
 \end{figure}
 \subsection{Poiseuille velocity profile}
 \label{sec:dsmc_validation_poiseuille}
@@ -34,7 +37,7 @@ The channel is periodic in the $x-$ and $z-$direction, emulating a large system 
 However, in the transition flow regime, $0.1 \leq \text{Kn} \leq 10$, we expect a non zero slip velocity\cite{morris1992slip}. The Knudsen number will affect the velocity distribution through the fact that a high Knudsen number means a larger mean free path, hence fewer inter-molecular collisions. A low collision rate will make the surface effects propagate slower through the system. Ohwada et al. \cite{ohwada1989numerical} studied the Poiseuille flow for hard-sphere molecules with a wide range of Knudsen numbers by numerically solving the linearized Boltzmann equation. By using nondimensionalized units, the result is not dependent on the pressure difference or the temperature. The only assumption is that the pressure gradient is so small that the Boltzmann equation can be linearized around the equilibrium state. To set up as system like this is a simple task with the DSMC algorithm, and is a good test case to validate both the surface interaction model and the inter-molecular collision model. In figure \ref{fig:dsmc_validation_poiseuille} we see that the DSMC model is in excellent agreement with the solutions obtained by Ohwada et al. 
 \begin{figure}[h]
 \includegraphics[width=\textwidth, trim=6cm 0cm 5cm 0cm, clip]{DSMC/figures/validation_poiseuille.eps}
-\label{fig:dsmc_validation_poiseuille}
 \centering
 \caption{Nondimensionalized velocity distribution for flow between infinite parallel thermal plates for different Knudsen numbers over two orders of magnitude. Each run is compared to the linearized Boltzmann solution of Ohwada et al\cite{ohwada1989numerical} which shows that the algorithm calculates correctly the behavior in all regions, near the wall and internally in the channel. $P_A = 1.1P_B$, $T$=\unit{300}{\kelvin}, $V$=\unit{1}{\micro\meter\cubed}.}
+\label{fig:dsmc_validation_poiseuille}
 \end{figure}
