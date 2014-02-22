@@ -60,17 +60,18 @@ From the kinetic theory we can calculate the mean free path (which is done in se
 \begin{align}
 	\lambda = {m\over \sqrt 2 \pi d \rho_n} = {k_B T\over \sqrt 2 \pi d^2 P},
 \end{align}
-where $\rho_n$ is the number density and $m$ and $d$ are the mass and diameter of the particles. By inserting the ideal gas law $P = \rho k_BT$, we can eliminate the density and use the pressure $P$ together with the temperature $T$ instead. Here $k_B$ is of course Boltzmann's constant. For Knudsen numbers smaller than $10^{-2}$, the continuum hypthosis is valid and we can apply the Navier-Stokes equations\cite{karniadakis2005microflows}. The Knudsen number is so important, so it will be discussed in more detail in section \ref{sec:knudsen_number}.
+where $\rho_n$ is the number density and $m$ and $d$ are the mass and diameter of the particles. By inserting the ideal gas law $P = \rho k_BT$, we can eliminate the density and use the pressure $P$ together with the temperature $T$ instead. Here $k_B$ is of course Boltzmann's constant. For Knudsen numbers smaller than $10^{-2}$, the continuum hypthosis is valid and we can apply the Navier-Stokes equations\cite{karniadakis2005microflows}. The Knudsen number is so important that it deserves to be discussed in more detail in section \ref{sec:knudsen_number}.
 \section{Atomic models}
 For systems where the continuum hypothesis is invalid, we need other models describing the behaviour of the particles in our system. The first idea that might pop our minds might be to study the system at the atomic level. The physical set of rules that are controlling the atoms is of course quantum mechanics. The equations of motion and hence the dynamics of an atomic system can in principle be calculated directly from quantum mechanics by solving Schr\"{o}dinger's equation with perturbation theory. Since this requires calculating the wave function of every atom with complex atomic interactions, the size of the system needs to be very small with today's computers. An alternative, popular approach is to use a parameterized potential $U(\vec r^N)$ ($\vec r^N$ being the positions of all atoms), and calculate the forces through the gradient of $U$. Newton's equations of motion is then integrated and the dynamics of the system are determined in a classical, deterministic way where important effects from quantum mechanics can be embedded in the potential. This method is called \textit{Molecular Dynamics} and is studied in chapter \ref{chap:md}. Molecular Dynamics is orders of magnitudes faster than models solving Schr\"{o}dinger's equation, but it still needs a detailed describtion of the dynamics of every atom in the system. For many problems, this information is redundant because what's really important is the statistical properties of the system.
 \section{Statistical mechanics}
 We know from statistical mechanics that what dominates the macroscopic effects is the statistical behaviour of the system. One can for example derive the ideal gas law from pure statistical and combinatorial arguments with conservation of energy being the only physical concept\cite{ravndal2008statmech}. The idea is that it is the average properties of a system that are being observed wheras the actual state (i.e. all the positions and velocities of all atoms) of the system is not known, nor needed. A physical system is often described as a distribution function $f(\vec p, \vec r; t)$ yielding the probability of finding an atom, or in general a particle with position in the range $\vec r + \dm {\vec r}$ with momentum in the range $\vec p + \dm {\vec p}$ at the time $t$. The dynamics of this function is described by the Boltzmann equation which is derived in chapter \ref{chap:kinetic_theory}. From the Boltzmann equation, we can derive the results we need to describe the properties of gases which will be input parameters to a model called Direct Simulation Monte Carlo (DSMC) which is studied in chapter \ref{chap:dsmc}. 
+
 \section{Knudsen number}
 \label{sec:knudsen_number}
-To get an idea of the length scales where the Knudsen number is about unity, the mean free path for helium at $T=273$ K and $P=1$ atm is\cite{lillestol2001generell} 
+To get an idea of the length scales where the Knudsen number is about unity, the mean free path for helium at $T=$\unit{273}{\kelvin} and $P=1$ atm is\cite{lillestol2001generell} 
 \begin{align}
 	\label{eq:helium_mfp}
-	\lambda_{\text{He}} = 0.17\mu \text{m} = 170 \text{nm}.
+	\lambda_{\text{He}} = \unit{0.17}{\micro\meter} = \unit{170}{\nano\meter}.
 \end{align}
 This means that for systems where the channels have diameter of a few hundred nanometers, the Knudsen number is around unity, and the continuum hypothesis is invalid. 
 \section{Slip velocity}
@@ -87,7 +88,7 @@ In Day's detailed study of the no-slip condition, he says
 \begin{aquote}{Day, 1990}
 	Looking back, it appears that the acceptance of a more general no-slip condition was prolonged because of experimental shortcomings, not because of a lack of the \'appropriate\' theoretical solutions to fluid flow problems.
 \end{aquote}
-In other words, the theoretical framework that existed already in the time of Stokes were complete enough to include both slip and no-slip solutions. In fact, Maxwell theoretically predicted slip velocity already in a paper in 1867\cite{maxwell1879stresses}, but the experiments the next 50 years seemed to more or less confirm the no-slip condition. \todo{Discuss the later experiments showing discrepancies} Klinkenberg also has a nice argument that supports the slip velocity
+In other words, the theoretical framework that existed already in the time of Stokes were complete enough to include both slip and no-slip solutions. In fact, Maxwell predicted slip velocity in a paper already in 1867\cite{maxwell1879stresses}, but the experiments the next 50 years seemed to more or less confirm the no-slip condition. \todo{Discuss the later experiments showing discrepancies} Klinkenberg also has a nice argument that supports the slip velocity
 \begin{aquote}{L.J. Klinkenberg, 1941}
 Consider a layer adjacent to the wall which is thinner than the mean free path $\lambda$ of the gas molecules, so that practically a molecule does not collide with other molecules present in this layer. At a given moment half of the gas molecules in this layer will have a component of velocity moving towards the wall; the other half in the opposite direction. The molecules moving towards the wall have had their last collision somewhere in the flowing mass, and, therefore, will have an average velocity component in the direction of flow different from zero. A part of this average velocity component will be lost in colliding with the wall. Even if the molecules lose it entirely, then still the average velocity component in the direction of flow of all the molecules contained in the layer will amount to half of the average velocity component of the molecules moving towards the wall. The gas in the layer, therefore, will have a finite rate of flow.
 \end{aquote}
@@ -108,8 +109,14 @@ where $\alpha\approx 1.15$ is the slip coefficient \cite{morris1992slip}. The ef
 \begin{align}
 	l_s^* = {l_s\over L} = \alpha {\lambda \over L} = \alpha \text{Kn},
 \end{align}
-we see that the ratio of the slip length to the channel diameter is proportional to the Knudsen number. In nanoporous media (which is defined in section \ref{sec:nanoporous_media}), the channels that contribute to flow are of nanometer scale.
+we see that the ratio of the slip length to the channel diameter is proportional to the Knudsen number. The actual slip velocity (the average velocity of the molecules right next to the wall) can be written as
+\begin{align}
+	\label{eq:linear_slip_velocity}
+	v_{\text{wall}} = \alpha\lambda\frac{\dm v}{\dm n},
+\end{align}
+where $n$ is the direction normal on the wall\cite{klinkenberg1941permeability}. We call this a \textit{first order} slip model since it is contains only the first derivative of the velocity. Higher order models exists and give corrections that are important in nanoporous media (which is defined in section \ref{sec:nanoporous_media}) where the channels that contribute to flow are of nanometer scale. It is convenient to classify different flow regimes 
 \section{Flow regimes}
+\todo{Discuss flow regimes}
 \section{Nanoporous media}
 \label{sec:nanoporous_media}
 A porous medium is a material with pores and channels (the pore network) available for fluids. Typical examples are sandstone and sponges, see figure \ref{fig:history_porous_media}. 

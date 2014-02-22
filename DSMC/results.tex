@@ -1,26 +1,30 @@
 \section{Parallelization performance}
 \label{sec:dsmc_parallelization_performance}
+After the code is parallelized, the total computation time needed to perform a simulation is obviously not reduced. There are still as many collisions as before as the physical problem is identical. The idea is to do many of the calculations at the same time so that the total \textit{real} time we actually wait is reduced. Parallelizing is of course not \textit{free} as we need more logic to let the processors communicate with each other (exchanging particles and waiting for each other to finish each time step). As the number of processors increases, the total computation time \textit{per processor} is reduced, but the time spent on communication often increases. We will measure what's called \textit{parallel scalability} which indicates how efficient a program is when the number of processors is increased. There are two different kinds of scalability; weak and strong scaling
+\begin{itemize}
+	\item strong scaling is how the computation time changes with an increased number of processors on a fixed system size, whereas the
+	\item weak scaling is how the computation time changes with an increased number of processors on a fixed system size \textit{per processor}.
+\end{itemize}
+
 
 \section{Results for simple geometries}
-\subsection{Flow in a cylinder, varying Knudsen number}
-We have induced flow in a voxelized cylinder as shown in figure \ref{fig:cylinder_flow}. The cylinder has radius $0.45 \mu m$ with an applied acceleration corresponding to a pressure difference $\Delta P = 1.1P_0$, where $P_0$ is the ideal gas pressure at $T=300K$. We can choose the Knudsen number through the density
-\begin{align}
-	\rho_n(\text{Kn}) = {1\over \sqrt 2 \pi d^2 \text{Kn}L},
-\end{align}
-where $L$ is the length of the cylinder. 
+\label{sec:results_for_simple_geometries}
+In this section, we will study flow in simple geometries where the theoretical permeability is well known. The expression for the permeability is only valid for small Knudsen numbers (which we called the absolute permeability; the permeability for fluids in the continuum limit), so it is a perfect test case for the Knudsen correction factor $f_c$ in equation \eqref{eq:knudsen_correction}. 
 
-\begin{figure}[h]
-\begin{center}
-\includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/cylinder.png}
-\label{fig:cylinder_flow}
-\end{center}
-\caption{Voxelized (128x128x128 voxels) cylinder with radius $0.45\mu m$.}
-\end{figure}
-We expect an apparent permeability following the Knudsen correction factor $f_c$ from section \ref{sec:knudsen_correction}
+\subsection{Flow in a cylinder, varying Knudsen number}
+We have induced flow in a cylinder with radius \unit{0.45}{\micro\meter} with an applied acceleration corresponding to a pressure difference $\Delta P = 1.1P_0$, where $P_0$ is the ideal gas pressure at \unit{300}{\kelvin}. We want to vary the Knudsen number which was defined as
 \begin{align}
-	k_a = k_\infty f_c = k_\infty[1 + \alpha(\text{Kn})\text{Kn}]\left[1 + {4\text{Kn}\over 1 - b\text{Kn}}\right],
+	\text{Kn} = \frac{\lambda}{L} = \frac{1}{\sqrt 2 \pi d^2 \rho_n L}
 \end{align}
-where $k_\infty$ is the high density limit permeability; the absolute permeability. The analytical absolute permeability for a cylinder is given by\cite{karniadakis2005microflows}
+where $L$ is the length of the cylinder, $\lambda$ is the mean free path. We have used equation \eqref{eq:mean_free_path} in the last expression so that we can choose the Knudsen number through the density
+\begin{align}
+	\rho_n(\text{Kn}) = \frac{1}{\sqrt 2 \pi d^2 \text{Kn}L}.
+\end{align}
+We expect an apparent permeability satisfying the Knudsen correction
+\begin{align}
+	k_a = k_\infty f_c = k_\infty[1 + \alpha(\text{Kn})\text{Kn}]\left[1 + {4\text{Kn}\over 1 - b\text{Kn}}\right].
+\end{align}
+The analytical absolute permeability for a cylinder with radius $r$ is given by\cite{karniadakis2005microflows}
 \begin{align}
 	\label{eq:permeability_cylinder}
 	k_\infty = {r^2\over 8},
@@ -29,7 +33,9 @@ which gives the following prediction for the apparent permeability
 \begin{align}
 	k_a = [1 + \alpha(\text{Kn})\text{Kn}]\left[1 + {4\text{Kn}\over 1 - b\text{Kn}}\right] {r^2\over 8}.
 \end{align}
-In figure \ref{fig:one_cylinder_varying_knudsen} we have plotted the measured permeability as a function of Knudsen number. We see that the permeability is slightly smaller than the analytical prediction as we would expect since the cylinder is voxelized.
+In figure \ref{fig:one_cylinder_varying_knudsen} we have plotted the measured permeability as a function of Knudsen number. We see that the 
+
+We see that the permeability is slightly smaller than the analytical prediction as we would expect since the cylinder is voxelized.
 
 \begin{figure}[h]
 \begin{center}

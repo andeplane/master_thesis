@@ -31,7 +31,7 @@
 \LoadClass{\baseclass}
 
 \def\degreename{\uppercase{Master of Science}}
-\newcommand*{\degree}[1]{\def\degreename{#1}}
+\newcommand*{\degreee}[1]{\def\degreename{#1}}
 \def\degreenameno{\uppercase{Master i Fysikk}}
 \newcommand*{\degreeno}[1]{\def\degreenameno{#1}}
 \def\universityname{University of Oslo}

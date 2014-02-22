@@ -37,7 +37,7 @@ bool is_surface(short ***world_matrix, int voxel_index_i, int voxel_index_j, int
     return false;
 }
 \end{lstlisting}
-This has to be done for every voxels in the system, but only once per system.
+This has to be done for every voxel in the system, but only once per system. 
 \subsection{Calculating normal and tangent vectors}
 The last surface properties we need to calculate are the normal and tangent vectors. This could in principle be done by using marching cubes \cite{article:marching_cubes_original} or a similar technique. However, in this thesis, I have chosen to develop a new way of describing the surface vectors. A cube consisting of 9 voxels has a geometric center $\vec r_{gc}$, plus a center of mass $\vec r_{cm}$ which can be defined through the values, the mass, of the voxels
 \begin{align}

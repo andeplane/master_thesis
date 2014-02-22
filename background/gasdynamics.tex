@@ -24,29 +24,37 @@ where we picked up a minus sign because the fluid flows from high pressure to lo
 \section{Permeability $k$}
 \label{sec:permeability}
 The motivation of introducing the concept permeability is to separate the proportionality constant $\sigma_D = k/\mu$ in equation \eqref{eq:darcy_2} into two parts; one that depends on the liquid only, the viscosity $\mu$, and a material specific constant $k$ which we call permeability. This means that we in principle can do an experiment with a liquid with known viscosity, say water, and measure the permeability of some material (Darcy studied a sand filled cylinder in his original experiment). Once you know the permeability, you are able to predict the flow rate through the material for \textit{any} other liquid with a well known viscosity. This is of great importance for i.e. the oil industry where they ideally would like to take a sample of the rock in which the oil and/or gas is confined in, calculate the permeability of the rock to be able to predict the recovery rate.\\
-This is of course not completely true in all circumstances. While Darcy originally found the relation as an empiric equation based on experiments, it can be derived from the Navier-Stokes equations. Darcy's law is only correct if the fluid flow satisfies the no-slip condition. As discussed in section \ref{sec:slip_length}, the velocity of a fluid near the surface is proportional to the mean free path $\lambda$, and is often a non-zero quantity in dilute gases. \todo{Show this relation in the no-slip section.} 
-
+This is of course not completely true in all circumstances. While Darcy originally found the relation as an empiric equation based on experiments, it can be derived from the Navier-Stokes equations. Darcy's law is only correct if the fluid flow satisfies the no-slip condition. As discussed in section \ref{sec:slip_length}, the velocity of a fluid near the surface is proportional to the mean free path $\lambda$ which again depends on the density. This is studied in section \ref{sec:dsmc_validation_poiseuille}. \todo{Show this relation in the no-slip section.} 
 \subsection{Klinkenberg effect}
-In 1941, L.J. Klinkenberg published a paper explaining the discrepancies between Darcy's law and experiment by applying the theory of no-slip \cite{klinkenberg1941permeability}. His discoveries were of great importance in the oil industry since
+In 1941, L.J. Klinkenberg published a paper explaining discrepancies that was found in experiments when measuring the permeability for both liquids and gases in the same material\cite{klinkenberg1941permeability}. His discoveries were of great importance in the oil industry
 \begin{aquote}{Klinkenberg, 1941}
 	It has become common practice in the oil industry to determine the permeability of core material with dry air; the equipment usually employed for this determination is arranged to operate with the outlet of the sample at or near atmospheric pressure.
 \end{aquote}
-He introduced a linear scaling function $f_c$ that relates what he called the \textit{absolute permeability} $k_\infty$, the permeability that is measured with a liquid or a high density gas, to the \textit{apparent permeability} $k_a$ which is the permeability that is measured in the lab for i.e. dilute gases. The relation is given as
+He introduced a linear scaling function $f_c(\text{Kn})$ that relates what he called the \textit{apparent permeability} $k_a$, the permeability measured in the lab for a fluid with arbitrary density, to the \textit{absolute permeability} $k_\infty$, the permeability for a liquid in the high density limit. The absolute permeability is a constant dependent only on the porous medium (which is the whole idea of the permeability). The relation is given as
 \begin{align}
-	k_a = f_c k_\infty = \left(1 + 4\alpha\text{Kn}\right)k_\infty,
+	k_a = f_c k_\infty = \left(1 + 4\alpha\frac{\lambda}{L}\right)k_\infty = \left(1 + 4\alpha\text{Kn}\right)k_\infty,
 \end{align}
-where $\alpha\approx 1.15$ is the no-slip factor in equation \eqref{eq:noslip_sliplength}. We can rewrite Klinkenberg's equation to 
+where $L$ is the diameter of the channel and $\alpha\approx 1.15$ is the no-slip factor in equation \eqref{eq:noslip_sliplength}. Since the mean free path is proportional to the inverse pressure, we can write the scaling function as
 \begin{align}
-	k_a = \left(1 + {b\over P}\right)k_\infty,
+	f_c = \left(1 + \frac{b}{\bar P}\right),
 \end{align}
-by using that
-\begin{align}
-	4\alpha\text{Kn} &= {4\alpha\lambda \over L} = {b\over P},
-\end{align}
-where $b=4\alpha\lambda P / L$ is called Klinkenberg's gas slippage factor. We see that $b$ is a constant depending on the geometry of the material and the pressure. 
+where $b$ is a constant depending on the material. In figure \ref{fig:klinkenberg_correction_factor}, we see that the Klinkenberg correction factor predicts a permeability that almost fifty times higher for a gas in a material with $\text{Kn}=10$. The figure also contains the Knudsen correction factor which is discussed in the next subsection. The Klinkenberg correction factor is derived using the first order slip velocity in equation \eqref{eq:linear_slip_velocity} which is not sufficient for high Knudsen numbers as we will see in section \ref{sec:results_for_simple_geometries}. Based on higher order slip velocity models, one can derive better permeability corrections. 
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{figures/klinkenberg.eps}
+\label{fig:klinkenberg_correction_factor}
+\end{center}
+\caption{A comparison between the Klinkenberg factor and the Knudsen factor shows that slip velocity leads to even higher corrections to the permeability than what the Klinkenberg factor predicts. We see that in the high Knudsen number limit ($\text{Kn}=10$), we can expect an increase of permeability by a factor 50 compared to a liquid or a high density gas.}
+\end{figure}
 \subsection{Knudsen's correction}
 \label{sec:knudsen_correction}
+Beskok and Karniadakis (1999) developed another correction factor that uses a second order slip velocity model 
 \begin{align}
 	\label{eq:knudsen_correction}
-	f_c = [1 + \alpha(\text{Kn})\text{Kn}]\left[1 + {4\text{Kn}\over 1 - b\text{Kn}}\right]
+	f_c = [1 + \alpha(\text{Kn})\text{Kn}]\left[1 + {4\text{Kn}\over 1 + \text{Kn}}\right],
 \end{align}
+where $\alpha(\text{Kn})$ is given as\cite{civan2010effective}
+\begin{align}
+	\alpha(\text{Kn}) = \frac{\alpha_0}{1 + \frac{A}{\text{Kn}^B}}
+\end{align} 
+where $A=0.170$, $B=0.4348$, and $\alpha_0=1.358$. These are fitted parameters based on a large dataset of Loyalka and Hamoodi (1990). We see in figure \ref{fig:klinkenberg_correction_factor} that the Knudsen factor predicts approximately 40\% higher correction than the Klinkenberg factor. In chapter \ref{chap:dsmc_results} we will check the validity of this correction factor for a simple cylinder, and discuss the practical problems we meet when studying flow in complex geometries where the system does not simply have one Knudsen number but rather a distribution of Knudsen numbers.

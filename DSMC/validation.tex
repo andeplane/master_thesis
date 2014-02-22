@@ -1,43 +1,40 @@
 \section{Code validation}
-Every time a physicist implements a model, it is important to verify that the implementation is correct. New models that describe unknown areas of physics (such as new length scales) might be difficult to confirm if there are no experiments or comparable models available. 
+Every time a scientist creates or implements a model, it is important to verify that the model is giving correct results. Or maybe we should rephrase; it is important to verify that the model is \textit{doing as intended}. It is not always clear what correct results \textit{means}. As George E.P. Box said
+\begin{aquote}{George E.P. Box, 1987}
+Essentially, all models are wrong, but some are useful.
+\end{aquote}
+A good model should be in agreement with already existing theories (at least those we believe are reliable). Take special relativity for example, in the limit of low velocities, it reproduces the results of Newtonian mechanics (e.g. the effects time dilation and length contraction vanishes). For the validation of DSMC, we will compare numerical results to those of statistical mechanics and the kinetic theory. First we let the particles start in some non-equilibrium state where all the velocity components are $\pm v_0$ to confirm that the collision model results in the Maxwell-Boltzmann velocity distribution. The velocity $v_0$ corresponds to some initial temperature $T_0$ that defines the standard deviation in the Maxwell-Boltzmann distribution. Then we study the Poisuille flow (two infinite parallel plates) and compare the spatial velocity distribution $v(x)$ ($x$ being the distance from the lower plate) to numerical solutions to the linearized Boltzmann equation.
 \subsection{Maxwell-Boltzmann velocity distribution}
-We showed in section \ref{sec:maxwell_boltzmann_distribution} that the particles in a gas in equilibrium will have velocities following the Maxwell-Boltzmann distribution. We can run a simulation with $N$ simulated particles with initial velocities given for each particle $n$ as
+We showed in section \ref{sec:maxwell_boltzmann_distribution} that the particles in a gas in equilibrium will have velocities according to the Maxwell-Boltzmann distribution. We have run a simulation with $N$ simulated particles with initial velocities given for each particle $n$ as
 \begin{align}
-	\dot x_n = v_0(1 - 2 (n\mod 2))\\
-	\dot y_n = v_0(1 - 2 ((n+1)\mod 2))\\
-	\dot z_n = \dot x_n,
+	\dot x_n &= v_0(1 - 2 (n\bmod 2))\\
+	\dot y_n &= v_0(1 - 2 ((n+1)\bmod 2))\\
+	\dot z_n &= \dot x_n,
 \end{align}
-where $v_0$ is some velocity that is chosen so that $T\approx 300K$. This is is of course not the Maxwell-Boltzmann distribution, we are not in an equilibrium state. We expect that after some time, the system will thermalize and approach the Maxwell-Boltzmann distribution which is given as
+where $v_0$ is some velocity that is chosen so that $T\approx 300K$. The reason we have chosen this initial velocity distribution is that the net momentum will be zero if $N$ is an even number (each particle's velocity components are cancelled out by the next particle). This is is of course not the Maxwell-Boltzmann distribution - we are not in an equilibrium state. We expect that after some time, the system will thermalize and approach the Maxwell-Boltzmann distribution which is given as
 \begin{align}
-	P(v_i) = \sqrt{m\over 2\pi kT}e^{-mv_i^2\over 2kT},
+	P(v_i)\dm {v_i} = \sqrt{m\over 2\pi kT}e^{-mv_i^2\over 2kT}\dm {v_i},
 \end{align}
-where $i\in \{x,y,z\}$ indicates the velocity component. We see in figure \ref{fig:velocity_distribution} that DSMC reproduces
+where $i\in \{x,y,z\}$ indicates the velocity component. We see in figure \ref{fig:velocity_distribution} that DSMC reproduces this distribution perfectly with temperature $T=\unit{298.5}{\kelvin}$. 
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/velocity_distribution.eps}
 \label{fig:velocity_distribution}
 \end{center}
-\caption{Voxelized (128x128x128 voxels) cylinder with radius $0.45\mu m$.}
+\caption{asd}
 \end{figure}
-
 \subsection{Poiseuille velocity profile}
 \label{sec:dsmc_validation_poiseuille}
-The Poiseuille flow through a long channel is a standard and fundamental problem that is wideley studied in the gas dynamics literature. The system consists of two infinite parallel plates, displaced by a distance $h$. A pressure gradient is applied in the $z$-direction by a constant acceleration $g$, see figure \ref{fig:dsmc_validation_poiseuille_system}. 
-
-\begin{figure}[htp]
-\centering
-%\includegraphics[scale=0.25]{figures/validation_poiseuille.pdf}
-\label{fig:dsmc_validation_poiseuille_system}
-\caption{Acceleration driven Poiseuille flow}
-\end{figure}
-The channel is periodic in the $x-$ and $z-$direction, emulating a large system with negligible boundary effects. The gas molecules collide with the plates through the thermal wall model, so the reflected particles will have zero tangential velocity on average. In the continuum limit, $Kn\rightarrow 0$, we expect the velocity profile to approach the parabolic solution \cite{batchelor2000introduction}
+The Poiseuille flow through a long channel is a standard and fundamental problem that is wideley studied in the gas dynamics literature. The system consists of two infinite parallel plates, displaced by a distance $h$ in the $y$-direction. A pressure gradient is applied in the $z$-direction by a constant acceleration $g$, see figure \ref{fig:dsmc_validation_poiseuille_system}. 
+\missingfigure{Acceleration driven Poiseuille flow}
+The channel is periodic in the $x-$ and $z-$direction, emulating a large system with negligible boundary effects. The gas particles collide with the plates through the thermal wall model, so the reflected particles will have zero tangential velocity on average. In the continuum limit, $\text{Kn}\rightarrow 0$, we expect the velocity profile to approach the parabolic solution \cite{batchelor2000introduction}
 \begin{align}
 	v_z(y) = \nabla P\frac{1}{2\mu}y(y-h).
 \end{align}
-However, in the transition flow regime, $0.1 \leq Kn \leq 10$, we expect a non zero slip velocity\cite{morris1992slip}. The Knudsen number will affect the velocity distribution through the fact that a high Knudsen number means a larger mean free path, hence fewer inter-molecular collisions. A low collision rate will make the surface effects propagate slower through the system. Ohwada et al. \cite{ohwada1989numerical} studied the Poiseuille flow for hard-sphere molecules with a wide range of Knudsen numbers by numerically solving the linearized Boltzmann equation. By using nondimensionalized units, the result is not dependent on the pressure difference or the temperature. The only assumption is that the pressure gradient is so small that the Boltzmann equation can be linearized around the equilibrium state. To setup as system like this is a simple task with the DSMC algorithm, and is a good test case to validate the code. In figure \ref{fig:dsmc_validation_poiseuille} we see that the DSMC model is in excellent agreement with the solutions obtained by Ohwada et al.
+However, in the transition flow regime, $0.1 \leq \text{Kn} \leq 10$, we expect a non zero slip velocity\cite{morris1992slip}. The Knudsen number will affect the velocity distribution through the fact that a high Knudsen number means a larger mean free path, hence fewer inter-molecular collisions. A low collision rate will make the surface effects propagate slower through the system. Ohwada et al. \cite{ohwada1989numerical} studied the Poiseuille flow for hard-sphere molecules with a wide range of Knudsen numbers by numerically solving the linearized Boltzmann equation. By using nondimensionalized units, the result is not dependent on the pressure difference or the temperature. The only assumption is that the pressure gradient is so small that the Boltzmann equation can be linearized around the equilibrium state. To set up as system like this is a simple task with the DSMC algorithm, and is a good test case to validate both the surface interaction model and the inter-molecular collision model. In figure \ref{fig:dsmc_validation_poiseuille} we see that the DSMC model is in excellent agreement with the solutions obtained by Ohwada et al. 
 \begin{figure}[h]
 \includegraphics[width=\textwidth, trim=6cm 0cm 5cm 0cm, clip]{DSMC/figures/validation_poiseuille.eps}
 \label{fig:dsmc_validation_poiseuille}
 \centering
-\caption{Nondimensionalized velocity distribution for flow between infinite parallel thermal plates for different Knudsen numbers over two orders of magnitude. Each run is compared to the linearized Boltzmann solution of Ohwada et al\cite{ohwada1989numerical} which shows that the algorithm calculates correctly the behaviour in all regions, near the wall and internally in the channel. $P_A = 1.1P_B, T=300K, V=1\mu m^3$.}
+\caption{Nondimensionalized velocity distribution for flow between infinite parallel thermal plates for different Knudsen numbers over two orders of magnitude. Each run is compared to the linearized Boltzmann solution of Ohwada et al\cite{ohwada1989numerical} which shows that the algorithm calculates correctly the behavior in all regions, near the wall and internally in the channel. $P_A = 1.1P_B$, $T$=\unit{300}{\kelvin}, $V$=\unit{1}{\micro\meter\cubed}.}
 \end{figure}

@@ -30,31 +30,31 @@ which is called the collisionless Boltzmann equation. It is a good approximation
 \subsection{The collision operator}
 Since the gas is dilute, we assume binary collisions only since the probability of three particles colliding is negligible. We also assume that the total energy and momentum is conserved in all collisions. Then consider two particles $i$ and $j$ moving towards each other with velocities $\vec v$, $\vec v_1$ and relative velocity $\vec g = \vec v - \vec v_1$. In order to make the calculations easier, we will change the frame of reference. We define particle $i$ as the \textit{incident} particle and $j$ as the \textit{target} particle. After the collision, the particles will have velocities $\vec v'$ and $\vec v_1'$ with relative velocity $\vec g' = \vec v' - \vec v_1'$. If we then choose the target particle as initial frame of reference, we see that the velocity of the incident particle becomes $\tilde {\vec v} = \vec g$ and $\tilde {\vec v}' = \vec g'$. Since momentum is conserved, we know that the relative velocity must remain constant $|\vec g| = |\vec g'|$ during the collision. The direction of $\vec g'$ is given by the angles $\phi$ and $\theta$ with $\hat {\vec z}$ along $\vec g$ and $\phi \in [0, 2\pi], \theta \in [0, \pi]$. We can express $\vec g'$ as
 \begin{align}
-	\vec g' = \vec g - 2\unit e(\unit e\cdot\vec g),
+	\vec g' = \vec g - 2\unitvector e(\unitvector e\cdot\vec g),
 \end{align}
-where $\unit e$ is some unit vector, see figure \ref{fig:relation_between_g_and_g_prime}. If we multiply by $\unit e$, we see that 
+where $\unitvector e$ is some unit vector, see figure \ref{fig:relation_between_g_and_g_prime}. If we multiply by $\unitvector e$, we see that 
 \begin{align}
-	\unit e\cdot \vec g' = \unit e\cdot\left[\vec g - 2\unit{e}(\unit e\cdot\vec g)\right] = -\unit e \cdot \vec g
+	\unitvector e\cdot \vec g' = \unitvector e\cdot\left[\vec g - 2\unitvector{e}(\unitvector e\cdot\vec g)\right] = -\unitvector e \cdot \vec g
 \end{align}
 which gives the symmetric relation
 \begin{align}
-	\vec g = \vec g' - 2\unit e(\unit e\cdot\vec g').
+	\vec g = \vec g' - 2\unitvector e(\unitvector e\cdot\vec g').
 \end{align}
 The angle between $\vec g$ and $\vec g'$ is $\theta$, so
 \begin{align}
 	\vec g'\cdot \vec g = g^2\cos\theta = g^2(1 - 2\cos \chi),
 \end{align}
-where $\chi$ is the angle between $\unit e$ and $\vec g$ which gives the relation
+where $\chi$ is the angle between $\unitvector e$ and $\vec g$ which gives the relation
 \begin{align}
 	\theta = \pi - 2\chi.
 \end{align}
 We define the solid angle element $d\Omega=\sin\theta d\theta d\phi$ about $\vec g'$ 
 \begin{align}
 	g d\Omega &= g\sin\theta d\theta d\phi = 2g\sin(\pi - 2\chi)d\chi d\phi\\
-	&= 4g\cos\chi\sin\chi d\chi d\phi = 4\left|\unit e\cdot\vec g\right|\sin\chi d\chi d\phi\\
-	&= 4\left|\unit e\cdot\vec g\right|d^2e,
+	&= 4g\cos\chi\sin\chi d\chi d\phi = 4\left|\unitvector e\cdot\vec g\right|\sin\chi d\chi d\phi\\
+	&= 4\left|\unitvector e\cdot\vec g\right|d^2e,
 \end{align}
-where $d^2e = \sin\chi d\chi d\phi$ is a solid angle element about $\unit e$. In the following, we will calculate the scattering cross section which is the \textit{area} which describes the likelyhood of an incident particle being scattered by the target particle. We denote the number density as $\rho$ and find that the incident flux is $\rho g$. The rate $h_{d\Omega}'$ of scattered particles into $d\Omega$ is
+where $d^2e = \sin\chi d\chi d\phi$ is a solid angle element about $\unitvector e$. In the following, we will calculate the scattering cross section which is the \textit{area} which describes the likelyhood of an incident particle being scattered by the target particle. We denote the number density as $\rho$ and find that the incident flux is $\rho g$. The rate $h_{d\Omega}'$ of scattered particles into $d\Omega$ is
 \begin{align}
 	\label{eq:partial_scattering_rate}
 	h_{d\Omega}' = \rho g\sigma d\Omega,
@@ -69,19 +69,19 @@ The \textit{differential} cross section $\sigma$ depends on $\vec g$ and $\vec g
 \end{align}
 We will now look at particles with velocities in the range $d^3 v$ incident on target particles with velocity in the range $d^3 v_1$. The incident flux is $gf(v)d^3v$ and the number of target particles is $f(v_1)d^3v_1d^3x$. The rate at which particles with velocity $\vec v_1$ are scattered by particles with velocity $\vec v$ is 
 \begin{align}
-	f_N(\vec v)f_N(\vec v_1) g \sigma d\Omega d^3v d^3v_1 d^3 x = f_N(\vec v)f_N(\vec v_1)4\left|\unit e\cdot \vec g\right| \sigma d^2e d^3v d^3v_1 d^3 x,
+	f_N(\vec v)f_N(\vec v_1) g \sigma d\Omega d^3v d^3v_1 d^3 x = f_N(\vec v)f_N(\vec v_1)4\left|\unitvector e\cdot \vec g\right| \sigma d^2e d^3v d^3v_1 d^3 x,
 \end{align}
 The rate of loss is the rate of which particles in $d^3vd^3x$ are being hit by other particles. We can calulate this by integrating over all solid angles $d^2 e$ and incident velocities $d^3 v$
 \begin{align}
-	\text{rate of loss} = \left[\int f(\vec v)f(\vec v_1)4\left|\unit e \cdot \vec g \right|\sigma d^2 ed^3 v_1\right]d^3 vd^3 x.
+	\text{rate of loss} = \left[\int f(\vec v)f(\vec v_1)4\left|\unitvector e \cdot \vec g \right|\sigma d^2 ed^3 v_1\right]d^3 vd^3 x.
 \end{align}
 We also have the inverse event, incident particles with velocity $\vec v'$ hitting target particles with velocity $\vec v_1'$ so that the final velocity of the target particles is $\vec v$. This is calculated with the same idea
 \begin{align}
-	\text{rate of gain} = \left[\int f(\vec v')f(\vec v_1')4\left|\unit e \cdot \vec g \right|\sigma d^2 ed^3 v_1\right]d^3 vd^3 x,
+	\text{rate of gain} = \left[\int f(\vec v')f(\vec v_1')4\left|\unitvector e \cdot \vec g \right|\sigma d^2 ed^3 v_1\right]d^3 vd^3 x,
 \end{align}
-since $|\unit e\cdot \vec g| = |\unit e\cdot \vec g'|$ and $d^3 v'd^3 v_1' = d^3 vd^3 v_1$. The total change in the distribution function is given by the functional $J[f]$
+since $|\unitvector e\cdot \vec g| = |\unitvector e\cdot \vec g'|$ and $d^3 v'd^3 v_1' = d^3 vd^3 v_1$. The total change in the distribution function is given by the functional $J[f]$
 \begin{align}
-	J[f] &= \int d^3 v_1 d^2 e4|\unit e\cdot\vec g|\sigma[f'f_1' - ff_1]\\
+	J[f] &= \int d^3 v_1 d^2 e4|\unitvector e\cdot\vec g|\sigma[f'f_1' - ff_1]\\
 	&= \int d^3 v_1 d\Omega g \sigma[f'f_1' - ff_1],
 \end{align}
 where $f = f(\vec x, \vec v, t)$ and $f_1 = f(\vec x, \vec v_1, t)$. The full Boltzmann equation is then given by
