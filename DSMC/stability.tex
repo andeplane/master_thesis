@@ -6,15 +6,15 @@ Most numerical methods have a critical stability criterion where the energy or s
 \end{align}
 where $|\dot x|_{max}$ is the magnitude of the velocity. If the spatial grid has high resolution, small $\Delta x$, we need a similarly small timestep $\Delta t$. Since DSMC always conserves energy and momentum, the method is in principle numerically stable for any timestep. As mentioned in section \ref{sec:dsmc_model}, the timestep is splitted into two parts; moving and colliding. The timestep must therefore be smaller than the mean collision time. Larger timesteps may result in large errors in the transport coefficients (such as viscosity and thermal conductivity)\cite{karniadakis2005microflows}. While the timestep is compared to the mean collision time $\tau_{coll}$, the collision cell size can be seen as the spatial discretization, and be compared to the mean free path $\lambda$. 
 \subsection{Finite cell size}
-If the cell size is too large, particles from a hot region may collide with \textit{colder} particles a large distance apart, so the heat is transferred faster than it would in a real gas. The cell size $\L_{cell}$ should be smaller than one third of the mean free path\cite{karniadakis2005microflows}. Garcia et al. \cite{alexander1998cell} showed that the viscosity error has a quadratic dependency of the cell size
+If the cell size is too large, particles from a hot region may collide with \textit{colder} particles a large distance apart, so the heat is transferred faster than it would in a real gas. The cell size $\L_{cell}$ should be smaller than one third of the mean free path\cite{karniadakis2005microflows}. Garcia et al. \cite{alexander1998cell} showed that the error in the viscosity coefficient has a quadratic dependency of the cell size
 \begin{align}
 	\label{eq:viscosity_cell_size}
-	\mu = \frac{5}{16d^2}\sqrt{\frac{mk T}{\pi}} \left [1 + \frac{16}{45\pi}\frac{L_{cell}^2}{\lambda^2}\right],
+	\mu = \frac{5}{16d^2}\sqrt{\frac{mk_B T}{\pi}} \left [1 + \frac{16}{45\pi}\frac{L_{cell}^2}{\lambda^2}\right],
 \end{align}
 where $d$ is the molecular diameter. 
 \subsection{Finite timestep}
-A large timestep may allow particles to travel through several collision cells during a single timestep. Hadjiconstantinou \cite{hadjiconstantinou2000analysis} derived an expression for the timestep dependency for the viscosity, similar to equation \eqref{eq:viscosity_cell_size}
+A large timestep may allow particles to travel through several collision cells during a single timestep. This would allow information to travel faster than in a real gas and leads to errors in transport coefficients. Hadjiconstantinou \cite{hadjiconstantinou2000analysis} derived an expression for the timestep dependency for the viscosity, similar to equation \eqref{eq:viscosity_cell_size}
 \begin{align}
-	\mu = \frac{5}{16d^2}\sqrt{\frac{mk T}{\pi}} \left [1 + \frac{16}{75\pi}\frac{(v_m\Delta t)^2}{\lambda^2}\right],
+	\mu = \frac{5}{16d^2}\sqrt{\frac{mk_B T}{\pi}} \left [1 + \frac{16}{75\pi}\frac{(v_m\Delta t)^2}{\lambda^2}\right],
 \end{align}
-where $v_m=\sqrt{2k/mT}$ is the most probable velocity. 
+where $v_m=\sqrt{2k_B/mT}$ is the most probable velocity. We see that the error is proportional to $(v_m\Delta T/\lambda)^2$ so it vanishes in the limit $\Delta t\rightarrow 0$. 

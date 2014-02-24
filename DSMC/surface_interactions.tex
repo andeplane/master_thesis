@@ -1,33 +1,33 @@
 \section{Surface interactions}
 \label{sec:surface_interactions}
-The effects of surface interactions become significant as the pore sizes decrease. For very small pores, the number of atoms near the surface is comparable with total number of atoms. In MD, these effects are already taken care of through the atomic forces, but in DSMC, we need a surface interaction model. We discuss three different models in this section. The main property of these models is to perform a statistically correct energy and momentum transfer between the wall and the colliding particles. In DSMC, we are only interested in the macroscopic details of these collisions. There are two important parameters that incorporates the differences between different gases and surfaces; the normal and tangential accomodation coefficients.
+The effects of surface interactions become significant as the pore sizes decrease. For very small pores, the number of atoms near the surface is comparable with total number of atoms. In an atomic model that calculates forces, these effects are already taken care of through the atomic forces, but in DSMC, we need a surface interaction model. We discuss three different models in this section. The main property of these models is to perform a statistically correct energy and momentum transfer between the wall and the colliding particles. In DSMC, we are only interested in the macroscopic details of these collisions. There are two important parameters that incorporates the differences between different gases and surfaces; the normal and tangential accomodation coefficients.
 \subsection{Accomodation coefficients}
+\label{sec:accomodation_coefficients}
 When a particle hits a wall with energy $E_i$, some of the energy might be transferred to the wall resulting in an energy change $\Delta E$. On average, we can define the \textit{normal accomodation coefficient} 
 \begin{align}
 	\sigma_n = \frac{E_i - E_r}{E_i - E_w},
 \end{align}
-where $E_i$ is the energy of the incoming particles, $E_r$ is the energy of the outging molecules and $E_w$ is the energy corresponding to the surface temperature $T_w$. A thermal accomodation coefficient equal to zero would mean that there is no energy exchange, and we will get the specular wall model described below. $\sigma_T=1$ on the other hand means that all the reflected particles have energies corresponding to the surface temperature. This is what we call the thermal wall (or diffuse reflection\cite{karniadakis2005microflows}), and there is no correlation between the incoming and outgoing velocities. More intricate models make use of other values of the accomodation coefficients so the particles \textit{remember} their incoming velocities.\\
-We can also define the \textit{tangential momentum accomodation coefficient}
+where $E_i$ is the energy of the incoming particles, $E_r$ is the energy of the outgoing particles and $E_w$ is the energy corresponding to the surface temperature $T_w$. A thermal accomodation coefficient equal to zero would mean that there is no energy exchange, and we will get the specular wall model described below. $\sigma_T=1$ on the other hand means that all the reflected particles have energies corresponding to the surface temperature. This is what we call the thermal wall (or diffuse reflection\cite{karniadakis2005microflows}), and there is no correlation between the incoming and outgoing velocities. More intricate models make use of other values of the accomodation coefficients so the particles \textit{remember} their incoming velocities. We can also define the \textit{tangential momentum accomodation coefficient}
 \begin{align}
 	\sigma_t = {\tau_i - \tau_r\over \tau_i - \tau_w},
 \end{align}
 where $\tau_i$ and $\tau_r$ are the incoming and outgoing tangential momentum and $\tau_w$ is the momentum of the wall. For stationary surfaces we have $\tau_w=0$.
 
 \subsection{Specular wall}
-The specular wall behaves just like a classical mirror. The colliding objects are reflected so that the normal component of the velocity is reversed while the tangential components remain unchanged. There is no exchange of energy with the wall. 
+The specular wall behaves just like how a classical mirror reflects light. The colliding particles are reflected so that the normal component of the velocity is reversed while the tangential components remain unchanged. This leads to the famous saying \textit{the angle of incidence equals the angle of reflection}. Since the magnitude of all components are unchanged, there is no exchange of energy with the wall. 
 
 \subsection{Thermal wall}
-If we instead think of the wall as an object with a given temperature $T_w$, we can imagine that the particles go into the wall, collide with the wall atoms as a random walk, and return with no correlation with the incoming velocity. We can then choose a new, random velocity vector from a distribution so that the gas temperature converges to the wall temperature. This distribution has to reflect the fact that faster particles collide more often with the surface. A distribution that satisfies this property is the biased Maxwell-Boltzmann distribution
+If we instead think of the wall as a reservoir with a given temperature $T_w$, we can imagine that the particles go into the wall, collide with the wall atoms for a while, and at some point return with no correlation with the incoming velocity. In principle it doesn't have to be the same particle that goes into the wall that returns, but as long as there is no net particle flux we might as well just assume this. We can then choose a new, random velocity vector from a distribution so that the gas particles have an average velocity according to the wall temperature. Since faster particles collide with the wall more often (this is also true for the particles coming from the reservoir), this distribution has to reflect this fact. A distribution that satisfies this property is the biased Maxwell-Boltzmann distribution\cite{alexander1997direct}
 \begin{align}
-	P_n(v_n) = {m\over kT_w}v_n e^{-mv_n^2/2kT_w}
+	P_n(v_n) = {m\over k_BT_w}v_n e^{-mv_n^2/2k_BT_w}
 \end{align}
 for the velocity component normal on the surface and
 \begin{align}
-	P_t(v_t) = \sqrt{m\over 2\pi kT_w}e^{-mv_t^2/2kT_w},
+	P_t(v_t) = \sqrt{m\over 2\pi k_BT_w}e^{-mv_t^2/2k_BT_w},
 \end{align}
-for the tangential component. Here $m$ is the mass of the particle and $k$ is Boltzmann's constant\cite{alexander1997direct}. This distribution does not obey detailed balance since the incoming velocity is completely uncorrelated to the outgoing velocity. It is computationally inexpensive and is much used in the literature. 
+for the tangential component. Here $m$ is the mass of the particle and $k_B$ is Boltzmann's constant. This distribution does not obey detailed balance since the incoming velocity is completely uncorrelated to the outgoing velocity, but it is computationally inexpensive and is much used in the literature. 
 \subsection{The Cercignani-Lampis model}
-Another more realistic model is the Cercignani-Lampis model which was derived requiring detailed balance and wall isotropy\cite{cowling1974cercignani}. The probability of going from an incoming velocity $\vec v'$ to an outgoing velocity $\vec v$ is given as
+A more realistic model is the Cercignani-Lampis model which was derived requiring detailed balance and wall isotropy\cite{cowling1974cercignani}. The probability of going from an incoming velocity $\vec v'$ to an outgoing velocity $\vec v$ is given as
 \begin{align}
 	\nonumber
 	P(\vec v'\rightarrow \vec v) &= \frac{2\sigma_n\sigma_t(2-\sigma_t)\beta_w^4}{\pi}\\
@@ -35,13 +35,12 @@ Another more realistic model is the Cercignani-Lampis model which was derived re
 	&\times\exp\Big(-\beta_w^2\frac{v_n^2 + (1-\sigma_n)(v_n')^2}{\sigma_n} - \beta_w^2\frac{(v_t - (1 - \sigma_t)v_t')^2}{\sigma_t(2 - \sigma_t)}\Big)\\
 	&\times I_0\Big(\beta_w^2\frac{2\sqrt{1 - \sigma_t}v_nv_n'}{\sigma_n}\Big),
 \end{align}
-where $v_n$ and $v_t$ are the normal and tangential components of the velocities, $I_0$ is the zeroth-order modified Bessel function of the first kind. We see that the tangential component is a normal distribution with a non-zero mean, whereas the normal component is more complicated. The distribution for the normal component is plotted in figure \ref{fig:cercignani_lampis}.
-
+where $v_n$ and $v_t$ are the normal and tangential components of the velocities, $I_0$ is the zeroth-order modified Bessel function of the first kind and $\beta_w = (k_BT_w)^{-1}$ for the surface temperature $T_w$. $\sigma_n$ and $\sigma_t$ are the accomodation coefficients discussed in subsection \ref{sec:accomodation_coefficients}. We see that the tangential component is a normal distribution with a non-zero mean, whereas the normal component is more complicated. The distribution for the normal component is plotted in figure \ref{fig:cercignani_lampis}.
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/cercignani-lampis.eps}
 \end{center}
-\caption{The Cercignani-Lampis normal component distribution for $T=100K$, $m=m_{\text{argon}}$, $\alpha_n=0.5$. We see that particles with high velocities are reflected with a slightly lower velicities converging towards the velocity corresponding to the wall temperature $T_w$, $\langle v \rangle = 144m/s$.}
+\caption{The Cercignani-Lampis normal component distribution for $T=100K$, $m=m_{\text{argon}}$, $\alpha_n=0.5$. We see that particles with high velocities are reflected with a slightly lower velicities converging towards the velocity corresponding to the wall temperature $T_w$, $\langle v \rangle = $\unit{144}{\meter\per\second}.}
 \label{fig:cercignani_lampis}
 \end{figure}
 To draw random numbers from this distribution is orders of magnitudes more expensive than the thermal wall since it isn't trivial to invert the cumulative distribution function. Instead we must use the von Neumann algorithm which is a accept-reject Monte Carlo algorithm\cite{allen1989computer}. I have implemented and tested this method, but due to the computational cost, the main focus in this thesis is the thermal wall. 

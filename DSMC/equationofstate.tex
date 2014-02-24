@@ -2,9 +2,9 @@
 \label{sec:dsmc_eos}
 The free \textit{modules} in a DSMC simulation are the collision operator $\mathcal C$ and the move operator $\mathcal M$ which fully (stochastically) determines the time evolution of the system. For hard sphere particles, the pressure may be defined in a similar way as for MD (equation \eqref{eq:pressure_in_md})
 \begin{align}
-	P = \rho_nkT + {1\over tV}\sum_{all collisions} m\Delta \vec v_{ij}\cdot \vec r_{ij},
+	P = \rho_nkT + {1\over tV}\sum_\text{all collisions} m\Delta \vec v_{ij}\cdot \vec r_{ij},
 \end{align}
-where $\Delta \vec v_{ij}$ is the change of velocity of one of the particles during a collision and $\vec r_{ij}$ is the distance between these two particles\cite{garcia1997direct}. If we choose the hard sphere collision model as described in the previous section, there is no correlation between the change in velocity $\Delta \vec v_{ij}$ and the displacement vector $\vec r_{ij}$
+where $\Delta \vec v_{ij}$ is the change of velocity of one of the particles during a collision and $\vec r_{ij}$ is the distance between these two particles\cite{garcia1997direct}. If we choose the hard sphere collision model as described in section \ref{sec:dsmc_collisions_model}, there is no correlation between the change in velocity $\Delta \vec v_{ij}$ and the displacement vector $\vec r_{ij}$
 \begin{align}
 	\langle \Delta \vec v_{ij}\cdot \vec r_{ij}\rangle = 0,
 \end{align}

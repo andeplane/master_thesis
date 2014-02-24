@@ -1,18 +1,20 @@
-\section{Physical properties}
-Once the simulation program is written, we can create states with all the information needed to know any physical property about the system. However, most macroscopic quantities are of statistical nature and require a time average in a steady state to reach the real expectation value. In section \ref{sec:dsmc_steady_state} we will discuss how to verify that we have reached a steady state. 
+\section{Measuring physical quantities}
+\todo{Write better introduction here}
+Once the simulation program is written, we can create states with all the information needed to know any microscopic property about the system. However, most macroscopic quantities are of statistical nature and 
+ a time average in a steady state to reach the real expectation value. In section \ref{sec:dsmc_steady_state} we will discuss how to verify that we have reached a steady state. 
 \subsection{Energy}
 The total energy of a system is as usual given by the sum of the kinetic and potential energy. Since we are using the hard sphere model, we remember that the potential energy is given as
 \begin{align}
 	V(\vec r_1, \vec r_2) = \left\{
 	\begin{array}{lr}
-	0 & \text{if} |\vec r_1  - \vec r_2| \leq d\\
-	\infty & \text{if} |\vec r_1  - \vec r_2| < d\\
+	0 & \text{if } |\vec r_1  - \vec r_2| \leq d\\
+	\infty & \text{if } |\vec r_1  - \vec r_2| < d\\
 	\end{array}
 	\right .
 \end{align}
 where collisions will make sure that the relative distance between any particle pair always remains larger than the diameter. The total energy of our entire system will then be the kinetic energy
 \begin{align}
-	E = E_K = \sum_{n=1}^N {1\over 2}m_iv_i^2
+	E = E_k = \sum_{n=1}^N {1\over 2}m_iv_i^2
 \end{align}
 where $m_i$ is the mass of particle $i$ and $v_i$ is its scalar velocity. An example implementation of how the kinetic energy is calculated is given in listing \ref{lst:dsmc_kinetic_energy}. Remember that in DSMC, each particle represents a given number of real atoms.
 
@@ -34,11 +36,11 @@ double calculate_kinetic_energy(vector<vector<double> > &velocities, vector<doub
 \subsection{Temperature}
 The temperature is defined through the equipartition theorem using the three momentum degrees of freedom
 \begin{align}
-	\langle E_k \rangle = {3\over 2}NkT,
+	\langle E_k \rangle = {3\over 2}Nk_BT,
 \end{align}
-where $\langle E_k \rangle$ is the average kinetic energy, $N$ is the number of particles, $k$ is Boltzmann's constant and $T$ is the temperature. The only unknown property in this equation is the temperature
+where $\langle E_k \rangle$ is the average kinetic energy, $N$ is the number of particles, $k_B$ is Boltzmann's constant and $T$ is the temperature. The only unknown property in this equation is the temperature
 \begin{align}
-	T = \frac{2E_k}{3Nk},
+	T = \frac{2E_k}{3Nk_B},
 \end{align}
 where we have dropped the average value brackets of the kinetic energy because we use this to define the \textit{instantaneous} temperature which in turn must be averaged in order to get the actual gas temperature over time. In listing \ref{lst:dsmc_temperature}, we show how to calculate the temperature in a DSMC model.
 
@@ -55,28 +57,17 @@ double calculate_temperature(vector<vector<double> > &velocities, vector<double>
 \end{lstlisting}
 
 \subsection{Density}
-Since there are no forces between particles in DSMC, all gas particles may be at the very same point. This will of course not happen, but it is possible to initiate a state in that configuration. The gas is compressible, so various density plots may be interesting. The density in any volume $V$ is easily calculated through
+Since there are no forces between particles in DSMC, all gas particles may be at the very same point (remember that we used the hard sphere collision model only to calculate the statistical collision rates, not to detect collisions). This will of course not happen, but it is possible to initiate a state in that configuration. The density in any volume $V$ is easily calculated through
 \begin{align}
 	\rho_n = {N \over V},
 \end{align}
 where $N$ is the number of atoms in that volume. 
 
-\subsection{Pressure}
-As we will discuss in \ref{sec:dsmc_eos}, the a DSMC gas satisfies the ideal gas equation of state. We can then define the pressure through the ideal gas law
-\begin{align}
-	P = \rho_n kT.
-\end{align}
-We can also calculate the pressure tensor which can be defined as \cite{uribe1999burnett}
-\begin{align}
-	\vec P_{ij} = \langle m\vec c_i \vec c_j \rangle - \rho \vec v_i \vec v_j,
-\end{align}
-where $\vec v = \langle m\vec c\rangle/\langle m \rangle$ and $\vec c_i$ is velocity of particle $i$. These two results may not be equivalent since the pressure tensor can be non-isotropic in some systems\cite{uribe1999burnett}. 
 \subsection{Permeability}
 \label{sec:permeability_dsmc}
-The permeability is defined through Darcy's law for gases which was derived in section \ref{sec:darcy_gas}. We can solve for the permeability $k$
+The permeability is defined through Darcy's law (equation \eqref{eq:darcy_1}) which was discussed in section \ref{sec:darcy_law}. We can solve for the permeability $k$
 \begin{align}
 	\label{eq:permeability_gas}
-	k = Q{2PL\mu\over A\left(P_L^2 - P_0^2\right)},
+	k = \frac{Q \mu L}{A\Delta P},
 \end{align}
-where $\mu$ is the viscosity, $Q$ is the volumetric flow rate, $A$ is the cross sectional area, $P_L$ and $P_0$ are the pressures at $x=L$ and $x=0$ and $P$ is the pressure measured at the same $x$ as $Q$. Note that most of the systems we will study are periodic in the flow direction. This implies that the point $x=0$ actually is the \textit{same point} as $x=L$, which gives $\rho_n(x=0) = \rho_n(x=L)$. If we measure the pressure through the ideal gas law, we get that $P_L = P_0$ which gives zero permeability.\\
-We will use a constant force to induce flow in the system. This will allow us to define an \textit{implied} pressure at $x=L$. We will come back to how to measure permeability in section \ref{sec:permeability_acceleration_driven} after we have discussed the acceleration driven flow.
+where $L$ is the length of the system in the flow direction, $\mu$ is the viscosity, $Q$ is the volumetric flow rate, $A$ is the cross sectional area, $\Delta P = P_0 - P_L$ are the pressures at $x=L$ and $x=0$. Note that the systems we will study are periodic in the flow direction. This implies that the point $x=0$ actually is the \textit{same point} as $x=L$, which gives $P(x=0) = P(x=L)$. In section \ref{sec:dsmc_pressure} we will discuss how pressure is defined in a DSMC model and how to solve the problem with periodic boundary conditions.

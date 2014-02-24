@@ -28,8 +28,7 @@ where $i\in \{x,y,z\}$ indicates the velocity component. We see in figure \ref{f
 \end{figure}
 \subsection{Poiseuille velocity profile}
 \label{sec:dsmc_validation_poiseuille}
-The Poiseuille flow through a long channel is a standard and fundamental problem that is wideley studied in the gas dynamics literature. The system consists of two infinite parallel plates, displaced by a distance $h$ in the $y$-direction. A pressure gradient is applied in the $z$-direction by a constant acceleration $g$, see figure \ref{fig:dsmc_validation_poiseuille_system}. 
-\missingfigure{Acceleration driven Poiseuille flow}
+The Poiseuille flow through a long channel is a standard and fundamental problem that is wideley studied in the gas dynamics literature. The system consists of two infinite parallel plates, displaced by a distance $h$ in the $y$-direction. A pressure gradient is applied in the $z$-direction by a constant acceleration $g$ corresponding to equation . 
 The channel is periodic in the $x-$ and $z-$direction, emulating a large system with negligible boundary effects. The gas particles collide with the plates through the thermal wall model, so the reflected particles will have zero tangential velocity on average. In the continuum limit, $\text{Kn}\rightarrow 0$, we expect the velocity profile to approach the parabolic solution \cite{batchelor2000introduction}
 \begin{align}
 	v_z(y) = \nabla P\frac{1}{2\mu}y(y-h).
