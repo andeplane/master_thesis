@@ -18,12 +18,12 @@ where $v_0$ is some velocity that is chosen so that $T\approx 300K$. There are n
 \begin{align}
 	P(v_i)\dm {v_i} = \sqrt{m\over 2\pi kT}e^{-mv_i^2\over 2kT}\dm {v_i},
 \end{align}
-where $i\in \{x,y,z\}$ indicates the velocity component. We see in figure \ref{fig:velocity_distribution} that DSMC reproduces this distribution perfectly with temperature $T=\unit{298.5}{\kelvin}$. 
+where $i\in \{x,y,z\}$ indicates the velocity component. We see in figure \ref{fig:velocity_distribution} that DSMC reproduces this distribution perfectly with temperature measured to be $T=\unit{298.5}{\kelvin}$. 
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/velocity_distribution.eps}
 \end{center}
-\caption{The system clearly reaches the Maxwell-Boltzmann distribution when the initial velocity distribution follows equation \ref{eq:weird_velocity_distribution}. }
+\caption{The system clearly reaches the Maxwell-Boltzmann distribution when the initial velocity distribution follows equation \ref{eq:weird_velocity_distribution}. Here the final temperature was measured to be $T=$\unit{298.5}{\kelvin} which reproduces the expected distribution perfectly well.}
 \label{fig:velocity_distribution}
 \end{figure}
 \subsection{Poiseuille velocity profile}
