@@ -10,35 +10,73 @@ To see how the program efficiency scales with a fixed system size while increasi
 \begin{align}
 	\eta_s = \frac{t_1}{Nt_N},
 \end{align}
-where $t_1$ is the total run time using one processor and $t_N$ is the total run time using $N$ processors. We see that $\eta_s\in (0,1)$ since $Nt_N$ is the ideal scaling without any communication overhead. In this benchmark, we have run a geometry carved out by 10 random walkers (the algorithm is described in section \ref{sec:dsmc_random_walk_algorithm}), each starting at random positions. Each walker moves 1000 steps (voxels) with a turn probability of 0.1 on a $128\times128\times128$ voxel grid ending up with a porosity of $\phi=0.53635$. The physical system is a cube with side length $L=$\unit{1.0}{\micro\meter} with a density $\rho_n=\unit{1.0\e{25}}{\meter^{-3}}$ which gives a total of 5.3 million atoms. We choose that one DSMC particle represents one atom yielding a total of 5.3 million particles in the whole system. The benchmark was performed with $2^N$ processors from 1 CPU to 512 CPUs yielding a good estimate of how efficient the program scales for a relatively large number of processors. In table \ref{tab:dsmc_strong_scaling} we have the results with additional information like the CPU configuration $(P_x, P_y, P_z)$ as defined in section \ref{sec:dmsc_parallelization}. The strong scaling efficiency is plotted against the number of processors in figure \ref{fig:dsmc_strong_scaling}.
+where $t_1$ is the total run time using one processor and $t_N$ is the total run time using $N$ processors. We see that $\eta_s\in (0,1)$ since $Nt_N$ is the ideal scaling without any communication overhead. In this benchmark, we have run a geometry carved out by 10 random walkers (the algorithm is described in section \ref{sec:dsmc_random_walk_algorithm}), each starting at random positions. Each walker moves 1000 steps (voxels) with a turn probability of 0.1 on a $128\times128\times128$ voxel grid ending up with a porosity of $\phi=0.53635$. The physical system is a cube with side length $L=$\unit{1.0}{\micro\meter} with a density $\rho_n=\unit{1.0\e{25}}{\meter^{-3}}$ which gives a total of 5.3 million atoms. We choose that one DSMC particle represents one atom yielding a total of 5.3 million particles in the whole system. The benchmark was performed for 10000 timesteps ($\Delta t = 0.005$) with $2^N$ processors from 1 CPU to 512 CPUs yielding a good estimate of how efficient the program scales for a relatively large number of processors. In table \ref{tab:dsmc_strong_scaling} we have the scaling results with additional information like the number of intermolecular collisions and the number of wall collisions. These numbers indicates the amount of computation  The strong scaling efficiency is plotted against the number of processors in figure \ref{fig:dsmc_strong_scaling}.
 \begin{table}
 \begin{center}
-    \begin{tabular}{|l|l|l|l|l|l}
+    \begin{tabular}{|l|l|l|l|l|l|l}
     \hline
-    $N_\text{CPU}$ & $(P_x, P_y, P_z)$ & $N_\text{particles}/N_\text{CPU}$ & Run time[s] & $\eta_s$ \\ \hline
-    1 & (1,1,1) & 5.4\e{6} & \unit{10571}{\second} & 1.00\\
+    $N_\text{CPU}$ & $N_\text{particles}/N_\text{CPU}$ & $N_\text{collisions}/N_\text{CPU}$ & $N_\text{wall collisions}/N_\text{CPU}$ & Run time[s] & $\eta_s$ \\ \hline
+    1 & 5.4\e{6} & 1.31\e{8} & 1.09\e{11} & \unit{10571}{\second} & 1.00\\
     \hline
-    2 & (1,1,2) & 2.7\e{6} & \unit{5262}{\second} & 1.00\\
+    2 & 2.7\e{6} & 6.55\e{7} & 5.04\e{10} &  \unit{5262}{\second} & 1.00\\
     \hline
-    4 & (1,2,2) & 1.3\e{6} & \unit{2687}{\second} & 0.984\\
+    4 & 1.3\e{6} & 3.28\e{7} & 2.73\e{10} &  \unit{2687}{\second} & 0.984\\
     \hline
-    8 & (2,2,2) & 6.7\e{5} & \unit{1360}{\second} & 0.972\\
+    8 & 6.7\e{5} & 1.64\e{7} & 1.36\e{10} &  \unit{1360}{\second} & 0.972\\
     \hline
-    16 & (2,2,4) & 3.4\e{5} & \unit{755}{\second} & 0.875\\
+    16 & 3.4\e{5} & 8.19\e{6} & 6.81\e{9} &  \unit{755}{\second} & 0.875\\
     \hline
-    32 & (2,4,4) & 1.7\e{5} & \unit{505}{\second} & 0.654\\
+    32 & 1.7\e{5} & 4.09\e{6} & 3.41\e{9} &  \unit{505}{\second} & 0.654\\
     \hline
-    64 & (4,4,4) & 8.4\e{4} & \unit{262}{\second} & 0.630\\
+    64 & 8.4\e{4} & 2.05\e{6} & 1.70\e{9} &  \unit{262}{\second} & 0.630\\
     \hline
-    128 & (4,4,8) & 4.2\e{4} & \unit{146}{\second} & 0.566\\
+    128 & 4.2\e{4} & 1.02\e{6} & 8.52\e{8} &  \unit{146}{\second} & 0.566\\
     \hline
-    256 & (4,8,8) & 2.1\e{4} & \unit{94}{\second} & 0.440\\
+    256 & 2.1\e{4} & 5.12\e{5} & 4.26\e{8} &  \unit{94}{\second} & 0.440\\
     \hline
-    512 & (8,8,8) & 1.0\e{4} & \unit{79}{\second} & 0.261\\
+    512 & 1.0\e{4} & 2.56\e{5} & 2.13\e{8} &  \unit{79}{\second} & 0.261\\
     \hline
     \end{tabular}
     \caption{Benchmark results showing the strong scaling efficiency $\eta_s$ for the DSMC program.}
     \label{tab:dsmc_strong_scaling}
+    \end{center}
+\end{table}
+The reason for this scaling behavior might be due to bad load balancing since the processors might get different work load. One processor might get a subvolume that contains very few particles if most of its voxels are solid wall voxels. These processors will spend most of their time on waiting for the other processors to finish and we do not make full use of the available processors. This problem is discussed further in section \ref{sec:future_work_load_balancing}. 
+\subsection{Weak scaling}
+Another important scaling problem appears when we want to maximize the simulated system size. If we keep a constant system size \textit{per cpu}, and increase the number of processors, the limitation of how big we efficiently can create the system is controlled by the weak scaling. We then introduce the \textit{weak scaling efficiency} $\eta_w$ defined as
+\begin{align}
+	\eta_w = \frac{t_1}{t_N},
+\end{align}
+where again $t_1$ is the total run time using one processor and $t_N$ is the run time using $N$ processors. If the algorithm scales perfectly, the total run time would remain constant while increasing the number of processors (each CPU is ideally independent), but we expect some overhead. This implies that the range for $\eta_w$ also is between zero and one. We have run the same geometry as for the strong scaling, but each processor controls a volume of \unit{1}{\micro\meter^3} so that the largest system is \unit{512}{\micro\meter^3}. Keeping the same density gives a total of 5.3 million particles per processor. In table \ref{tab:dsmc_weak_scaling}, we see the results for the weak scaling efficiency simulation. 
+\begin{table}
+\begin{center}
+    \begin{tabular}{|l|l|l|l|l|l|l}
+    \hline
+    $N_\text{CPU}$ & $N_\text{particles}$ & $N_\text{collisions}$ & $N_\text{wall collisions}$ & Run time[s] & $\eta_w$ \\ 
+    \hline
+    1 & 5.4\e{6} & 1.00\e{10} & 1.00\e{10} & \unit{100}{\second} & 1.0\\
+    \hline
+    2 & 1.27\e{6} & 1.00\e{10} & 1.00\e{10} & \unit{100}{\second} & 1.0\\
+    \hline
+    4 & 1.27\e{6} & 1.00\e{10} & 1.00\e{10} & \unit{100}{\second} & 1.0\\
+    \hline
+    8 & 1.27\e{6} & 1.00\e{10} & 1.00\e{10} & \unit{100}{\second} & 1.0\\
+    \hline
+    16 & 1.27\e{6} & 1.00\e{10} & 1.00\e{10} & \unit{100}{\second} & 1.0\\
+    \hline
+    32 & 1.27\e{6} & 1.00\e{10} & 1.00\e{10} & \unit{100}{\second} & 1.0\\
+    \hline
+    64 & 1.27\e{6} & 1.00\e{10} & 1.00\e{10} & \unit{100}{\second} & 1.0\\
+    \hline
+    128 & 6.87\e{8} & 1.67\e{10} & 5.86\e{11} & \unit{12032}{\second} & 1.0\\
+    \hline
+    256 & 1.37\e{9} & 3.33\e{10} & 1.05\e{12} & \unit{16418}{\second} & 1.0\\
+    \hline
+    512 & 2.75\e{9} & 6.59\e{10} & 1.87\e{12} & \unit{18242}{\second} & 1.0\\
+    \hline
+    \end{tabular}
+    \caption{Benchmark results showing the weak scaling efficiency $\eta_w$ for the DSMC program.}
+    \label{tab:dsmc_weak_scaling}
     \end{center}
 \end{table}
 
@@ -46,47 +84,9 @@ where $t_1$ is the total run time using one processor and $t_N$ is the total run
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/strong_scaling.eps}
 \end{center}
-\caption{The strong scaling efficiency $\eta_s$ as a funtion of the number of processors $N_\text{CPU}$. We see that at 512 processors, the efficiency is reduced to 25\% because of the large overhead from the MPI communication.}
+\caption{The weak and strong scaling efficiency, $\eta_w$ and $\eta_s$, as a funtion of the number of processors $N_\text{CPU}$. We see that at 512 processors, the efficiency is reduced to 25\% because of the large overhead from the MPI communication.}
 \label{fig:dsmc_strong_scaling}
 \end{figure}
-The reason for this scaling behavior might be due to bad load balancing since the processors might get different work load. One processor might get a subvolume that contains very few particles if most of its voxels are solid wall voxels. These processors will spend most of their time on waiting for the other processors to finish and we do not make full use of the available processors. This problem is discussed further in section \ref{sec:future_work_load_balancing}. 
-\subsection{Weak scaling}
-Another important scaling problem appears when we want to maximize the simulated system size. If we keep a constant system size \textit{per cpu}, and increase the number of processors, the limitation of how big we efficiently can create the system is controlled by the weak scaling. We then introduce the \textit{weak scaling efficiency} $\eta_w$ defined as
-\begin{align}
-	\eta_w = \frac{t_1}{t_N},
-\end{align}
-where again $t_1$ is the total run time using one processor and $t_N$ is the run time using $N$ processors. If the algorithm scales perfectly, the total run time would remain constant while increasing the number of processors (each CPU is ideally independent), but we expect some overhead. This implies that the range for $\eta_w$ also is between zero and one. We have run the same geometry as for the strong scaling, but each processor controls a volume of \unit{1}{\micro\meter^3} so that the largest system is \unit{512}{\micro\meter^3}. Keeping the same density gives a total of 5.3 million particles per processor. In table \ref{tab:dsmc_weak_scaling}, we have the results for the weak scaling efficiency simulation. 
-\begin{table}
-\begin{center}
-    \begin{tabular}{|l|l|l|l|l|l}
-    \hline
-    $N_\text{CPU}$ & $(P_x, P_y, P_z)$ & $N_\text{particles}$ & Run time[s] & $\eta_w$ \\ 
-    \hline
-    1 & (1,1,1) & 5.4\e{6} & \unit{100}{\second} & 1.0\\
-    \hline
-    2 & (1,1,2) & 1.27\e{6} & \unit{100}{\second} & 1.0\\
-    \hline
-    4 & (1,2,2) & 1.27\e{6} & \unit{100}{\second} & 1.0\\
-    \hline
-    8 & (2,2,2) & 1.27\e{6} & \unit{100}{\second} & 1.0\\
-    \hline
-    16 & (2,2,4) & 1.27\e{6} & \unit{100}{\second} & 1.0\\
-    \hline
-    32 & (2,4,4) & 1.27\e{6} & \unit{100}{\second} & 1.0\\
-    \hline
-    64 & (4,4,4) & 1.27\e{6} & \unit{100}{\second} & 1.0\\
-    \hline
-    128 & (4,4,8) & 1.27\e{6} & \unit{100}{\second} & 1.0\\
-    \hline
-    256 & (4,8,8) & 1.27\e{6} & \unit{100}{\second} & 1.0\\
-    \hline
-    512 & (8,8,8) & 1.27\e{6} & \unit{100}{\second} & 1.0\\
-    \hline
-    \end{tabular}
-    \caption{Benchmark results showing the weak scaling efficiency $\eta_w$ for the DSMC program.}
-    \label{tab:dsmc_weak_scaling}
-    \end{center}
-\end{table}
 \section{Results for simple geometries}
 \label{sec:results_for_simple_geometries}
 In this section, we will study flow in simple geometries where the theoretical permeability is well known. The expression for the permeability is only valid for small Knudsen numbers (which we called the absolute permeability; the permeability for fluids in the continuum limit), so it is a perfect test case for the Knudsen correction factor $f_c$ in equation \eqref{eq:knudsen_correction}. 
@@ -133,9 +133,11 @@ If we instead keep the Knudsen number constant ($\text{Kn}=1.0$), we can vary th
 \label{fig:one_cylinder_varying_radii_result}
 \end{figure}
 \section{Results for complicated geometries}
-\subsection{Randomly packed spheres}
-Through the Carman-Kozeny equation, we can theoretically predict the permeability for randomly packed spheres 
+We have now seen that the Knudsen correction factor works well for systems with a well defined Knudsen number. The Knudsen correction factor needs an exact Knudsen number to be able to predict the permeability, but for more complex geometries, there is rather a distribution of Knudsen numbers than a single number. It could work as a lower and an upper limit of the permeabilities for two different input Knudsen numbers, but they could differ by an order of magnitude. In this section we will study a system consisting of randomly packed spheres that does not have a well defined Knudsen number.
+\subsection{The Carman-Kozeny equation}
+In 1927, Kozensky proposed an equation predicting the permeability of packed spheres of radius $a$ forming a system with porosity $\phi$ given as
 \begin{align}
 	k = {a^2 \over 9K} {\phi^3 \over (1 - \phi)^2},
 \end{align}
-where $\phi$ is the porosity, $a$ is the sphere radius and $K$ is the Kozeny constant which is experimentally measured to be around five\cite{carman1937fluid}. This theoretical result has been verified to predict permeabilities in experiments. At micrometer scale however, we expect deviations due to the high Knudsen number. 
+where $K$ is the Kozeny constant which is experimentally measured to be around five\cite{carman1937fluid}. This result has been verified to predict permeabilities in many experiments since its discovery. However, at the nanometer scale, we expect deviations due to high Knudsen numbers. 
+\subsection{The simulation}

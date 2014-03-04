@@ -1,0 +1,85 @@
+\chapter{Knudsen number of a packed spheres system}
+If we want to use the Knudsen correction factor (equation \eqref{eq:knudsen_correction}) to predict permeabilities in a nanoporous system consisting of packed spheres, we need to derive some statistical properties of the system giving us enough information to calculate the expected Knudsen number. Now, consider a volume $V$ consisting of $N$ points (sphere centers) placed randomly and independently in the system. The density of points is of course given by
+\begin{align}
+	\label{eq:packed_sphere_density}
+	n = \frac{N}{V}.
+\end{align}
+The probability of placing a sphere center in a volume $v$ is $v/V$, yielding the probability of \textit{not} placing a sphere center in that same volume $(1 - v/V)$. If we now place $N$ such points, the probability $P_0(N)$ of not having placed \textit{any} points in that volume is given by
+\begin{align}
+	P_0(N) = \left[1 - \frac{nv}{N}\right]^N,
+\end{align}
+where we have used that $v/V = nv/nV = nv/N$ using equation \eqref{eq:packed_sphere_density}. In the limit where $N\rightarrow\infty$ and $V\rightarrow\infty$, keeping the density $n$ and $v$ constant, the probability approaches
+\begin{align}
+	P_0 = \lim_{N\rightarrow\infty}\left[1 - \frac{nv}{N}\right]^N = \exp(-nv).
+\end{align}
+We can use this to compute the probability of finding \textit{no} sphere centers within a distance $l$ from a point
+\begin{align}
+	\label{eq:packed_sphere_p0}
+	P_0(l) = \exp\left(-\frac{4n\pi}{3}l^3\right),
+\end{align}
+where we just used the volume of a sphere $v=4/3\pi l^3$. This is the cumulative probability distribution of finding \textit{no} sphere centers within a distance $l$, so the inverse problem, the probability of finding \textit{at least one} sphere center at some distance $x<l$ is now easy to calculate 
+\begin{align}
+	P(x<l) = 1 - \exp\left(-\frac{4n\pi}{3}l^3\right).
+\end{align}
+This is also a cumulative distribution function which we can differentiate to find the probability distribution of distances $l$
+\begin{align}
+	\label{eq:packed_sphere_probability_number_density}
+	p(l) = 4\pi n l^2 \exp\left(-\frac{4n\pi}{3}l^3\right).
+\end{align}
+$p(l)\dm l$ is the probability of finding a sphere center within the range $[l, l+\dm l)$. In this calculation, we are only interested in the distribution of distances $l$ \textit{given that we are not inside any spheres}. So we define a new distribution function
+\begin{align}
+	q(l) = \left\{\begin{array}{l l}
+			0 & \text{if $l<r$},\\
+			Mp(l) & \text{if $l\geq r$},
+			\end{array}\right.
+\end{align}
+where $M$ is the normalization constant for $q(l)$ (the area must be less than one now since we removed all the points from zero to $r$). We find $M$ by integrating
+\begin{align}
+	1 &= M\int\limits_0^\infty q(l)\dm l = M\int\limits_r^\infty p(l)\dm l\\
+	&= M4\pi n\int\limits_r^\infty l^2 \exp\left(-\frac{4n\pi}{3}l^3\right) \dm l\\
+	&= M\exp\left(-\frac{4n\pi}{3}r^3\right),
+\end{align}
+which gives $M=\exp\left(\frac{4n\pi}{3}r^3\right)$. Avoiding the points being inside the spheres is of course the same as choosing only the points that are in the pore space. The probability of randomly choosing such a point is actually the porosity $\phi$ (remember, porosity is pore space volume divided by total volume). It is found by using equation \eqref{eq:packed_sphere_p0}
+\begin{align}
+	\label{eq:packed_sphere_porosity}
+	\phi = \exp\left(-\frac{4n\pi}{3}r^3\right),
+\end{align}
+which we recognize as $M^{-1}$. We can then rewrite $q(l)$
+\begin{align}
+	q(l) = \left\{\begin{array}{l l}
+			0 & \text{if $l<r$},\\
+			4n\pi\phi^{-1} l^2 \exp\left(-\frac{4n\pi}{3}l^3\right) & \text{if $l\geq r$}.
+			\end{array}\right.
+\end{align}
+Now it would be interesting to find the average distance to the sphere centers. It is found by calculating
+\begin{align}
+	\langle l\rangle &= \int\limits_r^\infty lq(l) \dm l = \frac{4n\pi}{\phi}\int\limits_r^\infty l^3 \exp\left(-\frac{4n\pi}{3}l^3\right) \dm l \\
+	\label{eq:packed_sphere_average_distance}
+	&= \sqrt[3]{\frac{3}{4n\pi}}\frac{1}{\phi}\Gamma\left(\frac{4}{3}, \frac{4n\pi}{3}r^3\right),
+\end{align}
+where $\Gamma(a,x)$ is the incomplete gamma function defined as
+\begin{align}
+	\Gamma(a,x) = \int\limits_x^\infty t^{a-1}\exp(-t)\dm t.
+\end{align}
+We can replace the dependency of the number density $n$ with the porosity $\phi$ and sphere radius $r$ through equation \eqref{eq:packed_sphere_porosity} which can be solved for $n$
+\begin{align}
+	n = \frac{3}{4\pi r^3} \ln\phi^{-1}.
+\end{align}
+By inserting this into equation \eqref{eq:packed_sphere_average_distance} we obtain
+\begin{align}
+	\langle l(r,\phi) \rangle = \frac{r}{\phi}\left[\ln\phi^{-1}\right]^{-\frac{1}{3}}\Gamma\left(\frac{4}{3},\ln\phi^{-1}\right).
+\end{align}
+We can now find the average distance $d=(l-r)$ to a sphere surface by
+\begin{align}
+	\langle d(r,\phi)\rangle &= \langle l(r,\phi)\rangle - r = \frac{r}{\phi}\left[\ln\phi^{-1}\right]^{-\frac{1}{3}}\Gamma\left(\frac{4}{3},\ln\phi^{-1}\right) - r\\
+	&= r\left[\phi^{-1}\left[\ln\phi^{-1}\right]^{-\frac{1}{3}}\Gamma\left(\frac{4}{3},\ln\phi^{-1}\right) - 1\right].
+\end{align}
+
+% which we will use to replace $L$ in the Knudsen number
+% \begin{align}
+% 	\label{eq:packed_sphere_knudsen_1}
+% 	\text{Kn} = \frac{\lambda}{L} = \frac{\lambda}{\Gamma\left(\frac{1}{3}\right)\left(36\pi n\right)^{-1/3} - r}
+% \end{align}
+
+% The
+% If we insert this into equation \eqref{eq:packed_sphere_knudsen_1}, we
