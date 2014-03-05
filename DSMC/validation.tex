@@ -14,9 +14,9 @@ We showed in section \ref{sec:maxwell_boltzmann_distribution} that the particles
 	\nonumber
 	\dot z_n &= \dot x_n,
 \end{align}
-where $v_0$ is some velocity that is chosen so that $T\approx 300K$. There are no walls that the particles can exchange energy with, so the total energy is conserved. The reason we have chosen this initial velocity distribution is that the net momentum will be zero if $N$ is an even number (each particle's velocity components is cancelled out by the next particle). This is is of course not the Maxwell-Boltzmann distribution - we are not in an equilibrium state. We expect that after some time, the system will thermalize and approach the Maxwell-Boltzmann distribution which is given as
+where $v_0$ is some velocity that is chosen so that $T\approx 300K$. There are no walls that the particles can exchange energy with, so the total energy is conserved. The reason we have chosen this initial velocity distribution is that the net momentum will be zero if $N$ is an even number (each particle's velocity components is cancelled out by the next particle). This is is of course not the Maxwell-Boltzmann distribution - we are not in an equilibrium state. We expect that after some time, the system will thermalize and approach the Maxwell-Boltzmann distribution which is given as (equation \eqref{eq:maxwell_boltzmann_distribution})
 \begin{align}
-	P(v_i)\dm {v_i} = \sqrt{m\over 2\pi kT}e^{-mv_i^2\over 2kT}\dm {v_i},
+	P(v_i)\dm {v_i} = \sqrt{m\over 2\pi k_BT}e^{-mv_i^2\over 2k_BT}\dm {v_i},
 \end{align}
 where $i\in \{x,y,z\}$ indicates the velocity component. We see in figure \ref{fig:velocity_distribution} that DSMC reproduces this distribution perfectly with temperature measured to be $T=\unit{298.5}{\kelvin}$. 
 \begin{figure}[h]

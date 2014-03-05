@@ -1,0 +1,89 @@
+\chapter{Workflow and Python scripting}
+When we are running simulations to study flow in nanoporous media, one single experiment consists of more than just starting the program and waiting for the result. A typical simulation scheme could be
+\begin{enumerate}
+	\item Prepare geometry
+	\item Initialize system
+	\item Reach a steady state
+	\item Sample statistics.
+\end{enumerate}
+Some of these steps aren't even performed by the same c++ program, so we have developed a scripting framework in Python wrapping all the functionality from the different c++ programs into one scripting framework. This simplifies the workflow all the way from the very idea of some physical problem to running the simulation to study it. In this appendix we will discuss the Python framework and show the workflow of how to study problem, from idea to simulation, using DSMC.
+\section{From idea to simulation}
+\subsection{Create the geometry}
+The program package we have developed is an excellent tool to study flow of dilute gases in complex nanoporous media. So what we usually do is to come up with the idea of some interesting geometry to study. This could either be a real sample dataset, a mathematical description or some other creative way to create the geometry. An example could be the packed spheres discussed in section \ref{sec:dsmc_packed_spheres_results} where each sphere is placed out randomly inside the volume defined by the $N_x\times N_y \times N_z$ voxel grid. All the voxels within a given distance (the sphere radius) from the sphere center are marked as solid voxels. Any other geometry can made with this technique with the code in the \textit{complexgeometry.cpp} file. 
+\subsection{Initialize system}
+Once we have the geometry of the system we would like to study, we need to insert gas particles inside the system. The gas could in principle have different densities based on position or other properties, but in this thesis we are placing the particles uniformly in the pore volume, i.e. in voxels marked as empty. We choose velocities from the Maxwell-Boltzmann distribution (equation \eqref{eq:maxwell_boltzmann_distribution}) so that the gas has the temperature we want.
+\subsection{Reach a steady state}
+Now that we have our gas particles inside the (possibly) complex geometry, we want to apply a pressure gradient inducing flow. In the beginning, all the particles are (on average) at rest, so we should wait until we have reached a steady state before we start sampling statistics. Methods to determine whether or not a system has reached a steady state was discussed in section \ref{sec:dsmc_steady_state}. 
+\subsection{Sample statistics}
+If we assume that the system finally has reached a steady state, we can start measuring the physical quantities discussed in section \ref{sec:dsmc_measuring_physical_quantities}. The main focus in this thesis has been to study the permeability for different geometries. 
+\subsection{The run script - example.py}
+Finally, after having defined all the steps in our scheme, we can gather everything into one single Python script. This example script shows how to perform all the steps discussed above. 
+\begin{lstlisting}[caption=example.py, label=lst:dsmc_example_script, language=Python]
+	from dsmcconfig import *
+	from dsmc_unit_converter import *
+	from dsmc_geometry_config import *
+	nx = 2 # Number of processors in x-direction
+	ny = 2 # Number of processors in y-direction
+	nz = 2 # Number of processors in z-direction
+	program = DSMC(dt=0.001, nx=nx, ny=ny, nz=nz)
+	dsmc = program.compile(name="main")
+	geometry = DSMC_geometry(program)
+	unit_converter = DSMC_unit_converter(program)
+	
+	# Save geometry files to this directory
+	geometry.binary_output_folder = "../geometries/example_geometry/"
+	program.world = geometry.binary_output_folder
+	
+	# Set the dimensionality of the voxel grid
+	geometry.num_voxels_x = 128
+	geometry.num_voxels_y = 128
+	geometry.num_voxels_z = 128
+	
+	#geometry.create_cylinders(radius=0.05, num_cylinders_per_dimension = 4)
+	geometry.create_packed_spheres(radius = 0.02, spheres_type = 1, wanted_porosity = 0.5)
+	
+	# Specify the array size (maximum number of particles)
+	program.max_molecules_per_node = 1.5e6
+	
+	# Set system size (in micro meters)
+	program.Lx = 1
+	program.Ly = 1
+	program.Lz = 1
+	
+	# Select density (Kn = mean_free_path / length)
+	program.density = unit_converter.density_from_knudsen_number(knudsen_number=1.0, length=program.Ly)
+	
+	# Prepare a new simulation, delete old files
+	program.reset()
+	
+	# Select how many atoms each particle represents
+	program.atoms_per_molecule = 1
+	
+	# Set the number of collision cells
+	program.set_number_of_cells(geometry, particles_per_cell=100)
+	
+	# Initialize gas particles
+	program.prepare_new_system()
+	program.run(dsmc)
+	
+	# Apply pressure gradient
+	program.apply_pressure_gradient_percentage(factor=2.0)
+	
+	# Select low statistics measuring interval
+	program.statistics_interval = 10000
+	# Select num timesteps to reach steady state
+	program.timesteps = 500000
+	
+	program.create_config_file()
+	program.run(dsmc)
+	
+	# Select high statistics measuring interval
+	program.statistics_interval = 100
+	# Select num timesteps to sample
+	program.timesteps = 100000
+	
+	program.create_config_file()
+	program.run(dsmc)
+}
+\end{lstlisting}
+\section{The Python framework}

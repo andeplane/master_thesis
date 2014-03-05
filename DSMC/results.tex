@@ -132,7 +132,9 @@ If we instead keep the Knudsen number constant ($\text{Kn}=1.0$), we can vary th
 \caption{Logarithmic plot of the permeability for different cylinders with radii in the range $0.1 \mu m$ to $0.45 \mu m$ with an applied pressure difference $\Delta P = 1.1P_0$. The blue line is the Knudsen corrected analytical solution from \cite{karniadakis2005microflows}.}
 \label{fig:one_cylinder_varying_radii_result}
 \end{figure}
+
 \section{Results for complicated geometries}
+\label{sec:dsmc_packed_spheres_results}
 We have now seen that the Knudsen correction factor works well for systems with a well defined Knudsen number. It does however need \textit{one} Knudsen number to be able to predict the permeability, but for more complex geometries, there is rather a distribution of Knudsen numbers than a single number. It could work as a lower and an upper limit of the permeabilities for two different input Knudsen numbers, but they could possibly differ by an order of magnitude. Another approach could be to find the average distance $\langle L\rangle$ to the surface and use that distance to estimate the Knudsen number as
 \begin{align}
     \text{Kn}^* = \frac{\lambda}{\langle L \rangle}.
