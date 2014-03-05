@@ -1,5 +1,6 @@
 \chapter{Knudsen number of a packed spheres system}
-If we want to use the Knudsen correction factor (equation \eqref{eq:knudsen_correction}) to predict permeabilities in a nanoporous system consisting of packed spheres, we need to derive some statistical properties of the system giving us enough information to calculate the expected Knudsen number. Now, consider a volume $V$ consisting of $N$ points (sphere centers) placed randomly and independently in the system. The density of points is of course given by
+\label{app:knudsen_number_packed_spheres}
+If we want to use the Knudsen correction factor (equation \eqref{eq:knudsen_correction}) to predict permeabilities in a nanoporous system consisting of packed spheres, we need to derive some statistical properties of the system giving us enough information to calculate the expected Knudsen number. Now, consider a volume $V$ consisting of $N$ points (sphere centers) placed randomly and independently in the system. Note that this allows spheres with radius $r$ to overlap. The density of points is of course given by
 \begin{align}
 	\label{eq:packed_sphere_density}
 	n = \frac{N}{V}.
@@ -61,25 +62,22 @@ where $\Gamma(a,x)$ is the incomplete gamma function defined as
 \begin{align}
 	\Gamma(a,x) = \int\limits_x^\infty t^{a-1}\exp(-t)\dm t.
 \end{align}
-We can replace the dependency of the number density $n$ with the porosity $\phi$ and sphere radius $r$ through equation \eqref{eq:packed_sphere_porosity} which can be solved for $n$
+We can use equation \eqref{eq:packed_sphere_porosity} to replace the dependency of the number density $n$ with the porosity $\phi$ and sphere radius $r$ by solving for $n$ 
 \begin{align}
-	n = \frac{3}{4\pi r^3} \ln\phi^{-1}.
+	n = \frac{3}{4\pi r^3} \ln\phi^{-1},
 \end{align}
-By inserting this into equation \eqref{eq:packed_sphere_average_distance} we obtain
+and then insert this into equation \eqref{eq:packed_sphere_average_distance} to obtain
 \begin{align}
 	\langle l(r,\phi) \rangle = \frac{r}{\phi}\left[\ln\phi^{-1}\right]^{-\frac{1}{3}}\Gamma\left(\frac{4}{3},\ln\phi^{-1}\right).
 \end{align}
-We can now find the average distance $d=(l-r)$ to a sphere surface by
+What we really want is the distances to the \textit{surfaces} of the spheres, $d=(l-r)$ which is easy to find
 \begin{align}
 	\langle d(r,\phi)\rangle &= \langle l(r,\phi)\rangle - r = \frac{r}{\phi}\left[\ln\phi^{-1}\right]^{-\frac{1}{3}}\Gamma\left(\frac{4}{3},\ln\phi^{-1}\right) - r\\
 	&= r\left[\phi^{-1}\left[\ln\phi^{-1}\right]^{-\frac{1}{3}}\Gamma\left(\frac{4}{3},\ln\phi^{-1}\right) - 1\right].
 \end{align}
-
-% which we will use to replace $L$ in the Knudsen number
-% \begin{align}
-% 	\label{eq:packed_sphere_knudsen_1}
-% 	\text{Kn} = \frac{\lambda}{L} = \frac{\lambda}{\Gamma\left(\frac{1}{3}\right)\left(36\pi n\right)^{-1/3} - r}
-% \end{align}
-
-% The
-% If we insert this into equation \eqref{eq:packed_sphere_knudsen_1}, we
+In the expression for the Knudsen number ($\text{Kn}=\lambda/L$), we will use this quantity instead of $L$ as our best estimate, or average value, of the channel diameter. We then define the estimated Knudsen number $\text{Kn($r,\phi$)}^*$ as
+\begin{align}
+	\text{Kn($r,\phi$)}^* &= \frac{\lambda}{\langle l(r,\phi)\rangle}\\
+	\label{eq:packed_sphere_estimated_knudsen}
+	&= \frac{\lambda}{r\left[\phi^{-1}\left[\ln\phi^{-1}\right]^{-\frac{1}{3}}\Gamma\left(\frac{4}{3},\ln\phi^{-1}\right) - 1\right]}
+\end{align}
