@@ -1,4 +1,5 @@
 \section{Complex geometries}
+\label{sec:md_complex_geometries}
 As we did with DSMC, we want to study flow in arbitrary geometries.  To be able to do this, we need to create a model that satisfies some properties we already have in DSMC. The flowing fluid needs to
 \begin{itemize}
 	\item be confined in a subset of the total volume
@@ -49,6 +50,7 @@ If the atoms forming the solid are dense enough, very few atoms will be inside t
 \end{figure}
 
 \subsection{A simple model of a solid}
+\label{sec:md_simple_model_of_a_solid}
 We can improve the solid model by adding a harmonic oscillator potential to all the frozen atoms. Instead of freezing them completely, we allow them to vibrate around their equilibrium position $\vec q$ which is the initial position of the simulation. The force on atom $i$ in the solid is then
 \begin{align}
 	F^{(s)}(\vec r_i) = -k(\vec r_i - \vec q_i) 

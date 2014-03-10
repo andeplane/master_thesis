@@ -14,7 +14,7 @@ All three will change $f$ in different ways. We will first assume no collisions 
 \subsection{The collisionless Boltzmann equation}
 Consider particles around the point $(\vec r,\vec v)$ at the time $t$. If we assume no forces and that the total number of particles has not changed, a time $dt$ later, all particles have moved to $(\vec r + \vec vdt, \vec v)$. Conservation of probability states that any change of $f$ within a volume $\Omega$ must flow through the boundary $\partial \Omega$
 \begin{align}
-	{d\over dt}\int_\Omega f d\vec r d\vec v &= -\int_{\Omega_v}d\vec v\int_{\partial \Omega_r} f\vec v \vec n_r dS_r\\
+	\frac{d}{ dt}\int_\Omega f d\vec r d\vec v &= -\int_{\Omega_v}d\vec v\int_{\partial \Omega_r} f\vec v \vec n_r dS_r\\
 	&= -\int_{\Omega_v}d\vec v\int_{\Omega_r} \nabla_\vec r\cdot(f\vec v) d\vec r = -\int_{\Omega} \nabla_\vec r\cdot(f\vec v) d\vec vd\vec r
 \end{align}
 which becomes
@@ -24,7 +24,7 @@ which becomes
 since $\vec v$ is independent of $\vec r$. We can extend this equation by including an external force $\vec F$ that changes the velocity in exactly the same way as the position was changed above
 \begin{align}
 	\label{eq:collisionless_boltzmann}
-	\dpart{f}{t} + \vec v\cdot\nabla_\vec r f + \nabla_\vec v \cdot {\vec F\over m}f = 0,
+	\dpart{f}{t} + \vec v\cdot\nabla_\vec r f + \nabla_\vec v \cdot \frac{\vec F}{ m}f = 0,
 \end{align}
 which is called the collisionless Boltzmann equation. It is a good approximation to describe the dynamics of very dilute gases where intermolecular collisions occur rarely. Collisions between particles will change the velocity and appear as an additional term.
 \subsection{The collision operator}
@@ -32,7 +32,7 @@ Since the gas is dilute, we assume binary collisions only since the probability 
 \begin{align}
 	\vec g' = \vec g - 2\unitvector e(\unitvector e\cdot\vec g),
 \end{align}
-where $\unitvector e$ is some unit vector, see figure \ref{fig:relation_between_g_and_g_prime}. If we multiply by $\unitvector e$, we see that 
+where $\unitvector e$ is an arbitrary unit vector. If we multiply by $\unitvector e$, we see that 
 \begin{align}
 	\unitvector e\cdot \vec g' = \unitvector e\cdot\left[\vec g - 2\unitvector{e}(\unitvector e\cdot\vec g)\right] = -\unitvector e \cdot \vec g
 \end{align}
@@ -87,10 +87,10 @@ since $|\unitvector e\cdot \vec g| = |\unitvector e\cdot \vec g'|$ and $d^3 v'd^
 where $f = f(\vec x, \vec v, t)$ and $f_1 = f(\vec x, \vec v_1, t)$. The full Boltzmann equation is then given by
 \begin{align}
 	\label{eq:boltzmann_equation}
-	\dpart{f}{t} + \vec v\cdot \nabla_\vec r f + {\vec F\over m}\cdot\nabla_\vec v f = J[f].
+	\dpart{f}{t} + \vec v\cdot \nabla_\vec r f + \frac{\vec F}{ m}\cdot\nabla_\vec v f = J[f].
 \end{align}
 In the derivation of the collision operator $J[f]$, we assumed binary collisions only. This is a decent approximation that holds for low densities. By defining the force range $D$ and the dimensionless parameter $\nu = \rho_n D^3$, the Boltzmann equation is valid when $\nu$ is small \cite{mclennan1989introduction}. 
-\subsection{$H$-theorem}
+\subsection{\textit{H}-theorem}
 Boltzmann's $H$-theorem is a powerful result that gives us all the theoretical tools we need to implement the DSMC method. We define the $H$-function as
 \begin{align}
 	H(t) = \langle \ln f \rangle = \int f(\vec r, \vec v, t)\ln f(\vec r, \vec v, t)d\vec r d\vec v
@@ -113,9 +113,9 @@ We multiply the Boltzmann equation by $\ln f$ and integrate
 \label{sec:maxwell_boltzmann_distribution}
 \begin{align}
 	\label{eq:maxwell_boltzmann_distribution}
-	P(v_i)\dm {v_i} = \sqrt{m\over 2\pi k_BT}e^{-mv_i^2\over 2k_BT}\dm {v_i},
+	P(v_i)\dm {v_i} = \sqrt\frac{m}{ 2\pi k_BT}e^\frac{-mv_i^2}{ 2k_BT}\dm {v_i},
 \end{align}
-\subsection{Mean free path $\lambda$}
+\subsection{Mean free path}
 \label{sec:mean_free_path_calculation}
 The collision frequency can be calculated through the mean free path, which is the average distance a molecule travels between collisions. The mean free path for a gas is estimated by looking at the \textit{effective collision area}, see figure \ref{fig:effective_collision_area}. The effective collision area is then
 \begin{align}
@@ -142,9 +142,9 @@ which in turn gives the number of collisions during such a volume
 where $\rho_n$ is the number density. The mean free path is then calculated as the length of the path divided by the number of collisions
 \begin{align}
 	\label{eq:mean_free_path}
-	\lambda = {\langle v\rangle \tau\over \sqrt 2 \pi d^2\langle v\rangle \rho_n\tau} = {1 \over \sqrt 2 \pi d^2 \rho_n}
+	\lambda = \frac{\langle v\rangle \tau}{ \sqrt 2 \pi d^2\langle v\rangle \rho_n\tau} = \frac{1 }{ \sqrt 2 \pi d^2 \rho_n}
 \end{align}
-\subsection{Mean collision time $\tau_{coll}$}
+\subsection{Mean collision time}
 \begin{align}
 	\label{eq:coll_frequency}
 	f_{coll} = \rho_n \pi \sigma^2 \langle v_r \rangle

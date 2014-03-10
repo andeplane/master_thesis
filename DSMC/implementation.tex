@@ -30,8 +30,19 @@ int main(int args, char* argv[]) {
 }
 \end{lstlisting}
 \subsection{Class System}
-The system class is the top level simulator class. It reads all the physical properties of the system (e.g. system size, density, world geometry)
+The system class is the top level simulator class. It reads all the physical properties of the system (i.e. system size, density, world geometry) and executes each timestep when it's asked to do so. The phase space variables are saved in 
+\begin{itemize}
+\item \textit{std::vector<double> r}
+\item \textit{std::vector<double> v}
+\end{itemize}
 
-\subsection{cell.cpp}
-\subsection{dsmcio.cpp}
-\subsection{grid.cpp}
+\subsection{Class Cell}
+\subsection{Class DSMCIO}
+\subsection{Class Grid}
+\subsection{Class Random}
+\subsection{Class ColliderThermal}
+\subsection{Class ComplexGeometry}
+\subsection{Class ParticleMover}
+\subsection{Class StatisticalSampler}
+\subsection{Class StatisticalProperty}
+\subsection{Class StatisticalSampler}

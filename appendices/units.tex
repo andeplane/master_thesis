@@ -1,0 +1,139 @@
+\chapter{Physical units}
+The choice of units does of course not change the physical behavior. It is only a scaling of the the physical quantities so that their numerical values become more convenient. For example, it is common to choose a unit of length $L_0$ so that one unit of length is a typical value in the physical system. There are however only a few \textit{free} choices of units of which the other units follow from. In this appendix, we discuss the choices of units in both the MD and DSMC simulations and derive the other units.
+\section{Choice of units in MD}
+Here we use the so-called MD units. A convenient consequence of these units are that the parameters and masses in the Lennard-Jones force can be factored out which gives simpler calculations. The units we choose are
+\begin{align}
+	\text{Length } L_0 &= \unit{3.405\e{-10}}{\meter},\\
+	\text{Mass } m_0 &= \unit{1.66053886\e{-27}}{\kilogram},\\
+	\text{Energy } E_0 &= \unit{1.65088\e{-21}}{\joule},\\
+	\text{Boltzmann constant } k_B^* &= 1.0.
+\end{align}
+\section{Choice of units in DSMC}
+In DSMC, we use the same initial units as in MD, but with another unit of length since the systems normally are a few orders of magnitude larger. Here we use
+\begin{align}
+	\text{Length } L_0 &= \unit{1.0\e{-6}}{\meter},\\
+	\text{Mass } m_0 &= \unit{1.66053886\e{-27}}{\kilogram},\\
+	\text{Energy } E_0 &= \unit{1.65088\e{-21}}{\joule},\\
+	\text{Boltzmann constant } k_B^* &= 1.0.
+\end{align}
+Note that the mass, energy and the Boltzmann constant are equal in both MD and DSMC. 
+\section{Derivation of the other units}
+The other units can be derived from the four basis units through relations like $E=mc^2$ and $P=F/A$. Together, these physical formulas form a set of equations that can be solved for each physical quantity. We find the time unit $t_0$ through $E=mc^2$
+\begin{align}
+	E0 = m_0\frac{L_0^2}{t_0^2}\\
+	t_0 = L_0\sqrt\frac{m_0}{E_0}.
+\end{align}
+The force unit $F_0$ is found by using Newton's second law
+\begin{align}
+	F_0 = \frac{m_0L_0}{t_0^2} = \frac{E_0}{L_0}
+\end{align}
+We find the temperature $T_0$ by using that we chose the Boltzmann constant to be 1.0, which gives
+\begin{align}
+	T_0 = \frac{E_0}{k_B}.
+\end{align}
+The pressure is found through $P=F/A$ \todo{check this}
+\begin{align}
+	P_0 = \frac{F_0}{L_0^2} = \frac{E_0}{L_0^3}.
+\end{align}
+Now we have all all the conversion factors between SI units and MD/DSMC units. The programs are written so that all input values and internal variables are in the MD/DSMC units, but we have a simple unit converter script that can transform any physical value both to and from SI units. The conversion script can be found in listing \ref{lst:dsmcunitconverter}.
+\begin{lstlisting}[caption=dsmcUnitConverter.py, label=lst:dsmcunitconverter, language=Python]
+from dsmcconfig import *
+from math import sqrt, pi
+
+class DSMC_unit_converter:
+	def __init__(self, dsmc):
+		self.dsmc = dsmc
+		self.m0 = 1.66053886e-27  # si
+		self.L0 = 1e-6            # si
+		self.E0 = 1.65088e-21     # si
+		self.kb = 1.3806503e-23   # si
+
+		self.t0 = self.L0*sqrt(self.m0/self.E0)
+		self.F0 = self.E0/self.L0
+		self.T0 = self.E0/self.kb
+		self.P0 = self.m0/(self.t0**2*self.L0)
+		self.v0 = self.L0/self.t0
+		self.a0 = self.v0/self.t0
+		self.visc0 = self.P0*self.t0
+		self.diff0 = self.L0**2/self.t0
+		self.perm0 = self.L0**2
+		self.number_density0 = 1.0/(self.L0**3)
+
+	def pressure_to_si(self, P): 
+		return P*self.P0
+
+	def pressure_from_si(self, P): 
+		return P/self.P0
+
+	def temperature_to_si(self, T):
+		return T*self.T0
+
+	def temperature_from_si(self, T):
+		return T/self.T0
+
+	def mass_to_si(self, m):
+		return m*self.m0
+
+	def mass_from_si(self, m):
+		return m/self.m0
+
+	def length_to_si(self, L):
+		return L*self.L0
+
+	def length_from_si(self, L):
+		return L/self.L0
+
+	def force_to_si(self, F):
+		return F*self.F0
+
+	def force_from_si(self, F):
+		return F/self.F0
+
+	def energy_to_si(self, E):
+		return E*self.E0
+
+	def energy_from_si(self, E):
+		return E/self.E0
+
+	def time_to_si(self, t):
+		return t*self.t0
+
+	def time_from_si(self, t):
+		return t/self.t0
+
+	def velocity_to_si(self, v):
+		return v*self.v0
+
+	def velocity_from_si(self, v):
+		return v/self.v0
+
+	def acceleration_to_si(self, a):
+		return a*self.a0
+
+	def acceleration_from_si(self, a):
+		return a/self.a0
+
+	def viscosity_to_si(self, v):
+		return v*self.visc0
+
+	def viscosity_from_si(self, v):
+		return v/self.visc0
+
+	def permeability_to_si(self, k):
+		return k*self.perm0
+
+	def permeability_from_si(self, k):
+		return k/self.perm0
+
+	def diffusion_to_si(self, d):
+		return d*self.diff0
+
+	def diffusion_from_si(self, d):
+		return d/self.diff0
+
+	def number_density_to_si(self, d):
+		return d*self.number_density0
+
+	def number_density_from_si(self, d):
+		return d/self.number_density0
+\end{lstlisting}

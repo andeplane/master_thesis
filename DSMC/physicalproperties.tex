@@ -41,10 +41,15 @@ The temperature is defined through the equipartition theorem using the three mom
 \end{align}
 where $\langle E_k \rangle$ is the average kinetic energy, $N$ is the number of particles, $k_B$ is Boltzmann's constant and $T$ is the temperature. The only unknown property in this equation is the temperature
 \begin{align}
+	\label{eq:dsmc_temperature}
 	T = \frac{2E_k}{3Nk_B},
 \end{align}
-where we have dropped the average value brackets of the kinetic energy because we use this to define the \textit{instantaneous} temperature which in turn must be averaged in order to get the actual gas temperature over time. In listing \ref{lst:dsmc_temperature}, we show how to calculate the temperature in a DSMC model.
-
+where we have dropped the average value brackets of the kinetic energy because we use this to define the \textit{instantaneous} temperature which in turn must be averaged in order to get the actual gas temperature over time. Note that if the fluid is flowing (the gas has non-zero average velocity), the numerical values of the particle's velocities are higher, which in turn results in higher measured temperatures. But of course, this has to be wrong, the temperature should not be dependent of the frame of reference. Imagine a bacteria swimming in the flowing fluid, the temperature it feels is proportional to \textit{the average kinetic energy compared to the local frame of reference}. This indicates that we should define a \textit{instantaneous local temperature} $T(\vec r, t)$ which we define as
+\begin{align}
+	\label{eq:dsmc_local_temperature}
+	T(\vec r, t) = \frac{2m}{3k_B}\left[\frac{E(\vec r, t)}{\rho(\vec r, t)} - \frac{1}{2}\left(\frac{\vec p(\vec r, t)}{\rho(\vec r, t)}\right)^2\right],
+\end{align}
+where $E(\vec r,t)$, $\rho(\vec r,t)$ and $\vec p(\vec r,t)$ is the average kinetic energy, density and velocity within some volume around the point $\vec r$. This is of course still just the equipartition theorem where we measure the kinetic energy in the frame of reference determined by the fluid around the point $\vec r$. In listing \ref{lst:dsmc_temperature}, we show how to calculate the global temperature in a DSMC model. \todo{Code using the averaged temperature over local values}
 \begin{lstlisting}[caption=Calculation of instantaneous temperature., label=lst:dsmc_temperature]
 double calculate_temperature(vector<vector<double> > &velocities, vector<double> &masses, int atoms_per_particle) {
 	double kinetic_energy = calculate_kinetic_energy(velocities, masses, atoms_per_particle);

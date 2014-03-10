@@ -1,10 +1,17 @@
 \section{Introduction}
+The aim of this thesis is to study flow in what we call nanoporous media. 
+
+\section{Motivation}
 
 
-\subsection{Motivation}
-
-
-\subsection{The structure of this thesis}
-
+\section{The structure of this thesis}
 
 \section{My contribution}
+In every thesis, as in any scientific work, the foundation of the content is results from previous work. It should be clear what the author has contributed with that is unique and maybe not easily obtainable for everyone without this work. This could for example be new theoretical calculations, models, algorithms or tools that has been developed. Since a master thesis is a larger document containing more information than just the new contributions, it might be less obvious which parts that are the work of the author. A thesis like this deserves its own section highlighting these parts.\\
+We have studied two different models in this thesis; Molecular Dynamics (MD) and Direct Simulation Monte Carlo (DSMC). Both of these models have been written from scratch. Doing this has given me a great insight in both models, especially from a numerical perspective since every detail of the implementation had to be understood. In this section we briefly discuss the contributions by \todo{check of/by} the author. This section is not meant to be an introduction to any of the concepts, so it is assumed that the reader is familiar with the models at the time of reading. If this is not the case, everything in this section should be clear after reading about both models in chapters \ref{chap:dsmc}, \ref{chap:dsmc_implementation}, \ref{chap:md}, \ref{chap:md_implementation} and \ref{chap:opengl}.
+\subsection{Direct Simulation Monte Carlo}
+In the DSMC model, we needed to find a method to represent the geometry of the system (of which the fluid is confined in). This method had to be fast, scalable (for parallelizing) and general enough so that we could represent an arbitrary geometry. To be able to perform collisions between particles and the surface, the surface needed to have well defined normal and tangent vectors in every point. The author has developed a voxelation model of the geometry with a new method to calculate the normal and tangent vectors using the neighboring voxels to have a smoother effective surface than just voxels. This method is discussed in detail in section \ref{sec:dsmc_complex_geometries}.
+\subsection{Molecular Dynamics}
+The MD code is a standard, but remarkably efficient code using the unary Lennard-Jones potential. The structure and parallelization technique is based on what is teached at the University of Southern California \footnote{See \url{http://cacs.usc.edu/education/cs596/ParallelMD-VG.pdf} for details.}. In section \ref{sec:md_complex_geometries} we describe that we want to simulate a fluid in an arbitrary geometry with the MD code. The author has developed a simple, but very useful model of a solid that allows some of the atoms in the system to behave as a solid, vibrating about their equilibrium point. In addition, with an applied thermostat on these atoms, we are able to drain the system for energy which is a necessity when we induce flow in the system by adding a constant force as described in section \ref{md:pressure_driven_flows}. The details of this model is discussed in section \ref{sec:md_complex_geometries}.
+\subsection{Visualization}
+The free visualization software available (such as VMD, Ovito, ParaView) are great tools for studying datasets from numerical atomic or molecular models. There are two main limitations the author has noticed; the camera control and limitations of large data sets. In all of these programs, the camera is pointing towards a point (which can be moved) whereas the mouse controls the rotation around this point. To be able to study different parts of the system, one could want to control the camera as in a first person shooter game or a game where you control a space ship. The author has, together with Svenn-Arne Dragly, developed visualization tools allowing us to visualize up to 100 million atoms with decent frame rate while flying around as if the camera was a space ship. In chapter \ref{chap:opengl} we discuss how to make full use of what's called \textit{geometry shaders} which allows us to create the geometry used to render the spheres representing the atoms on the Graphical Processing Unit (GPU).

@@ -15,12 +15,12 @@ where $\dm \vec p\dm \vec r=\dm p_1\dm p_2...\dm r_{3N}$ is the $6N$ dimensional
 \subsection{Ensemble averages}
 Given the distribution function $f$, we can calculate any ensemble average (which will be the measurable, macroscopic properties of the system) by interpreting $f$ as a probability distribution (it needs the factor $1/N$ to be normalized) that gives the probability of finding a particle at position $\vec r + \dm \vec r$ with momentum in the range $\vec p + \dm\vec p$ at the time $t$. We can then use the standard expectation value expression to calculate a macroscopic property $\bar A$
 \begin{align}
-	\bar A = {1\over N}\int A(\vec p, \vec r, t)f(\vec p, \vec r, t)\dm \vec p\dm\vec r.
+	\bar A = \frac{1}{ N}\int A(\vec p, \vec r, t)f(\vec p, \vec r, t)\dm \vec p\dm\vec r.
 \end{align}
 This could for example be the total energy
 \begin{align}
-	\bar E &= {1\over N}\int E(\vec p, \vec r, t)f(\vec p, \vec r, t)\dm \vec p\dm\vec r \\
-	&= {1\over N}\int \left(V(\vec r) + \sum_{i=1}^N \frac{\vec p_i^2}{2m_i} \right)f(\vec p, \vec r, t)\dm \vec p \dm \vec r,
+	\bar E &= \frac{1}{ N}\int E(\vec p, \vec r, t)f(\vec p, \vec r, t)\dm \vec p\dm\vec r \\
+	&= \frac{1}{ N}\int \left(V(\vec r) + \sum_{i=1}^N \frac{\vec p_i^2}{2m_i} \right)f(\vec p, \vec r, t)\dm \vec p \dm \vec r,
 \end{align}
 where $\vec p_i$ is particle $i$'s momentum vector. Any other quantity of interest can in principle be measured in the same way. 
 \subsection{Ergodicity}

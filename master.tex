@@ -44,6 +44,7 @@ This is a dedication to my text.
 \end{chapter}
 
 \begin{chapter}{Theory of fluids}
+  \label{chap:theory_of_fluids}
   \input{background/theoryoffluids}
   \input{background/gasdynamics}
   \input{background/applications}
@@ -67,6 +68,7 @@ This is a dedication to my text.
   \input{DSMC/steadystate}
 \end{chapter}
 \begin{chapter}{Implementation}
+\label{chap:dsmc_implementation}
   \input{DSMC/implementation}
   \input{DSMC/collisions}
   \input{DSMC/geometry}
@@ -87,10 +89,10 @@ This is a dedication to my text.
   \input{MD/physicalproperties}
   \input{MD/stability}
   \input{MD/steadystate}
-  \input{MD/computationalcost}
   \end{chapter}
 
   \begin{chapter}{Implementation}
+  \label{chap:md_implementation}
     \input{MD/implementation}
     \input{MD/parallelization}
     \input{MD/flow}
@@ -106,12 +108,16 @@ This is a dedication to my text.
 \begin{part}{Visualization}
   \input{visualization/introduction}
   \begin{chapter}{OpenGL}
+    \label{chap:opengl}
     \input{opengl/introduction}
     \input{opengl/functions}
     \input{opengl/transformations}
     \input{opengl/textures}
     \input{opengl/shaders}
     \input{opengl/vbo}
+  \end{chapter}
+  \begin{chapter}{Oculus Rift}
+    \label{chap:oculus_rift}
   \end{chapter}
 
   \begin{chapter}{Results}
@@ -127,11 +133,13 @@ This is a dedication to my text.
 %---------------------------------------------------------------------------------------
 % Appendices
 %---------------------------------------------------------------------------------------
+\begin{part}{Appendices}
 \begin{appendices}
 \input{appendices/knudsen_number_packed_spheres}
 \input{appendices/python_scripting}
+\input{appendices/units}
 \end{appendices}
-
+\end{part}
 %---------------------------------------------------------------------------------------
 % Bibliography
 %---------------------------------------------------------------------------------------
