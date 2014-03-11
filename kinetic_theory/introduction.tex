@@ -10,7 +10,7 @@ where $m_i$ is the mass of particle $i$, $v_i$ is its scalar velocity and $V(\ve
 If we instead increase the velocity of particle $i$, we can reduce some another particle $j$'s velocity to keep the total energy constant. Even though the macroscopic property \textit{energy} is unchanged, there is a (theoretically) measureable difference between these two states. The set of all microstates that have the same macroscopic state variables (a \textit{macrostate}) forms an ensemble of systems. A typical ensemble is the microcanonical ensemble (NVE) with a constant number of particles $N$, constant volume $V$ and constant energy $E$. Increasing the velocity of particle $i$ while reducing particle $j$'s velocity just enough to remaining the energy unchanged does not change the particle number $N$, the volume $V$ nor the energy. These two different microstates would both be in the same ensemble.\\
 In a typical system, the number of microstates in a macrostate is so huge that the phase space points can be described by a continuous density function $f(\vec p, \vec r, t)$ without losing any important information \cite{mcquarrie1973statistical}. The input parameters are the $3N$ momentum components, the $3N$ spatial coordinates plus time. This function is often called a \textit{distribution function}, normalized so that
 \begin{align}
-	\int f(\vec p, \vec r, t) \dm \vec p\dm \vec r = N,
+	\iint\! f(\vec p, \vec r, t) \dm \vec p\dm \vec r = N,
 \end{align}
 where $\dm \vec p\dm \vec r=\dm p_1\dm p_2...\dm r_{3N}$ is the $6N$ dimensional phase space volume element. 
 
@@ -18,12 +18,12 @@ where $\dm \vec p\dm \vec r=\dm p_1\dm p_2...\dm r_{3N}$ is the $6N$ dimensional
 \label{sec:kinetic_theory_ensemble_averages}
 Given the distribution function $f$, we can calculate any ensemble average (which will be the measurable, macroscopic properties of the system) by interpreting $f$ as a probability distribution (it needs the factor $1/N$ to be normalized to one) that gives the probability of finding a particle at position $\vec r + \dm \vec r$ with momentum in the range $\vec p + \dm\vec p$ at the time $t$. We can then use the standard expectation value expression to calculate a macroscopic property $\bar A$
 \begin{align}
-	\bar A(t) = \frac{1}{ N}\int A(\vec p, \vec r, t)f(\vec p, \vec r, t)\dm \vec p\dm\vec r.
+	\bar A(t) = \frac{1}{ N}\iint\! A(\vec p, \vec r, t)f(\vec p, \vec r, t)\dm \vec p\dm\vec r.
 \end{align}
 This could for example be the total energy
 \begin{align}
-	\bar E(t) &= \frac{1}{ N}\int E(\vec p, \vec r, t)f(\vec p, \vec r, t)\dm \vec p\dm\vec r \\
-	&= \frac{1}{ N}\int \left(V(\vec r) + \sum_{i=1}^N \frac{\vec p_i^2}{2m_i} \right)f(\vec p, \vec r, t)\dm \vec p \dm \vec r,
+	\bar E(t) &= \frac{1}{ N}\iint\! E(\vec p, \vec r, t)f(\vec p, \vec r, t)\dm \vec p\dm\vec r \\
+	&= \frac{1}{ N}\iint\! \left(V(\vec r) + \sum_{i=1}^N \frac{\vec p_i^2}{2m_i} \right)f(\vec p, \vec r, t)\dm \vec p \dm \vec r,
 \end{align}
 where $\vec p_i$ is the momentum of particle $i$. Any other quantity of interest can in principle be measured in the same way. 
 \section{Ergodicity}
