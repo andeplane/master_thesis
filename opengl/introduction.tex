@@ -12,6 +12,7 @@ In OpenGL, the primitive decides how to interpret a set of vertices. The same se
 \end{figure}
 When using for example the \textit{GL\_TRIANGLES}, OpenGL interprets groups of three vertices as one triangle. In the case of \textit{GL\_QUADS}, it will of course use groups of four vertices to define the renderable object. All of the primitives (except the \textit{GL\_POINTS}) form one or more two dimensional surfaces that are colored from either the interpolated values between the vertices or from a texture map which we now will explain.
 \subsection{Color interpolation}
+\label{sec:opengl_color_interpolation}
 When creating a primitive consisting of $N$ vertices we can color each vertex $\vec r_i$ with an RGBA vector
 \begin{align}
 	\vec c_i = (r_i, g_i, b_i, \alpha_i)
@@ -37,6 +38,7 @@ where $\vec c(\vec p_i)$ is the color we gave the vertex at $\vec p_i$. In figur
 \label{fig:opengl_color_interpolation}
 \end{figure}
 \subsection{Textures}
+\label{sec:opengl_texture_interpolation}
 Instead of using the colors specified per vertex, we can upload a texture (for example an image) to the graphics card so that the GPU can use that as the source of the color (this can be combined with the color values as we will see soon). The texture consists of $m\times n$ pixels where each pixel has a color $\vec c_t$. Each vertex $i$ of the triangle is assigned a \textit{local texture coordinate} 
 \begin{align}
 	\vec t_i = (t_x, t_y),
@@ -100,3 +102,4 @@ Say we want a model of a die. A die is a cube with six faces. The model $\mathca
 \caption{Drawing a die using the technique described in subsection \ref{sec:opengl_model}. The color was chosen to be red whereas each of the six faces were assigned one of the textures in the black box.}
 \label{fig:opengl_die}
 \end{figure}
+\subsection{Environment}
