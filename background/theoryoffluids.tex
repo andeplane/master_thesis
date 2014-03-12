@@ -1,6 +1,8 @@
-The history of any physical field is interesting in several ways. Physical questions usually start with one or more observations, the \textit{what}, and then the urge to understand \textit{why}. In science, \textit{why} is of course the question we ideally want to answer, but in many cases that is not achievable at first. An example is the statement of Kepler's three laws of planetary motion. Kepler had observations that he confirmed were indeed correct, but he did not know \textit{why} the planets behave like they do. Some 50 years later, Newton explained Kepler's three laws by his universal law og gravitation. This is the beauty of science, the \textit{why} is not required, just desired.\\
-Another interesting part of the history is the amount of available information at the time of discoveries, which strongly affects their ability to develop new theories. Newton needed to create a theory that were in agreement with Kepler's laws, and Kepler needed his laws to agree with the observations that were done. In this chapter, we will briefly discuss some of the discoveries and questions in fluid mechanics that lead up to our current knowledge of the field. 
+Most people have an intuition about what a substance is. A substance is just \textit{something}, like water, wood, butter or glass. A metal is a substance. The blood in your body is a substance. All of these are made up of atoms that form molecules in ways giving them very different properties. We know that a substance can exist in different phases, for example plasma, solid, liquid and gas \cite{ravndal2008statmech}, in which the same substance can behave very differently. Liquids and gases are often called fluids because they share the property that they do not have a fixed shape and is often easily deformed. In this chapter we will briefly go through the history of fluids, and discuss how the theory of fluids was developed from the discoveries by the ancient greeks to modern fluid mechanics. \\
+We start this chapter with section \ref{sec:theory_of_fluids_greece} by quoting some of the great minds from Greece who were the first to describe fluids in a scientific way, before we discuss the Euler equations and Navier-Stokes equations in section \ref{sec:theory_of_fluids_euler_navier}. These sets of equations assume that the fluid can be described as a continuum, which turns out not to be true for what is called \textit{microflows}. The discussion about macroflows and microflows leads up to what is called the breakdown of continuum which is addressed in section \ref{sec:continuum_breakdown}. One very important effect is the slip velocity which leads to discrepancies from the standard continuum solver approach. This is discussed in section \ref{sec:slip_length}, before we in section \ref{sec:knudsen_number} introduce the Knudsen number which allows us to define different flow regimes in which we can categorize the validity of different fluid flow models.\\
+We then define what a nanoporous media is before we in section \ref{sec:darcy_law} discuss permeability and Darcy's law and that we need to apply corrections to the permeability because of the effects of slip velocity.
 \section{The beginning in Greece}
+\label{sec:theory_of_fluids_greece}
 The first scientific descriptions of fluid mechanics dates back to Aristotle (384-322 B.C.) when he identified the continuum and dynamic drag in fluids \cite{anderson1998history}. He wrote
 \begin{aquote}{Aristotle by Lysippus}
 The continuous may be defined as that which is divisible into parts which are themselves divisible to infinity, as a body which is divisible in all ways. Magnitude divisible in one direction is a line, in three directions a body. And magnitudes which are divisible in this fashion are continuous. 
@@ -16,6 +18,7 @@ Any object, wholly or partially immersed in a fluid, is buoyed up by a force equ
 Even today, more than 2000 years later, every high school student taking a physics course learn about Archimedes' principle. It is a simple and intuitive, yet remarkably powerful, statement that can easily be derived using Newtonian mechanics. 
 
 \section{The Euler equations and the Navier-Stokes equations}
+\label{sec:theory_of_fluids_euler_navier}
 With the concept of continuum, we think that each point in space has well defined physical properties like temperature, density and momentum. In 1757, Euler published what's called the \textit{Euler equations} by applying conservation of mass, momentum and energy to a small volume element $\dm V$. It is a set of differential equations describing how the fluid velocity field changes in time and space. The conservation laws can be written as
 \begin{align}
 	\dpart{\rho_m}{t} + \nabla\cdot (\rho_m\vec u) &= 0 \qquad \text{mass}\\
@@ -41,15 +44,18 @@ which is a good approximation for many liquids. However, most gases are compress
 	\rho_m \frac{D\vec u}{ Dt} = \rho_m \vec F - \nabla p + \mu\nabla^2\vec u + \mu\nabla(\nabla\cdot \vec u),
 \end{align}
 where we notice the extra term compared to equation \eqref{eq:nse_incompressible}. When solving the NSE, one has to provide boundary conditions to get a unique solution for the system. Usually, one applies no-slip boundary conditions, i.e. that the fluid velocity is zero at the container walls. In section \ref{sec:slip_length} we discuss the effects of slip velocity and how this affects the flow properties of the fluid. 
+
 \section{Macroflows and microflows}
-When we solve the equations governing our fluid flow, we add boundary conditions defining the geometry of our system. In the 1990s H. Bau and J. Zemel (University of Pennsylvania) performed some experiments on microchannel flow in which they found clear deviations from what was expected from the theory\cite{karniadakis2005microflows}. It is useful to introduce the terms \textit{microflows} for flow in geometries where the distance between the channel walls is of micrometer size and \textit{macroflows} for larger systems (milimeter and above). Flow at microscales differ from macroscales because of effects that can be classified into four groups
+\label{sec:theory_of_fluids_microflows}
+When we solve the equations governing our fluid flow, we add boundary conditions defining the geometry of our system. In the 1990s H. Bau and J. Zemel (University of Pennsylvania) performed experiments on microchannel flow in which they found clear deviations from what was expected from the theory\cite{karniadakis2005microflows}. It is useful to introduce the terms \textit{microflows} for flow in geometries where the distance between the channel walls is of micrometer size and \textit{macroflows} for larger systems (milimeter and above). Flow at microscales differ from macroscales because of effects that can be classified into four groups
 \begin{itemize}
 \item noncontinuum effects,
 \item surface-dominated effects,
 \item low Reynolds number effects, and
 \item multiscale and multiphysics effects.
 \end{itemize}
-In this thesis, we focus on the noncontinuum effects which are briefly discussed in section \ref{sec:continuum_breakdown}, and the surface-dominated effects as the slip condition described in section \ref{sec:slip_length}. See \cite{karniadakis2005microflows} for details about the effects of low Reynolds number and multiscale and multiphysics. 
+In this thesis, we focus on the noncontinuum effects which are briefly discussed in section \ref{sec:continuum_breakdown}, and the surface-dominated effects as the slip condition described in section \ref{sec:slip_length}. See \cite{karniadakis2005microflows} for details about the effects of low Reynolds number, multiscale and multiphysics. 
+
 \section{The breakdown of continuum}
 \label{sec:continuum_breakdown}
 A fundamental assumption in the derivation of the NSE is that the space is continuous. We know that in reality, the mass of the fluid is concentrated in the very center of the atoms, but we often assume that the mass is uniformly distributed in the volume element of which the conservations laws are applied on. This is known as the \textit{continuum hypothesis} and is invalid when the \textit{mean free path} $\lambda$, the average distance a particle moves between collisions, becomes large compared to some characteristic length $L$ in the system, i.e. the diameter of a channel\cite{karniadakis2005microflows}. This property is quantified through the \textit{Knudsen number}
@@ -60,20 +66,8 @@ From the kinetic theory we can calculate the mean free path (which is done in se
 \begin{align}
 	\lambda = \frac{m}{\sqrt 2 \pi d \rho_n} = \frac{k_B T}{\sqrt 2 \pi d^2 P},
 \end{align}
-where $\rho_n$ is the number density and $m$ and $d$ are the mass and diameter of the particles. By inserting the ideal gas law $P = \rho_n k_BT$, we can eliminate the density and use the pressure $P$ together with the temperature $T$ instead. Here $k_B$ is of course Boltzmann's constant. For Knudsen numbers smaller than $10^{-2}$, the continuum hypthosis is valid and we can apply the Navier-Stokes equations\cite{karniadakis2005microflows}. The Knudsen number is so important that it deserves to be discussed in more detail in section \ref{sec:knudsen_number}.
-\section{Atomic models}
-For systems where the continuum hypothesis is invalid, we need other models describing the behaviour of the particles in our system. The first idea that might pop our minds might be to study the system at the atomic level. The physical set of rules that are controlling the atoms is of course quantum mechanics. The equations of motion and hence the dynamics of an atomic system can in principle be calculated directly from quantum mechanics by solving Schr\"{o}dinger's equation with perturbation theory. Since this requires calculating the wave function of every atom with complex atomic interactions, the size of the system needs to be very small with today's computers. An alternative, popular approach is to use a parameterized potential $U(\vec r^N)$ ($\vec r^N$ being the positions of all atoms), and calculate the forces through the gradient of $U$. Newton's equations of motion is then integrated and the dynamics of the system are determined in a classical, deterministic way where important effects from quantum mechanics can be embedded in the potential. This method is called \textit{Molecular Dynamics} and is studied in chapter \ref{chap:md}. Molecular Dynamics is orders of magnitudes faster than models solving Schr\"{o}dinger's equation, but it still needs a detailed describtion of the dynamics of every atom in the system. For many problems, this information is redundant because what's really important is the statistical properties of the system.
-\section{Statistical mechanics}
-We know from statistical mechanics that what dominates the macroscopic effects is the statistical behaviour of the system. One can for example derive the ideal gas law from pure statistical and combinatorial arguments with conservation of energy being the only physical concept\cite{ravndal2008statmech}. The idea is that it is the average properties of a system that are being observed wheras the actual state (i.e. all the positions and velocities of all atoms) of the system is not known, nor needed. A physical system is often described as a distribution function $f(\vec p, \vec r; t)$ yielding the probability of finding an atom, or in general a particle with position in the range $\vec r + \dm {\vec r}$ with momentum in the range $\vec p + \dm {\vec p}$ at the time $t$. The dynamics of this function is described by the Boltzmann equation which is derived in chapter \ref{chap:kinetic_theory}. From the Boltzmann equation, we can derive the results we need to describe the properties of gases which will be input parameters to a model called Direct Simulation Monte Carlo (DSMC) which is studied in chapter \ref{chap:dsmc}. 
+where $\rho_n$ is the number density and $m$ and $d$ are the mass and diameter of the particles. By inserting the ideal gas law $P = \rho_n k_BT$, we can eliminate the density and use the pressure $P$ together with the temperature $T$ instead. Here $k_B$ is of course Boltzmann's constant. For Knudsen numbers smaller than $10^{-2}$, the continuum hypthosis is valid and we can apply the Navier-Stokes equations\cite{karniadakis2005microflows}. The Knudsen number is so important that it deserves its own section.
 
-\section{Knudsen number}
-\label{sec:knudsen_number}
-To get an idea of the length scales where the Knudsen number is about unity, the mean free path for helium at $T=$\unit{273}{\kelvin} and $P=1$ atm is\cite{lillestol2001generell} 
-\begin{align}
-	\label{eq:helium_mfp}
-	\lambda_{\text{He}} = \unit{0.17}{\micro\meter} = \unit{170}{\nano\meter}.
-\end{align}
-This means that for systems where the channels have diameter of a few hundred nanometers, the Knudsen number is around unity, and the continuum hypothesis is invalid. 
 \section{Slip velocity}
 \label{sec:slip_length}
 The Navier-Stokes equations need boundary conditions of the velocity field defining the geometry of which the fluid is confined in. As mentioned earlier, the simplest boundary condition is the no-slip condition where
@@ -114,7 +108,22 @@ we see that the ratio of the slip length to the channel diameter is proportional
 	\label{eq:linear_slip_velocity}
 	v_{\text{wall}} = \alpha\lambda\frac{\dm v}{\dm n},
 \end{align}
-where $n$ is the direction normal on the wall\cite{klinkenberg1941permeability}. We call this a \textit{first order} slip model since it is contains only the first derivative of the velocity. Higher order models exists and give corrections that are important in nanoporous media (which is defined in section \ref{sec:nanoporous_media}) where the channels that contribute to flow are of nanometer scale. It is convenient to classify different flow regimes 
+where $n$ is the direction normal on the wall\cite{klinkenberg1941permeability}. We call this a \textit{first order} slip model since it is contains only the first derivative of the velocity. Higher order models exists and give corrections that are important in nanoporous media (which is defined in section \ref{sec:nanoporous_media}) where the channels that contribute to flow are of nanometer scale.
+
+\section{Knudsen number}
+\label{sec:knudsen_number}
+To get an idea of the length scales where the Knudsen number is about unity, the mean free path for helium at $T=$\unit{273}{\kelvin} and $P=1$ atm is\cite{lillestol2001generell} 
+\begin{align}
+	\label{eq:helium_mfp}
+	\lambda_{\text{He}} = \unit{0.17}{\micro\meter} = \unit{170}{\nano\meter}.
+\end{align}
+This means that for systems where the channels have diameter of a few hundred nanometers, the Knudsen number is around unity, and the continuum hypothesis is invalid. 
+
+\section{Atomic models}
+\label{sec:theory_of_fluids_atomic_models}
+For systems where the continuum hypothesis is invalid, we need other models describing the behaviour of the particles in our system. The first idea that might pop our minds might be to study the system at the atomic level. The physical set of rules that are controlling the atoms is of course quantum mechanics. The equations of motion and hence the dynamics of an atomic system can in principle be calculated directly from quantum mechanics by solving Schr\"{o}dinger's equation with perturbation theory. Since this requires calculating the wave function of every atom with complex atomic interactions, the size of the system needs to be very small with today's computers. An alternative, popular approach is to use a parameterized potential $U(\vec r^N)$ ($\vec r^N$ being the positions of all atoms), and calculate the forces through the gradient of $U$. Newton's equations of motion is then integrated and the dynamics of the system are determined in a classical, deterministic way where important effects from quantum mechanics can be embedded in the potential. This method is called \textit{Molecular Dynamics} and is studied in chapter \ref{chap:md}. Molecular Dynamics is orders of magnitudes faster than models solving Schr\"{o}dinger's equation, but it still needs a detailed describtion of the dynamics of every atom in the system. For many problems, this information is redundant because what's really important is the statistical properties of the system.
+
+ It is convenient to classify different flow regimes 
 \section{Flow regimes}
 \todo{Discuss flow regimes}
 \section{Nanoporous media}

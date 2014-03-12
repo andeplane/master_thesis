@@ -1,6 +1,6 @@
 \section{What is OpenGL?}
 \label{sec:opengl}
-OpenGL is an open source graphics library providing an application programming interface (API) to communicate with a graphics processing unit (GPU) in order to get hardware-accelerated \textit{rendering}. Rendering is the process of generating an image from \textit{models} in an \textit{environment}. These models contain information about the geometry and associated textures. A model is typically represented by a set of points, triangles or some other set of \textit{primitives}. Before discussing the model and the environment, we should explain what a primitive is.
+OpenGL is an open source graphics library providing an application programming interface (API) to communicate with a graphics processing unit (GPU) in order to get hardware-accelerated \textit{rendering}. Rendering is the process of generating an image from \textit{models} in an \textit{environment}. These models contain information about the geometry and associated textures. A model is typically represented by a set of points, triangles or some other set of \textit{primitives}. Before discussing the model, we should explain what a primitive is.
 \subsection{Primitive}
 In OpenGL, the primitive decides how to interpret a set of vertices. The same set of vertices may be interpreted, hence rendered, very different on the screen. Three points can be used to draw three single points, a triangle or a part of a rectangle among other different geometries. To illustrate this idea, in figure \ref{fig:opengl_primitives}, the four vertices $\{(0,0), (0,1), (1,1), (1,0)\}$ have been rendered with the primitives \textit{GL\_POINTS}, \textit{GL\_LINES}, \textit{GL\_TRIANGLES}, \textit{GL\_QUADS} and \textit{GL\_TRIANGLE\_STRIP}. The rendered objects are of course very different depending on the primitive. 
 \begin{figure}[h]
@@ -74,7 +74,7 @@ where $\odot$ is the element-wise multiplication operator defined as
 \begin{align}
 	(\vec a \odot \vec b)_i = a_i\cdot b_i,
 \end{align}
-where $\vec a,\vec b \in \mathbb{R}^N$ and $d_i$ is the $i$'th component of $\vec d$. In figure \ref{fig:color_and_texture} we have combined both the color and the texture giving a triangle with the same image of Albert Einstein colored as in figure \ref{fig:opengl_color_interpolation}.
+where $\vec a,\vec b \in \mathbb{R}^N$ and $d_i$ is the $i$'th component of some vector $\vec d$. In figure \ref{fig:color_and_texture} we have combined both the color and the texture giving a triangle with the same image of Albert Einstein colored in the same way as the triangle in figure \ref{fig:opengl_color_interpolation}.
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{opengl/figures/color_and_texture.png}
@@ -102,4 +102,3 @@ Say we want a model of a die. A die is a cube with six faces. The model $\mathca
 \caption{Drawing a die using the technique described in subsection \ref{sec:opengl_model}. The color was chosen to be red whereas each of the six faces were assigned one of the textures in the black box.}
 \label{fig:opengl_die}
 \end{figure}
-\subsection{Environment}

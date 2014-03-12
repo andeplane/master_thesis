@@ -1,6 +1,11 @@
 \section{Coordinate transformations}
 \label{sec:opengl_coordinate_transformations}
-OpenGL operates with three coordinate spaces that are essential to understand. 
+OpenGL operates with four coordinate spaces that are heavily used in all OpenGL programs. These are spaces that makes the API convenient to use both from the user's perspective and internally in the OpenGL API. 
 \subsection{Model space}
+When we create an object, say a triangle, we define its geometrical shape by a set of vertices and the primitive saying how these vertices should be combined to define the surface of the object. The vertices we provide are given in the \textit{model space} (they are the local coordinates) where the origin defines the center position of the object. If we want to render several such objects at different positions, the local coordinates of each object must be translated into the world space, i.e. using \textit{global coordinates}.
+\subsection{World space}
+The world space is the coordinate system that fully 
+
 \subsection{View space}
+
 \subsection{Projection space}
