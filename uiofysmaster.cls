@@ -30,9 +30,11 @@
 \ProcessOptions\relax
 \LoadClass{\baseclass}
 
-\def\degreename{\uppercase{Master of Science}}
-\newcommand*{\degreee}[1]{\def\degreename{#1}}
-\def\degreenameno{\uppercase{Master i Fysikk}}
+\input{packages.tex}
+
+\def\degreename{Master of Science}
+%\newcommand*{\degree}[1]{\def\degreename{#1}}
+\def\degreenameno{Master i Fysikk}
 \newcommand*{\degreeno}[1]{\def\degreenameno{#1}}
 \def\universityname{University of Oslo}
 \newcommand*{\university}[1]{\def\universityname{#1}}
@@ -40,25 +42,8 @@
 \newcommand*{\universityno}[1]{\def\universitynameno{#1}}
 \def\facultyname{Faculty of Mathematics and Natural Sciences}
 \newcommand*{\faculty}[1]{\def\facultyname{#1}}
-\def\facultynameno{Det matematisk-naturvitenskapelige fakultet}
+\def\facultynameno{Det matematisk- naturvitenskapelige fakultet}
 \newcommand*{\facultyno}[1]{\def\facultynameno{#1}}
-
-%----------------------------------------------------------------------------------------
-%       USEFUL PACKAGES
-%----------------------------------------------------------------------------------------
-
-% ---- Maths -------
-\usepackage{amsmath}
-\usepackage{amsthm}
-% ---- Links -------
-\usepackage{hyperref}
-\hypersetup{
-    colorlinks,
-    citecolor=black,
-    filecolor=black,
-    linkcolor=black,
-    urlcolor=black
-}
 
 %---------------------------------------
 %           USEFUL COMMANDS
@@ -77,15 +62,14 @@
 \theoremstyle{uiotheoremstyle}
 \newtheorem{theorem}{Theorem}
 \renewenvironment{proof}{\noindent{\scshape Proof}.}{\qed}
-\renewcommand{\vec}[1]{\mathbf{#1}}
-% BEGIN COMMANDS FROM LATEX FOR PHYSICISTS
-% http://www.dfcd.net/articles/latex/latex.html
-\newcommand{\ket}[1]{\left| #1 \right>} % for Dirac bras
-\newcommand{\bra}[1]{\left< #1 \right|} % for Dirac kets
-\newcommand{\braket}[2]{\left< #1 \vphantom{#2} \right|
- \left. #2 \vphantom{#1} \right>} % for Dirac brackets
-% END COMMANDS FROM
+\input{commands}
 
+% Page style commands
+\let\origdoublepage\cleardoublepage
+\newcommand{\clearemptydoublepage}{%
+  \clearpage
+  {\pagestyle{empty}\origdoublepage}%
+}
 
 %----------------------------------------------------------------------------------------
 %       ABSTRACT PAGE DESIGN
@@ -100,7 +84,8 @@
 }
 {
   \vfil\vfil\vfil\null
-  \cleardoublepage
+  \thispagestyle{empty}
+  \clearemptydoublepage
 }
 %----------------------------------------------------------------------------------------
 %       DEDICATION PAGE DESIGN
@@ -113,7 +98,7 @@
 {
   \end{center}
   \vfil\vfil\vfil\null
-  \cleardoublepage
+  \clearemptydoublepage
 }
 %----------------------------------------------------------------------------------------
 %       ABSTRACT PAGE DESIGN
@@ -122,56 +107,91 @@
 \newenvironment{acknowledgements}
 {
   \thispagestyle{empty}
-  {\huge{\textbf{Acknowledgements}} \par}
+  \begin{center}
+    {\huge{\textbf{Acknowledgements}} \par}
+  \end{center}
 }
 {
   \vfil\vfil\vfil\null
-  \cleardoublepage
+  \clearemptydoublepage
 }
 
 %----------------------------------------------------------------------------------------
 %       FRONT PAGE DESIGN
 %----------------------------------------------------------------------------------------
+
+\RequirePackage{iftex}
 \RequirePackage{graphicx}
 \renewcommand{\maketitle}{
+\pagenumbering{roman}
 \thispagestyle{empty}
 \begin{center}        % Sentrerer teksten
   % Tittel
-  \vspace{5mm}          % Vertikalt mellomrom
+  \ \\
+  \vspace{10mm}          % Vertikalt mellomrom
   \LARGE
-  \textbf{\@title} \\
-  \Large
-  \vspace{5mm}
-  \textbf{by} \\
+  \textsc{\@title} \\
+  \small
+  \vspace{10mm}
+  {by} \\
   \vspace{5mm}
   % Forfatter
   \large
-  \textbf{\@author} \\
+  {\@author} \\
   \vspace{25mm}
   \Large
-  {\bf{\textsl{THESIS}}} \\
-  \textsl{for the degree of} \\
+%   {\bf{\textsl{THESIS}}} \\
+  {\textsc{Thesis}} \\
+%   \textsl{for the degree of} \\
+  {\small for the degree of} \\
   \vspace{2mm}
   
-  {\bf{\textsl{\degreename}}} \\
-  \vspace{5mm}
-  {\large \textsl {(\degreenameno)}}\\
-  \vspace{10mm}
-  \centerline{\includegraphics[width=4cm,height=4cm]{figures/uiologo}}
-  \vspace{5mm}
+%   {\bf{\textsl{\degreename}}} \\
+  {\textsc{\degreename}} \\
+  \vspace{15mm}
+%   {\large \textsl {(\degreenameno)}}\\
+%   \vspace{5m}
+%   \ifXeTeX
+    \centerline{\includegraphics[width=5cm,height=5cm]{figures/apollonseglet/Apollonseglet/UiO_Segl_cmyk.pdf}}
+%   \else
+%     \centerline{\includegraphics[width=5cm,height=5cm]{figures/apollonseglet/Apollonseglet/UiO_Segl_cmyk.eps}}
+%   \fi
+  \vspace{15mm}
   % \textsl{Avdeling for mekanikk, Matematisk institutt} \\
-  \textsl{\facultyname} \\
-  \textsl{\universityname} \\
+%   \textsl{\facultyname} \\
+  \large
+  \facultyname \\
+%   \textsl{\universityname} \\
+  \universityname \\
   % Maaned, aar
   \vspace{5mm}
   % \vspace{10mm}
-  \large
-  \textsl{\@date} \\
+  \normalsize
+%   \textsl{\@date} \\
+  \@date \\
   \vspace{4mm}
   \normalsize
   % \textsl{Mechanics Division, Department of Mathematics} \\
-  \textsl{\facultynameno} \\
-  \textsl{\universitynameno} \\
+%   \textsl{\facultynameno} \\
+%   \textsl{\universitynameno} \\
 \end{center}
-\cleardoublepage
+\clearemptydoublepage
 }
+
+\makeatletter
+\def\pagenumberingnoreset#1{%
+  \gdef\thepage{\csname @#1\endcsname \c@page}}
+\makeatother
+\let\oldtableofcontents\tableofcontents
+\renewcommand{\tableofcontents}{
+{
+  \pagenumberingnoreset{roman}
+  \pagestyle{tableofcontents}
+%   \thispagestyle{onlypagenum}
+  \oldtableofcontents
+  \clearpage
+}
+\pagenumbering{arabic}
+}
+
+% \input{listings}
