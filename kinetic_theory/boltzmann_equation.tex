@@ -1,6 +1,6 @@
 \section{The Boltzmann equation}
 \label{sec:boltzmann_equation}
-In the section \ref{sec:kinetic_theory_distribution_function}, we introduced the distribution function $f$ that describes the density in a $6N$ dimensional phase space. Now, if we know the distribution function at $t=0$, we could in principle compute any property of the system. But at a later time $t=\tau$, the distribution function might have changed, unless, of course, $\partial_t f = 0$ (in which the system would be in what we call an equilibrium state). We can, by applying conservation of probability, derive an equation of motion for $f$. This equation is called the Boltzmann equation. It describes how $f$ evolves through time by assuming that any change of density (read probability) around a point $(\vec r, \vec v)$ at the time $t$ must be due to
+In the section \ref{sec:kinetic_theory_distribution_function}, we introduced the distribution function $f$ that describes the density in a $6N$ dimensional phase space. Now, if we know the distribution function at $t=0$, we could in principle compute any property of the system. But at some later time the distribution function might have changed, unless, of course, $\dm f/\dm t = 0$ (in which the system would be in what we call an equilibrium state). We can, by applying conservation of probability, derive an equation of motion for $f$. This equation is called the Boltzmann equation and describes how $f$ evolves through time by assuming that any change of density (read probability) around a point $(\vec r, \vec v)$ at the time $t$ must be due to
 \begin{itemize}
 	\item flow through a surface in the phase space,
 	\item an external force, or
@@ -9,10 +9,10 @@ In the section \ref{sec:kinetic_theory_distribution_function}, we introduced the
 All three will change $f$ in different ways. For simplicity, we will first assume that the particles do not collide and derive the \textit{collisionless Boltzmann equation}. But do not worry, we will add the collision term later and end up with the full Boltzmann equation.
 
 \subsection{The collisionless Boltzmann equation}
-Consider the density around the phase space point $(\vec r,\vec v)$ at the time $t$. If we assume no forces, and that the total number of particles has not changed, a time $dt$ later, the density has moved to $(\vec r + \vec vdt, \vec v)$. Conservation of probability states that any change of $f$ within a volume $\Omega$ must flow through the boundary $\partial \Omega$
+Consider the density $f(\vec r, \vec v, t)\dm\vec r\dm\vec v$ around the phase space point $(\vec r,\vec v)$ at the time $t$. Then, at a time $\dm t$ later, if we assume no forces and that the total number of particles has not changed, that \textit{chunk} of density has moved to $(\vec r + \vec v\dm t, \vec v)$. Conservation of probability states that any change of $f$ within a volume $\Omega$ must flow through the boundary $\partial \Omega$
 \begin{align}
-	\frac{\dm }{\dm t}\iint_\Omega f\! \dm \vec r \dm \vec v &= -\int_{\Omega_v}\!\dm \vec v\int_{\partial \Omega_r}\! f(\vec v\cdot \vec n_r) \dm S_r\\
-	&= -\int_{\Omega_v}\!\dm \vec v\int_{\Omega_r}\! \nabla_\vec r\cdot(f\vec v) \dm \vec r = -\iint_{\Omega}\! \nabla_\vec r\cdot(f\vec v) \dm \vec r\dm \vec v
+	\frac{\dm }{\dm t}\iint_\Omega\! f\, \dm \vec r \dm \vec v &= -\int_{\Omega_v}\!\dm \vec v\int_{\partial \Omega_r}\! f(\vec v\cdot \vec n_r)\, \dm S_r\\
+	&= -\int_{\Omega_v}\!\dm \vec v\int_{\Omega_r}\! \nabla_\vec r\cdot(f\vec v)\, \dm \vec r = -\iint_{\Omega}\! \nabla_\vec r\cdot(f\vec v)\, \dm \vec r\dm \vec v
 \end{align}
 which becomes
 \begin{align}
@@ -63,24 +63,24 @@ where the proportionality constant $\sigma$ is the cross section. We might have 
 \end{align}
 The \textit{differential} cross section $\sigma$ depends on $\vec g$ and $\vec g'$, so we denote it as $\sigma = \sigma(\vec g\rightarrow \vec g')$, whereas the \textit{total} cross section $\sigma_T$ is given by integrating over all solid angles
 \begin{align}
-	\sigma_T = \int\! \sigma \dm\Omega.
+	\sigma_T = \int\! \sigma \, \dm\Omega.
 \end{align}
 We will now look at particles with velocities in the range $[\vec v, \vec v + \dm\vec v]$ incident on target particles with velocities in the range $[\vec v_1, \vec v_1 + \dm\vec v_1]$. The incident flux is $gf(\vec v,\vec r)\dm\vec v$ and the number of target particles is $f(v_1,\vec r)\dm\vec v_1\dm\vec r$. The rate at which particles with velocity $\vec v_1$ are scattered by particles with velocity $\vec v$ is \todo{Check if these $f$'s should be normalized}
 \begin{align}
-	f(\vec v)f(\vec v_1) g \sigma \dm\Omega \dm\vec v \dm\vec v_1 \dm\vec r = f(\vec v)f(\vec v_1)4\left|\unitvector e\cdot \vec g\right| \sigma \dm^2e \dm \vec v \dm\vec v_1 \dm \vec r.
+	f(\vec v)f(\vec v_1) g \sigma \, \dm\Omega \dm\vec v \dm\vec v_1 \dm\vec r = f(\vec v)f(\vec v_1)4\left|\unitvector e\cdot \vec g\right| \sigma \,\dm^2e \dm \vec v \dm\vec v_1 \dm \vec r.
 \end{align}
 The rate of loss is the rate of which particles in $\dm\vec v\dm\vec r$ are being hit by other particles. We can calulate this by integrating over all solid angles $\dm^2 e$ and incident velocities $\dm \vec v$
 \begin{align}
-	\text{rate of loss} = \left[\iiint\! f(\vec r, \vec v, t)f(\vec r, \vec v_1, t)4\left|\unitvector e \cdot \vec g \right|\sigma \dm^2 e\dm \vec v_1\right]\dm \vec v\dm \vec r.
+	\text{rate of loss} = \left[\iiint\! f(\vec r, \vec v, t)f(\vec r, \vec v_1, t)4\left|\unitvector e \cdot \vec g \right|\sigma \,\dm^2 e\dm \vec v_1\right]\dm \vec v\dm \vec r.
 \end{align}
 We also have the inverse event, incident particles with velocity $\vec v'$ hitting target particles with velocity $\vec v_1'$ so that the final velocity of the target particles is $\vec v$. This is calculated with the same idea
 \begin{align}
-	\text{rate of gain} = \left[\iiint\! f(\vec r, \vec v', t)f(\vec r, \vec v_1', t)4\left|\unitvector e \cdot \vec g \right|\sigma \dm^2 e\dm \vec v_1\right]\dm\vec v\dm\vec r,
+	\text{rate of gain} = \left[\iiint\! f(\vec r, \vec v', t)f(\vec r, \vec v_1', t)4\left|\unitvector e \cdot \vec g \right|\sigma \,\dm^2 e\dm \vec v_1\right]\dm\vec v\dm\vec r,
 \end{align}
 since $|\unitvector e\cdot \vec g| = |\unitvector e\cdot \vec g'|$ and $\dm\vec v'\dm\vec v_1' = \dm\vec v\dm\vec v_1$. The total change in the distribution function is given by the functional $J[f]$
 \begin{align}
-	J[f] &= \iiint\! 4|\unitvector e\cdot\vec g|\sigma[f'f_1' - ff_1]\dm\vec v_1 \dm^2e\\
-	&= \iint\! g \sigma[f'f_1' - ff_1] \dm\vec v_1 \dm\Omega,
+	J[f] &= \iiint\! 4|\unitvector e\cdot\vec g|\sigma[f'f_1' - ff_1]\,\dm\vec v_1 \dm^2e\\
+	&= \iint\! g \sigma[f'f_1' - ff_1] \,\dm\vec v_1 \dm\Omega,
 \end{align}
 where $f = f(\vec r, \vec v, t)$ and $f_1 = f(\vec r, \vec v_1, t)$. The full Boltzmann equation is then given by
 \begin{align}
@@ -92,44 +92,44 @@ In the derivation of the collision operator $J[f]$, we assumed binary collisions
 Now we have an integro differential equation describing how the distribution function evolves through time. We will now look at Boltzmann's $H$-theorem which is a powerful result that gives us all the theoretical tools we need to implement the DSMC method. We will use this to derive what velocity distribution a gas in equilibrium obeys. In addition, we will find the mean free path and the mean collision time which both will be used in the Direct Simulation Monte Carlo method. Let us define the $H$-function as
 \begin{align}
 	\label{eq:h_function}
-	H(t) = \langle \ln f \rangle = \iint\! f(\vec r, \vec v, t)\ln f(\vec r, \vec v, t)\dm \vec r \dm\vec v,
+	H(t) = \langle \ln f \rangle = \iint\! f(\vec r, \vec v, t)\ln f(\vec r, \vec v, t)\,\dm \vec r \dm\vec v,
 \end{align}
 and differenciate with respect to time
 \begin{align}
 	\label{eq:h_theorem_one}
-	\frac{\dm H}{\dm t} = \iint\! \dpart{f}{t}\ln f \dm\vec r \dm\vec v + \iint\! \dpart{f}{t} \dm\vec r \dm\vec v = \iint\! \dpart{f}{t}\ln f \dm\vec r \dm\vec v,
+	\frac{\dm H}{\dm t} = \iint\! \dpart{f}{t}(\ln f) \,\dm\vec r \dm\vec v + \iint\! \dpart{f}{t} \,\dm\vec r \dm\vec v = \iint\! \dpart{f}{t}\ln f \,\dm\vec r \dm\vec v,
 \end{align}
 where the last term vanished since the number of particles is conserved
 \begin{align}
-	\iint\! \dpart{f}{t}\dm\vec r \dm\vec v = \frac{\dm}{\dm t} \iint\! f\dm\vec r \dm\vec v = \frac{\dm N}{\dm t} = 0.
+	\iint\! \dpart{f}{t} \,\dm\vec r \dm\vec v = \frac{\dm}{\dm t} \iint\! f \,\dm\vec r \dm\vec v = \frac{\dm N}{\dm t} = 0.
 \end{align}
 We multiply the Boltzmann equation by $\ln f$ and integrate over $\vec r$ and $\vec v$
 \begin{align}
 	\nonumber
-	\iint\! \ln f\dpart{f}{t} \dm \vec r \dm\vec v &= -\iint\! (\ln f)\vec v\cdot \nabla_\vec r f \dm\vec r \dm\vec v - \iint\! (\ln f) \frac{\vec F}{m}\cdot \nabla_\vec v f \dm\vec r\dm\vec v\\
+	\iint\! \ln f\dpart{f}{t} \,\dm \vec r \dm\vec v &= -\iint\! (\ln f)\vec v\cdot \nabla_\vec r f \,\dm\vec r \dm\vec v - \iint\! (\ln f) \frac{\vec F}{m}\cdot \nabla_\vec v f \,\dm\vec r\dm\vec v\\
 	\label{eq:boltzmann_hell}
-	&+ \iint\! \ln f J[f] \dm\vec r \dm\vec v.
+	&+ \iint\! \ln f J[f] \,\dm\vec r \dm\vec v.
 \end{align}
 The first integral on the right can be integrated by parts
 \begin{align}
 	\nonumber
-	\iint\! (\ln f)\vec v\cdot \nabla_\vec r f \dm\vec r \dm\vec v &= \iint\! f(\ln f) (\vec v\cdot \hat{\vec n})\dm \Gamma_\vec r\dm \vec v\\
-	&- \iint\! f\ln f(\nabla_\vec r \cdot \vec v)\dm \vec r\dm \vec v = 0,
+	\iint\! (\ln f)\vec v\cdot \nabla_\vec r f \,\dm\vec r \dm\vec v &= \iint\! f(\ln f) (\vec v\cdot \hat{\vec n}) \,\dm \Gamma_\vec r\dm \vec v\\
+	&- \iint\! f\ln f(\nabla_\vec r \cdot \vec v)\,\dm \vec r\dm \vec v = 0,
 \end{align}
 where $\dm \Gamma_\vec r$ indicates the boundary of the spatial domain. The integral is zero if we assume that $f$ is zero at the boundaries and $\vec v$ is independent of $r$. Similarly with the second integral on the right in equation \eqref{eq:boltzmann_hell}
 \begin{align}
 	\nonumber
-	\frac{1}{m}\iint\! (\ln f) \vec F\cdot \nabla_\vec v f \dm\vec r\dm\vec v &= \frac{1}{m}\iint\! f\ln f (\vec F\cdot \hat{\vec n})\dm \Gamma_\vec v\dm \vec r\\
-	&- \frac{1}{m}\iint\! f\ln f (\nabla_\vec v \cdot \vec F)\dm \vec r\dm \vec v = 0,
+	\frac{1}{m}\iint\! (\ln f) \vec F\cdot \nabla_\vec v f \,\dm\vec r\dm\vec v &= \frac{1}{m}\iint\! f\ln f (\vec F\cdot \hat{\vec n}) \,\dm \Gamma_\vec v\dm \vec r\\
+	&- \frac{1}{m}\iint\! f\ln f (\nabla_\vec v \cdot \vec F) \,\dm \vec r\dm \vec v = 0,
 \end{align}
 where $\dm \Gamma_\vec v$ indicates the boundary of the velocity space. This integral is also zero since $f$ is zero when $\vec v\rightarrow \pm \infty$ and the force is independent of the velocity. By recognizing that the left hand side of equation \eqref{eq:boltzmann_hell} actually is $\dm H/\dm t$, we end up with
 \begin{align}
- 	\frac{\dm H}{\dm t} = \iiint\! \ln f [f'f_1' - ff_1] g \sigma\dm\Omega\dm\vec v_1 \dm\vec v,
+ 	\frac{\dm H}{\dm t} = \iiint\! \ln f [f'f_1' - ff_1] g \sigma \,\dm\Omega\dm\vec v_1 \dm\vec v,
 \end{align}
 which can be written as\cite{mcquarrie1973statistical}
 \begin{align}
 	\label{eq:h_theorem_integral}
- 	\frac{\dm H}{\dm t} = \frac{1}{4}\iiint\! \ln\left[\frac{ff_1}{f'f_1'}\right] [f'f_1' - ff_1]g \sigma \dm\Omega\dm\vec v_1 \dm\vec v.
+ 	\frac{\dm H}{\dm t} = \frac{1}{4}\iiint\! \ln\left[\frac{ff_1}{f'f_1'}\right] [f'f_1' - ff_1]g \sigma \, \dm\Omega\dm\vec v_1 \dm\vec v.
 \end{align}
 The integrand is of the form $-(x-y)\ln(x/y)$ which is negative for $x\neq y$ and zero for $x=y$. This means that
 \begin{align}
@@ -162,11 +162,11 @@ which we can write as
 \end{align}
 By using that 
 \begin{align}
-	\rho_n(\vec r, t) = \int\!f\dm v,
+	\rho_n(\vec r, t) = \int\!f \,\dm\vec v,
 \end{align}
 and 
 \begin{align}
-	\vec v_0 = \bar {\vec v} = \frac{1}{\rho}\int\!\vec v f\dm v
+	\vec v_0 = \bar {\vec v} = \frac{1}{\rho}\int\!\vec v f\,\dm \vec v
 \end{align}
 in addition to the equipartition theorem
 \begin{align}
@@ -177,23 +177,23 @@ we can write equation \eqref{eq:almost_maxwell} as \cite{mclennan1989introductio
 	\label{eq:maxwell_boltzmann_distribution}
 	f(\vec r, \vec v) = \rho_n \left(\frac{m}{2\pi k_B T}\right)^{3/2}e^\frac{-m|\vec v|^2}{2k_BT},
 \end{align}
-which is the \textit{Maxwell-Boltzmann distribution}. We use this to validate both the Direct Simulation Monte Carlo code and the Molecular Dynamics code in sections \ref{sec:dsmc_code_validation} and \ref{sec:md_code_validation}. The next important quantity we need is the mean free path. It is needed to define the Knudsen number which we discussed in section \ref{sec:knudsen_number}.
+which is the \textit{Maxwell-Boltzmann distribution}. We will use this to validate both the Direct Simulation Monte Carlo code and the Molecular Dynamics code in sections \ref{sec:dsmc_code_validation} and \ref{sec:md_code_validation}. The next important quantity we need is the mean free path. It is needed to define the Knudsen number which we discussed in section \ref{sec:knudsen_number}.
 \section{Mean free path}
 \label{sec:mean_free_path_calculation}
-The collision frequency can be calculated through the mean free path, which is the average distance a molecule travels between collisions. The mean free path for a gas is estimated by looking at the \textit{effective collision area}, see figure \ref{fig:effective_collision_area}. The effective collision area is then
+The mean free path $\lambda$ is the average distance a particle travels before it collides with other particles. For a gas, we can estimate $\lambda$ by looking at the \textit{effective collision area}, see figure \ref{fig:effective_collision_area}. The effective collision area is then
 \begin{align}
 	A = \pi d^2,
 \end{align}
-where $d$ is the molecular diameter. Two molecules with velocities $\vec v_1$ and $\vec v_2$ have the relative velocity $\vec v_{rel} = \vec v_1 - \vec v_2$. The norm is given by
+where $d$ is the diameter of one particle. Two particles with velocities $\vec v_1$ and $\vec v_2$ have the relative velocity $\vec v_{rel} = \vec v_1 - \vec v_2$. The norm is given by
 \begin{align}
 	v_{rel} &= \sqrt{\vec v_{rel}\cdot \vec v_{rel} } = \sqrt{ (\vec v_1 - \vec v_2)(\vec v_1 - \vec v_2)}\\
 	&= \sqrt{\vec v_1\cdot \vec v_1 - 2\vec v_1\vec v_2 + \vec v_2\vec v_2}.
 \end{align}
-The average relative velocity is calculated by assuming that the velocities are completely random and hence not correlated, and that the molecules have the same mean speed $\langle v\rangle$
+The average relative velocity is calculated by assuming that the velocities are completely random and hence not correlated, and that the particles have the same mean speed $\langle v\rangle$
 \begin{align}
 	\bar v_{rel} &= \sqrt{\vec v_1^2 + \vec v_2^2} = \sqrt 2 \langle v\rangle,
 \end{align}li
-During a time $\tau$ and average relative molecular velocity $\sqrt 2 \langle v\rangle$, the total volume sweeped out by the particle is given as
+During a time $\tau$ and average relative velocity $\sqrt 2 \langle v\rangle$, the total volume sweeped out by the particle is given as
 \begin{align}
 	V = \sqrt 2 \pi d^2\langle v\rangle \tau,
 \end{align}
@@ -206,7 +206,7 @@ where $\rho_n$ is the number density. The mean free path is then calculated as t
 \begin{align}
 	\label{eq:mean_free_path}
 	\lambda = \frac{\langle v\rangle \tau}{ \sqrt 2 \pi d^2\langle v\rangle \rho_n\tau} = \frac{1 }{ \sqrt 2 \pi d^2 \rho_n}
-\end{align}
+\end{align}+
 \section{Mean collision time}
 \begin{align}
 	\label{eq:coll_frequency}
