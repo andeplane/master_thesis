@@ -1,4 +1,4 @@
-In this chapter we will go into detail about how the DSMC model is implemented in \textit{c++}. We assume that the reader is familiar with c++ and object orientation. First, we discuss how the code is object oriented and how the different classes are structured. We will explain how particles are divided into collision cells and how the collisions are calculated. The algorithm for detecting and performing surface interactions is discussed, in addition to how the code is parallelized with Message Passing Interface (MPI). 
+In this chapter we will go into detail about how the DSMC model is implemented in \textit{c++}. We assume that the reader is familiar with \textit{c++} and object orientation. First, we discuss how the code is object oriented and how the different classes are structured. We will explain how particles are divided into collision cells and how the collisions are calculated. The algorithm for detecting and performing surface interactions is discussed, in addition to how the code is parallelized with Message Passing Interface (MPI). 
 \section{Code structure and variables}
 The main function of the program initiates an instance of the class \textit{System} which is the main class of the simulator. It also has an object of the \textit{SystemSampler} class that samples the physical quantities following the definitions in section \ref{sec:dsmc_measuring_physical_quantities}. In this section we go through all of the classes and how they are connected (as shown in figure \ref{fig:dsmc_uml_diagram}). 
 \begin{figure}[h]
@@ -35,14 +35,3 @@ The system class is the top level simulator class. It reads all the physical pro
 \item \textit{std::vector<double> r}
 \item \textit{std::vector<double> v}
 \end{itemize}
-
-\subsection{Class Cell}
-\subsection{Class DSMCIO}
-\subsection{Class Grid}
-\subsection{Class Random}
-\subsection{Class ColliderThermal}
-\subsection{Class ComplexGeometry}
-\subsection{Class ParticleMover}
-\subsection{Class StatisticalSampler}
-\subsection{Class StatisticalProperty}
-\subsection{Class StatisticalSampler}
