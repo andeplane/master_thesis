@@ -31,7 +31,7 @@ This is already what Ovito does\footnote{See the source code at \url{http://www.
 Before we start visualizing the data, all timesteps of a simulation are uploaded as VBO's on the GPU so that we don't need to upload data every frame. The VBO is rendered as \textit{GL\_POINTS} so each vertex represents the center position of a particle. We will now follow a single vertex through the pipeline
 \subsection{The pipeline}
 The VBO can now be seen as one OpenGL model containing the positions of all the particles. The vertices are then in the \textit{model space}. Every single vertex starts its life in the pipeline by going into the vertex shader. The vertex shader is pretty simple in this case, it just transforms the input vertex from the model space to the projection space as we can see in listing \ref{lst:simplevertexshaderbillboard}.
-\begin{lstlisting}[caption=billboard\_vertex\_shader.glsl, label=lst:simplevertexshaderbillboard, 
+\begin{lstlisting}[caption=billboardVertexShader.glsl, label=lst:simplevertexshaderbillboard, language=GLSL]
 #version 330\n"
 uniform mat4 qt_ModelViewProjectionMatrix;
 in vec4 qt_Vertex;
@@ -40,8 +40,9 @@ void main(void)
     gl_Position = qt_ModelViewProjectionMatrix * qt_Vertex;
 }
 \end{lstlisting}
-This position is then sent to the geometry shader as an instance of the \textit{GL\_POINTS} primitive. The geometry shader will, from that single vertex (the position, now in the projection space), create and emit \textit{four} vertices that are displaced from the input vertex as explained in equation \eqref{eq:vis_vertices_billboard} and figure \ref{fig:visualization_billboard_vertices}. The size of the billboard is available as a uniform variable (as explained in subsection \ref{sec:opengl_uniforms}) in the geometry shader. If we want to visualize particles with different sizes (e.g. two atom types with different atomic radii), we just render different VBO's with the corresponding size. We want the four vertices to form a rectangle pointing towards the camera, so the operation in equation \eqref{eq:vis_vertices_billboard} should be done in the view space (here the $z$-direction is orthogonal on the camera plane which forms the $xy$-plane). Since the position vertex now is in the projection space, we should transform the four displacement vectors to the projection space by applying the \textit{qt_ProjectionMatrix} before we add them together. We then set the texture coordinate (the local coordinate in the texture image) on each vertex and emit it with the \textit{EmitVertex()} function. The algorithm might be easier to understand with a code example, see listing \ref{lst:simplegeometryshaderbillboard}.
-\begin{lstlisting}[caption=billboard\_geometry\_shader.glsl, label=lst:simplegeometryshaderbillboard, language=GLSL]
+This position is then sent to the geometry shader as an instance of the \textit{GL\_POINTS} primitive. The geometry shader will, from that single vertex (the position, now in the projection space), create and emit \textit{four} vertices that are displaced from the input vertex as explained in equation \eqref{eq:vis_vertices_billboard} and figure \ref{fig:visualization_billboard_vertices}. The output primitive is here the \textit{GL\_TRIANGLE\_STRIP} which will create two triangles with vertices $\{\vec v_1, \vec v_2, \vec v_3\}$ and $\{\vec v_2, \vec v_3, \vec v_4\}$. The size of the billboard is available as a uniform (as explained in subsection \ref{sec:opengl_uniforms}) in the geometry shader. If we want to visualize particles with different sizes (e.g. two atom types with different atomic radii), we just render different VBO's with the corresponding size. We want the four vertices to form a rectangle pointing towards the camera, so the operation in equation \eqref{eq:vis_vertices_billboard} should be done in the view space (here the $z$-direction is orthogonal on the camera plane which forms the $xy$-plane). Since the position vertex now is in the projection space, we should transform the four displacement vectors to the projection space by applying the \textit{qt\_ProjectionMatrix} before we add them together. We then set the texture coordinate (the local coordinate in the texture image) on each vertex and emit it with the \textit{EmitVertex()} function. The algorithm might be easier to understand with a code example, see listing \ref{lst:simplegeometryshaderbillboard}.
+
+\begin{lstlisting}[caption=billboardGeometryShader.glsl, label=lst:simplegeometryshaderbillboard, language=GLSL]
 #version 400
 layout( points ) in;
 layout( triangle_strip, max_vertices = 4 ) out;
@@ -67,20 +68,21 @@ void main(void) {
 }
 \end{lstlisting}
 This is done with every single position vertex in the VBO (once per particle per frame) and all the output primitives from the geometry shader will be rasterized, clipped and texture coordinates are interpolated into the fragment shader that is run once per pixel per visible primitive. Before we discuss the fragment shader, we should take a look at the texture that each billboard will have.\\
-We didn't lie before, we will use a circle that actually is a real sphere rendered in the 3D modeling program Blender\footnote{See \url{http://www.blender.org/} for details}. With some lighting, we get this nice shiny effect making the \"spheres\" look more interesting. This texture is shown in figure \ref{fig:visualization_billboard_texture}, where we also see that all the pixels outside the circles are transparent. This is very important so that we can discard these contributions in the fragment shader.
+We didn't lie before, we will use a circle that actually is a real sphere rendered in the 3D modeling program Blender\footnote{Available from \url{http://www.blender.org/}.}. With some lighting, we get this nice shiny effect making the \"spheres\" look more interesting. This texture is shown in figure \ref{fig:visualization_billboard_texture}, where we also see that all the pixels outside the circles are transparent. This is very important so that we can discard these contributions in the fragment shader.
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=0.7\textwidth, trim=0cm 0cm 0cm 0cm, clip]{visualization/figures/texture_transparent.png}
 \end{center}
-\caption{The texture used on the billboards is a circle which is a real sphere rendered with Blender. Notice that the pixels outside the circle are transparent. This allows us to discard these texture pixels in the fragment shader.}
+\caption{The texture used on the billboards is an image of a real sphere rendered with Blender. Notice that the pixels outside the circle are transparent. This allows us to discard these texture pixels in the fragment shader.}
 \label{fig:visualization_billboard_texture}
 \end{figure}
-The fragment shader will then get an interpolated texture coordinate as input which we will use to look up which value this pixel gets from the texture. Now is the time for another detail, the color of the particles. Again we assume that all particles have the same color, so as the size variable, it is available as a uniform variable. The final pixel color is then found by equation \eqref{eq:opengl_combining_colors_textures}
+The fragment shader will then get an interpolated texture coordinate as input, which we will use to look up what RGBA value this pixel gets from the texture. If the alpha value (the opacity) is smaller than one, it means that the pixel contribution comes from a texture pixel outside the circle. In that case we just discard it. We almost forgot one last detail, the \textit{color} of the particles. Again we assume that all particles have the same color (if not, we just use multiple VBO's per timestep), so as we did with the billboard size variable, the color is available as a uniform. The final pixel color is then found by equation \eqref{eq:opengl_combining_colors_textures}
 \begin{align}
+	\nonumber
 	\vec C(\vec p) = \vec c_t[\vec t(\vec p)] \odot \vec c(\vec p).
 \end{align}
-The fragment shader code is shown in listing \ref{lst:simplefragmentshaderbillboard} with the final rendering result in figure \ref{fig:visualization_billboard_md}. In this rendered image, we also added light effects making atoms that are far away from the camera appear darker. This increases the feeling of depth which clarifies the pore structures.
-\begin{lstlisting}[caption=billboard\_fragment\_shader.glsl, label=lst:simplefragmentshaderbillboard, language=GLSL]
+The fragment shader code is shown in listing \ref{lst:simplefragmentshaderbillboard} with the final rendering result in figure \ref{fig:visualization_billboard_md}. In this rendered image, we also added light effects making atoms that are far away from the camera appear darker. This increases the feeling of depth which clarifies the pores.
+\begin{lstlisting}[caption=billboardFragmentShader.glsl, label=lst:simplefragmentshaderbillboard, language=GLSL]
 #version 330
 uniform vec4 color;
 uniform sampler2D qt_Texture0;
@@ -101,8 +103,62 @@ void main(void) {
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{visualization/figures/billboards_md_visualization.png}
 \end{center}
-\caption{The final rendering result with an MD simulation using billboards. In the rendering, light effects are added to increase the depth feeling clarifying the pore structure. This system is a nanoporous SiO2 system simulated with the REMD22 code developed at USC.}
+\caption{The final rendered image with an MD simulation using billboards. In the rendering, light effects are added to increase the feeling of depth, clarifying the pore structure. The atoms form a nanoporous SiO$_2$ system simulated with the REMD22 code developed at USC.}
 \label{fig:visualization_billboard_md}
 \end{figure}
 
 \subsection{Periodic copies}
+We used the geometry shader to create a \textit{GL\_TRIANGLE\_STRIP} creating the billboard from one single vertex (the particle position). Then, one may ask, why not use the geometry shader to create \textit{several} billboards, adding periodic copies of every particle in the system? This makes sense if the simulation operates with periodic boundary conditions so we have periodic symmetry on all directions. So, if the system is a box of size $L_x\times L_y \times L_z$, we can create 26 copies of the whole system giving a larger box of size $3L_x\times 3L_y\times 3L_z$, making the impression that the system is larger. This provides an important effect near the boundaries of the system, see figure \ref{fig:visualization_billboard_periodic_copies}.
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{visualization/figures/periodic_copies.png}
+\end{center}
+\caption{Adding periodic copies of the system provides an important effect when looking at atoms near the boundary. The upper image shows a visualization with no periodic copies of the atoms. This shows that the system clearly has a finite size. In the lower image, by adding 26 periodic copies of the whole system, it is not obvious that we are at the edge of the system.}
+\label{fig:visualization_billboard_periodic_copies}
+\end{figure}
+We will use a feature in OpenGL called geometry shader instancing to add all the copies. With instancing, the geometry shader is executed 27 times per input vertex. We can use the variable \textit{gl\_InvocationID} to identify which of the 27 instances we are running. The system coordinate $(S_x, S_y, S_z), S_i \in \{-1, 0, 1\}$ for invocation id $i$ is calculated as
+\begin{align}
+	S_x =& (i\bmod 3) - 1\\
+	S_y =& ([i\textbackslash3]\bmod 3) - 1\\
+	S_z =& ([i\textbackslash9]) - 1,
+\end{align}
+where $\textbackslash$ is the integer division operator. One instance of the geometry shader should then render a billboard displaced with 
+\begin{align}
+	\vec d = (L_x\cdot S_x, L_y\cdot S_y, L_z\cdot S_z),
+\end{align}
+where the system size $(L_x, L_y, L_z)$ is available as a uniform. The displacement $\vec d$ is given in the model space, so we must transform it the projection space before we add it to the position vertex (which, as we remember, already is in the projection space). The full geometry shader code using instancing to add periodic copies is found in listing \ref{lst:fullgeometryshaderbillboard}.
+\begin{lstlisting}[caption=billboardGeometryShaderWithPeriodicCopies.glsl, label=lst:fullgeometryshaderbillboard, language=GLSL]
+#version 400
+layout(invocations=27) in;
+layout(points) in;
+layout(triangle_strip, max_vertices = 4) out;
+uniform mat4 qt_ProjectionMatrix;
+uniform mat4 qt_ModelViewProjectionMatrix;
+uniform vec2 size;
+uniform vec3 systemSize;
+out vec2 texCoord;
+
+void main(void) {
+  int x = gl_InvocationID % 3 - 1;
+  int y = (gl_InvocationID/3) % 3-1;
+  int z = (gl_InvocationID/9)-1;
+    
+  vec4 displacement = vec4(systemSize.x*x,systemSize.y*y,systemSize.z*z,0);
+  vec4 pos = gl_in[0].gl_Position + qt_ModelViewProjectionMatrix * displacement;
+  gl_Position = pos + qt_ProjectionMatrix*vec4(-size.x, -size.y, 0.0, 0.0);
+  texCoord = vec2(0.0, 0.0);
+  EmitVertex();
+  gl_Position = pos + qt_ProjectionMatrix*vec4(-size.x, size.y, 0.0, 0.0);
+  texCoord = vec2(0.0, 1.0);
+  EmitVertex();
+  gl_Position = pos + qt_ProjectionMatrix*vec4(size.x, -size.y, 0.0, 0.0);
+  texCoord = vec2(1.0, 0.0);
+  EmitVertex();
+  gl_Position = pos + qt_ProjectionMatrix*vec4(size.x, size.y, 0.0, 0.0);
+  texCoord = vec2(1.0, 1.0);
+  EmitVertex();
+  EndPrimitive();
+}
+\end{lstlisting}
+\section{Rendering benchmark}
+\label{sec:vis_benchmark}
