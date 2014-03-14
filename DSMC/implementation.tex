@@ -1,4 +1,6 @@
-In this chapter we will go into detail about how the DSMC model is implemented in \textit{c++}. We assume that the reader is familiar with \textit{c++} and object orientation. First, we discuss how the code is object oriented and how the different classes are structured. We will explain how particles are divided into collision cells and how the collisions are calculated. The algorithm for detecting and performing surface interactions is discussed, in addition to how the code is parallelized with Message Passing Interface (MPI). 
+In this chapter we go into detail about how the DSMC model is implemented in c++. We assume that the reader is familiar with c++ and object orientation. First, we discuss how the code is object oriented and how the different classes are structured. We will explain how particles are divided into collision cells and how the collisions are calculated. The algorithm for detecting and performing surface interactions is discussed, in addition to how the code is parallelized with Message Passing Interface (MPI).
+
+
 \section{Code structure and variables}
 The main function of the program initiates an instance of the class \textit{System} which is the main class of the simulator. It also has an object of the \textit{SystemSampler} class that samples the physical quantities following the definitions in section \ref{sec:dsmc_measuring_physical_quantities}. In this section we go through all of the classes and how they are connected (as shown in figure \ref{fig:dsmc_uml_diagram}). 
 \begin{figure}[h]
@@ -9,8 +11,8 @@ The main function of the program initiates an instance of the class \textit{Syst
 \label{fig:dsmc_uml_diagram}
 \end{figure}
 \subsection{main.cpp}
-The main function is of course the top level scope of the program. It creates the objects used to read settings, simulate the system and sample statistics. The code is summarized in listing \ref{dsmc_main_cpp}.
-\begin{lstlisting}[caption=main.cpp, label=lst:dsmc_main_cpp]
+The main function is of course the top level scope of the program. It creates the objects used to read settings, simulate the system and sample statistics. The code is summarized in listing \ref{lst:dsmcmaincpp}.
+\begin{lstlisting}[caption=main.cpp, label=lst:dsmcmaincpp]
 int main(int args, char* argv[]) {
     // Initialize MPI
     Settings settings("dsmc.ini");

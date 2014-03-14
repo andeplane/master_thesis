@@ -20,20 +20,18 @@ where collisions will make sure that the relative distance between any particle 
 where $m_i$ is the mass of particle $i$ and $v_i$ is its scalar velocity. An example implementation of how the kinetic energy is calculated is given in listing \ref{lst:dsmc_kinetic_energy}. Remember that in DSMC, each particle represents a given number of real atoms.
 
 \begin{lstlisting}[caption=Calculation of kinetic energy., label=lst:dsmc_kinetic_energy]
-double calculate_kinetic_energy(vector<vector<double> > &velocities, vector<double> &masses, int atoms_per_particle) {
+double calculate_kinetic_energy(vector<Vector3> &velocities, int atoms_per_particle) {
 	double kinetic_energy = 0;
 	int num_particles = velocities.size();
 	for(int i=0; i<num_particles; i++) {
-		vector<double> &velocity = velocities.at(i);
-		double velocity_squared = velocity.at(0)*velocity.at(0) + velocity.at(1)*velocity.at(1) + velocity.at(2)*velocity.at(2);
-		double mass = masses.at(i);
-		kinetic_energy += 0.5*mass*atoms_per_particle*velocity_squared;
+		Vector3 velocity = velocities.at(i);
+		kinetic_energy += 0.5*mass*atoms_per_particle*velocity.NormSquared();
 	}
 
 	return kinetic_energy;
 }
 \end{lstlisting}
-
+This is of course the instantaneous energy at a given timestep. The average energy of the system should be found by averaging the instantaneous energy over time.
 \subsection{Temperature}
 The temperature is defined through the equipartition theorem using the three momentum degrees of freedom
 \begin{align}
@@ -44,31 +42,18 @@ where $\langle E_k \rangle$ is the average kinetic energy, $N$ is the number of 
 	\label{eq:dsmc_temperature}
 	T = \frac{2E_k}{3Nk_B},
 \end{align}
-where we have dropped the average value brackets of the kinetic energy because we use this to define the \textit{instantaneous} temperature which in turn must be averaged in order to get the actual gas temperature over time. Note that if the fluid is flowing (the gas has non-zero average velocity), the numerical values of the particle's velocities are higher, which in turn results in higher measured temperatures. But of course, this has to be wrong, the temperature should not be dependent of the frame of reference. Imagine a bacteria swimming in the flowing fluid, the temperature it feels is proportional to \textit{the average kinetic energy compared to the local frame of reference}. This indicates that we should define a \textit{instantaneous local temperature} $T(\vec r, t)$ which we define as
+where we have dropped the average value brackets of the kinetic energy because we use this to define the instantaneous temperature which, as with the energy, must be averaged over time in order to get the average gas temperature. Note that if the fluid is flowing (the gas has non-zero average velocity), the numerical values of the particle's velocities are higher, which in turn results in higher measured temperatures. But of course, this has to be wrong, the temperature should not be dependent of the frame of reference. Imagine a bacteria swimming in the flowing fluid, the temperature it feels is proportional to \textit{the average kinetic energy compared to the local frame of reference}. This indicates that we should define a \textit{instantaneous local temperature} $T(\vec r, t)$ which we define as
 \begin{align}
 	\label{eq:dsmc_local_temperature}
 	T(\vec r, t) = \frac{2m}{3k_B}\left[\frac{E(\vec r, t)}{\rho(\vec r, t)} - \frac{1}{2}\left(\frac{\vec p(\vec r, t)}{\rho(\vec r, t)}\right)^2\right],
 \end{align}
-where $E(\vec r,t)$, $\rho(\vec r,t)$ and $\vec p(\vec r,t)$ is the average kinetic energy, density and velocity within some volume around the point $\vec r$. This is of course still just the equipartition theorem where we measure the kinetic energy in the frame of reference determined by the fluid around the point $\vec r$. In listing \ref{lst:dsmc_temperature}, we show how to calculate the global temperature in a DSMC model. \todo{Code using the averaged temperature over local values}
-\begin{lstlisting}[caption=Calculation of instantaneous temperature., label=lst:dsmc_temperature]
-double calculate_temperature(vector<vector<double> > &velocities, vector<double> &masses, int atoms_per_particle) {
-	double kinetic_energy = calculate_kinetic_energy(velocities, masses, atoms_per_particle);
-	int num_particles = velocities.size();
-	int num_real_atoms = num_particles*atoms_per_particle;
-	
-	double temperature = 2*kinetic_energy / (3*num_real_atoms*boltzmann_constant);
-	
-	return temperature;
-}
-\end{lstlisting}
-
+where $E(\vec r,t)$, $\rho(\vec r,t)$ and $\vec p(\vec r,t)$ is the average kinetic energy, density and momentum within some volume around the point $\vec r$. This is of course still just the equipartition theorem where we measure the kinetic energy in the frame of reference determined by the fluid around the point $\vec r$. 
 \subsection{Density}
-Since there are no forces between particles in DSMC, all gas particles may be at the very same point (remember that we used the hard sphere collision model only to calculate the statistical collision rates, not to detect collisions). This will of course not happen, but it is possible to initiate a state in that configuration. The density in any volume $V$ is easily calculated through
+Since there are no forces between the particles in DSMC, all gas particles may be at the very same point (remember that we used the hard sphere collision model only to calculate the statistical collision rates, not to detect collisions). This will of course not happen, but it is possible to initiate a state in that configuration. The density in any volume $V$ is easily calculated through
 \begin{align}
 	\rho_n = {N \over V},
 \end{align}
-where $N$ is the number of atoms in that volume. 
-
+where $N$ is the number of atoms in that volume. This enables us to calculate local densities as well as the global density of the system.
 \subsection{Permeability}
 \label{sec:permeability_dsmc}
 The permeability is defined through Darcy's law (equation \eqref{eq:darcy_1}) which was discussed in section \ref{sec:darcy_law}. We can solve for the permeability $k$
@@ -76,4 +61,4 @@ The permeability is defined through Darcy's law (equation \eqref{eq:darcy_1}) wh
 	\label{eq:permeability_gas}
 	k = \frac{Q \mu L}{A\Delta P},
 \end{align}
-where $L$ is the length of the system in the flow direction, $\mu$ is the viscosity, $Q$ is the volumetric flow rate, $A$ is the cross sectional area, $\Delta P = P_0 - P_L$ are the pressures at $x=L$ and $x=0$. Note that the systems we will study are periodic in the flow direction. This implies that the point $x=0$ actually is the \textit{same point} as $x=L$, which gives $P(x=0) = P(x=L)$. In section \ref{sec:dsmc_pressure} we will discuss how pressure is defined in a DSMC model and how to solve the problem with periodic boundary conditions.
+where $L$ is the length of the system in the flow direction, $\mu$ is the viscosity, $Q$ is the volumetric flow rate, $A$ is the cross sectional area, $\Delta P = P_0 - P_L$ are the pressures at $x=L$ and $x=0$. Note that the systems we will study are periodic in the flow direction. This implies that the point $x=0$ actually is the \textit{same point} as $x=L$, which gives $P(x=0) = P(x=L)$. This means that the pressure difference is zero, no matter how we measure the pressure. We do however know how to deal with this. 

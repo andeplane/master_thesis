@@ -1,53 +1,28 @@
-Most people have an intuition about what a substance is. A substance is just \textit{something}, like water, wood, butter or glass. A metal is a substance. The blood in your body is a substance. All of these are made up of atoms that form molecules in ways giving them very different properties. We know that a substance can exist in different phases, for example plasma, solid, liquid and gas \cite{ravndal2008statmech}, in which the same substance can behave very differently. Liquids and gases are often called fluids because they share the property that they do not have a fixed shape and is often easily deformed. In this chapter we will briefly go through the history of fluids, and discuss how the theory of fluids was developed from the discoveries by the ancient greeks to modern fluid mechanics. \\
-We start this chapter with section \ref{sec:theory_of_fluids_greece} by quoting some of the great minds from Greece who were the first to describe fluids in a scientific way, before we discuss the Euler equations and Navier-Stokes equations in section \ref{sec:theory_of_fluids_euler_navier}. These sets of equations assume that the fluid can be described as a continuum, which turns out not to be true for what is called \textit{microflows}. The discussion about macroflows and microflows leads up to what is called the breakdown of continuum which is addressed in section \ref{sec:continuum_breakdown}. One very important effect is the slip velocity which leads to discrepancies from the standard continuum solver approach. This is discussed in section \ref{sec:slip_length}, before we in section \ref{sec:knudsen_number} introduce the Knudsen number which allows us to define different flow regimes in which we can categorize the validity of different fluid flow models.\\
-We then define what a nanoporous media is before we in section \ref{sec:darcy_law} discuss permeability and Darcy's law and that we need to apply corrections to the permeability because of the effects of slip velocity.
-\section{The beginning in Greece}
-\label{sec:theory_of_fluids_greece}
-The first scientific descriptions of fluid mechanics dates back to Aristotle (384-322 B.C.) when he identified the continuum and dynamic drag in fluids \cite{anderson1998history}. He wrote
-\begin{aquote}{Aristotle by Lysippus}
-The continuous may be defined as that which is divisible into parts which are themselves divisible to infinity, as a body which is divisible in all ways. Magnitude divisible in one direction is a line, in three directions a body. And magnitudes which are divisible in this fashion are continuous. 
-\end{aquote}
-The idea of continuum is fundamental in most fluid mechanics theories and is a rather abstract concept that makes the mathematics work out beautifully. At the time of Aristotle, the mathematical framework was not yet established, so it was an impressive contribution to the field. The more intuitive drag force was described as
-\begin{aquote}{Aristotle by Lysippus}
-It is impossible to say why a body that has been set in motion in a vacuum should ever come to rest. Why, indeed, should it come to rest at one place rather than another. As a consequence, it will either necessarily stay at rest, or if in motion, will move indefinitely unless some obstacle comes into collision with it.
-\end{aquote}
-For fluids in movement, the obstacle is the thing creating the drag force preventing the fluid to move freely. About a hundred years later, Archimedes (287-212 B.C.) published \textit{On Floating Bodies} where he discussed what is now known as \textit{Archimedes' principle} that states
-\begin{aquote}{Archimedes of Syracuse}
-Any object, wholly or partially immersed in a fluid, is buoyed up by a force equal to the weight of the fluid displaced by the object.
-\end{aquote}
-Even today, more than 2000 years later, every high school student taking a physics course learn about Archimedes' principle. It is a simple and intuitive, yet remarkably powerful, statement that can easily be derived using Newtonian mechanics. 
-
+Most people have an intuition about what a substance is. A substance is just \textit{something}, like water, wood, butter or glass. A metal is a substance. The blood in your body is a substance. All of these are made up of atoms that form molecules in ways giving them very different properties. We know that a substance can exist in different phases, for example plasma, solid, liquid and gas \cite{ravndal2008statmech}, in which the same substance can behave very differently. Liquids and gases are often called fluids because they share the property that they do not have a fixed shape and are often easily deformed. The theory that describes how fluids behave is called fluid mechanics.\\
+We start this chapter by discussing the Euler equations and the Navier-Stokes equations in section \ref{sec:theory_of_fluids_euler_navier}. They assume that the fluid can be described as a continuum, which turns out not to be true for what is called \textit{microflows}. The distinction between macroflows and microflows leads to what is called the breakdown of continuum, which is addressed in section \ref{sec:continuum_breakdown}. When studying microflows, one very important effect emerges; the slip velocity. It turns out that the slip velocity has major consequences for the permeability. This is discussed in section \ref{sec:slip_length}, before we in section \ref{sec:knudsen_number} introduce the Knudsen number which allows us to define different flow regimes in which we can categorize the validity of different fluid flow models.\\
+We then define what a nanoporous media is before we in section \ref{sec:darcy_law} discuss Darcy's law, permeability and that we need to apply corrections to the permeability because of the effects of slip velocity.
 \section{The Euler equations and the Navier-Stokes equations}
 \label{sec:theory_of_fluids_euler_navier}
-With the concept of continuum, we think that each point in space has well defined physical properties like temperature, density and momentum. In 1757, Euler published what's called the \textit{Euler equations} by applying conservation of mass, momentum and energy to a small volume element $\dm V$. It is a set of differential equations describing how the fluid velocity field changes in time and space. The conservation laws can be written as
+With the concept of continuum, we think that every point in space has well defined physical properties like temperature, density and momentum. In 1757, Euler published what's called the \textit{Euler equations} by applying conservation of mass, momentum and energy to a small volume element $\dm V$ of a fluid. They form a set of differential equations describing how the fluid velocity $\vec u$ field changes in time and space. The conservation laws can be written as
 \begin{align}
 	\dpart{\rho_m}{t} + \nabla\cdot (\rho_m\vec u) &= 0 \qquad \text{mass}\\
 	\dpart{\rho_m \vec u}{t} + \nabla \cdot (\vec u \otimes (\rho_m\vec u)) + \nabla P &= 0\qquad \text{momentum}\\
 	\dpart{E}{t} + \nabla\cdot (\vec u(E + p)) &= 0\qquad \text{energy},
 \end{align}
-where $\rho_m$ is the mass density, $\vec u(\vec x, t)$ is the velocity field, $E$ is the total energy per unit volume, $\otimes$ is the tensor product and $P(\vec x, t)$ is the pressure field. These can be combined to one vector equation, but the idea of conservation laws are more clear when they are separated. In the original paper, Euler only derived the first two equations, but the full set is usually referred to as the Euler equations. They describe the motion of fluids with negligible viscosity which is a decent approximation for many fluids.\\
+where $\rho_m$ is the mass density, $\vec u(\vec r, t)$ is the velocity field, $E$ is the total energy per unit volume, $p$ is the pressure field and $\otimes$ is the tensor product. These can be combined to one vector equation, but the connection to conservation laws is more clear when they are separated. In the original paper, Euler only derived the first two equations, but the full set is usually referred to as the Euler equations. They describe the motion of fluids with negligible viscosity, which is a decent approximation for many fluids.\\
 About 80 years later, in the 1840s, Sir George Stokes published the Navier-Stokes equations (NSE) which can be seen as an extension of the Euler equations where effects caused by the viscosity of the fluid are included \cite{batchelor2000introduction}. The Navier-Stokes equations for an incompressible fluid can be written as one vector equation
 \begin{align}
-	\label{eq:nse_incompressible}
-	\rho_m \frac{D\vec u}{Dt} = \rho_m \vec F - \nabla p + \mu\nabla^2\vec u,
+	\label{eq:nse}
+	\rho_m \frac{D\vec u}{ Dt} = \rho_m \vec F - \nabla p + \mu\nabla^2\vec u + \mu\nabla(\nabla\cdot \vec u)
 \end{align}
 where $\vec F$ is an external force (i.e. gravity or an electrostatic field), $\mu$ is the viscosity and $D/Dt$ is the material derivative defined as
 \begin{align}
 	\frac{D}{Dt} = \dpart{}{t} + \vec u\cdot \nabla.
 \end{align}
-These are also a set of coupled non-linear differential equations that can be seen as one vector differential equation. It has quite a few interesting analytically solvable solutions, but for most real systems, the geometry confining the fluid is so complex that it is usually solved on computers. The equation above is valid for incompressible fluids where the mass-conservation equation is written as (constant density)
-\begin{align}
-	\nabla\cdot \vec u = 0,
-\end{align}
-which is a good approximation for many liquids. However, most gases are compressible, and the more general NSE including theses effects is given as
-\begin{align}
-	\rho_m \frac{D\vec u}{ Dt} = \rho_m \vec F - \nabla p + \mu\nabla^2\vec u + \mu\nabla(\nabla\cdot \vec u),
-\end{align}
-where we notice the extra term compared to equation \eqref{eq:nse_incompressible}. When solving the NSE, one has to provide boundary conditions to get a unique solution for the system. Usually, one applies no-slip boundary conditions, i.e. that the fluid velocity is zero at the container walls. In section \ref{sec:slip_length} we discuss the effects of slip velocity and how this affects the flow properties of the fluid. 
-
+The NSE has quite a few interesting analytically solvable solutions, but for most real systems, the geometry confining the fluid is so complex that it is usually solved on computers. When solving the NSE, one has to provide boundary conditions to get a unique solution for the system. Usually, one applies no-slip boundary conditions, i.e. that the fluid velocity is zero at the container walls. It turns out that for real fluids, this is not always the case. In section \ref{sec:slip_length} we discuss the effects of slip velocity and how this affects the flow properties of the fluid. 
 \section{Macroflows and microflows}
 \label{sec:theory_of_fluids_microflows}
-When we solve the equations governing our fluid flow, we add boundary conditions defining the geometry of our system. In the 1990s H. Bau and J. Zemel (University of Pennsylvania) performed experiments on microchannel flow in which they found clear deviations from what was expected from the theory\cite{karniadakis2005microflows}. It is useful to introduce the terms \textit{microflows} for flow in geometries where the distance between the channel walls is of micrometer size and \textit{macroflows} for larger systems (milimeter and above). Flow at microscales differ from macroscales because of effects that can be classified into four groups
+When we solve the equations governing our fluid flow, we add boundary conditions defining the geometry of our system. In the 1990s H. Bau and J. Zemel (University of Pennsylvania) performed experiments on microchannel flow in which they found clear deviations from what was expected from the theory\cite{karniadakis2005microflows}. It is useful to introduce the terms \textit{microflows} for flow in geometries where the distance between the channel walls is of order micrometer or smaller, and \textit{macroflows} for larger systems (milimeter and above). Flow at microscales differ from macroscales because of effects that can be classified into four groups
 \begin{itemize}
 \item noncontinuum effects,
 \item surface-dominated effects,
@@ -58,23 +33,22 @@ In this thesis, we focus on the noncontinuum effects which are briefly discussed
 
 \section{The breakdown of continuum}
 \label{sec:continuum_breakdown}
-A fundamental assumption in the derivation of the NSE is that the space is continuous. We know that in reality, the mass of the fluid is concentrated in the very center of the atoms, but we often assume that the mass is uniformly distributed in the volume element of which the conservations laws are applied on. This is known as the \textit{continuum hypothesis} and is invalid when the \textit{mean free path} $\lambda$, the average distance a particle moves between collisions, becomes large compared to some characteristic length $L$ in the system, i.e. the diameter of a channel\cite{karniadakis2005microflows}. This property is quantified through the \textit{Knudsen number}
+A fundamental assumption in the derivation of the NSE is that the space is continuous. But we know that in reality, the mass of the fluid is concentrated in the center of the atoms, but we often assume that the mass is uniformly distributed in the volume element of which the conservations laws are applied on. This is known as the \textit{continuum hypothesis} and is invalid when the \textit{mean free path} $\lambda$, the average distance a particle moves between collisions, becomes large compared to some characteristic length $L$ in the system, i.e. the diameter of a channel\cite{karniadakis2005microflows}. This property is quantified through the \textit{Knudsen number}
 \begin{align}
 	\text{Kn} = \frac{\lambda}{L}.
 \end{align}
-From the kinetic theory we can calculate the mean free path (which is done in section \ref{sec:mean_free_path_calculation})
+From the kinetic theory we can calculate the mean free path (this is done in section \ref{sec:mean_free_path_calculation})
 \begin{align}
 	\lambda = \frac{m}{\sqrt 2 \pi d \rho_n} = \frac{k_B T}{\sqrt 2 \pi d^2 P},
 \end{align}
-where $\rho_n$ is the number density and $m$ and $d$ are the mass and diameter of the particles. By inserting the ideal gas law $P = \rho_n k_BT$, we can eliminate the density and use the pressure $P$ together with the temperature $T$ instead. Here $k_B$ is of course Boltzmann's constant. For Knudsen numbers smaller than $10^{-2}$, the continuum hypthosis is valid and we can apply the Navier-Stokes equations\cite{karniadakis2005microflows}. The Knudsen number is so important that it deserves its own section.
-
+where $\rho_n$ is the number density and $m$ and $d$ are the mass and diameter of the particles. By using the ideal gas law $P = \rho_n k_BT$, we can replace the density with the pressure $P$ and the temperature $T$. Here $k_B$ is Boltzmann's constant. For Knudsen numbers smaller than $10^{-2}$, the continuum hypthosis is valid and we can apply the Navier-Stokes equations\cite{karniadakis2005microflows}. It turns out that the Knudsen number is very useful, so we will get back to it in section \ref{sec:knudsen_number}.
 \section{Slip velocity}
 \label{sec:slip_length}
-The Navier-Stokes equations need boundary conditions of the velocity field defining the geometry of which the fluid is confined in. As mentioned earlier, the simplest boundary condition is the no-slip condition where
+As already mentioned, the NSE need boundary conditions of the velocity field defining the geometry of which the fluid is confined in. The simplest boundary condition is the no-slip condition where
 \begin{align}
 	\vec u(\vec r; t) = 0 \qquad \vec r \in \partial\Omega
 \end{align}
-where $\partial\Omega$ defines the boundary domain. The history of the no-slip condition is studied by Day, based on the work of Stokes in the 19th century. Stokes compared theoretical results to experiments for pendulums of different kinds and concluded that\cite{day1990no}
+where $\partial\Omega$ defines the boundary domain. The history of the no-slip condition was studied by Day\cite{day1990no}, based on the work of Stokes in the 19th century. Stokes compared theoretical results to experiments for pendulums of different kinds and concluded that
 \begin{aquote}{Stokes, 1901}
 	I shall assume, therefore, as the conditions to be satisfied at the boundaries of the fluid, that the velocity of a fluid particle shall be the same, both in magnitude and direction, as that of the solid particle with which it is in contact. The agreement of the results thus obtained with observation will presently appear to be highly satisfactory.
 \end{aquote}
@@ -82,7 +56,10 @@ In Day's detailed study of the no-slip condition, he says
 \begin{aquote}{Day, 1990}
 	Looking back, it appears that the acceptance of a more general no-slip condition was prolonged because of experimental shortcomings, not because of a lack of the \'appropriate\' theoretical solutions to fluid flow problems.
 \end{aquote}
-In other words, the theoretical framework that existed already in the time of Stokes were complete enough to include both slip and no-slip solutions. In fact, Maxwell predicted slip velocity in a paper already in 1867\cite{maxwell1879stresses}, but the experiments the next 50 years seemed to more or less confirm the no-slip condition. \todo{Discuss the later experiments showing discrepancies} Klinkenberg also has a nice argument that supports the slip velocity
+In other words, the theoretical framework that existed already in the time of Stokes were complete enough to include both slip and no-slip solutions. In fact, Maxwell predicted slip velocity in a paper already in 1867\cite{maxwell1879stresses}, but the experiments the next 50 years seemed to more or less confirm the no-slip condition.\\
+But 
+
+ Klinkenberg also has a nice argument that supports the slip velocity
 \begin{aquote}{L.J. Klinkenberg, 1941}
 Consider a layer adjacent to the wall which is thinner than the mean free path $\lambda$ of the gas molecules, so that practically a molecule does not collide with other molecules present in this layer. At a given moment half of the gas molecules in this layer will have a component of velocity moving towards the wall; the other half in the opposite direction. The molecules moving towards the wall have had their last collision somewhere in the flowing mass, and, therefore, will have an average velocity component in the direction of flow different from zero. A part of this average velocity component will be lost in colliding with the wall. Even if the molecules lose it entirely, then still the average velocity component in the direction of flow of all the molecules contained in the layer will amount to half of the average velocity component of the molecules moving towards the wall. The gas in the layer, therefore, will have a finite rate of flow.
 \end{aquote}
@@ -125,6 +102,7 @@ For systems where the continuum hypothesis is invalid, we need other models desc
 
  It is convenient to classify different flow regimes 
 \section{Flow regimes}
+
 \todo{Discuss flow regimes}
 \section{Nanoporous media}
 \label{sec:nanoporous_media}
