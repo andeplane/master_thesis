@@ -1,0 +1,95 @@
+\chapter{The Liouville operator and time integrators}
+The derivation of time integrator schemes are usually done in a mathematical sense through Taylor expansions. Given a Taylor expansion $f(x+h) = f(x) + hf'(x) + h^2/2f''(x) + O(h^3)$, we often truncate the taylor expansion yielding a truncation error $O(h^3)$. In physics, there are other properties of a system of which the error doesn't scale as the truncation error. A typical example is the energy of a particle system that ideally should conserve energy. Two different time integrators may have the same truncation error, but yield very different long term behavior if one has a drift in the energy whereas the other doesn't.\\
+There are other properties that might be difficult to measure through a mathematical analysis of the Taylor expansion that may be more important than the truncation error itself. In the Hamiltonian formulation of classical mechanics, we obtain the equations of motion through the energy operator $\vec H = \vec T + \vec V$, where $\vec T$ and $\vec V$ are operators measuring the kinetic and potential energy.\\
+In this chapter we will address the equations of motion by using the Liouville operator to derive a way to create time integrator schemes. We start by looking at the phase space coordinates and define the Liouville operator which can be seen a displacement operator in section \ref{sec:liouville_operator}. We then split the Liouville operator into two operators; one operator acting on the positions and one acting on the momenta. These operators do not commute, so we use the Trotter identity to split the time evolution operator into what ends up being the Velocity Verlet time integrator scheme, which is the one used in the Molecular Dynamics code. We then do an analysis of the mathematical error to find the local error (which is the same as the truncation error). This derivation is done as in \cite{frenkel2001understanding}.
+\section{Liouville operator}
+\label{sec:liouville_operator}
+The physical system consists of $N$ particles, each having three positions and three momenta defining the phase space point $(\vec r, \vec p)$. Now assume some function of these variables $f(\vec r(t), \vec p(t)) = f(t)$ (the function is indirectly a function of time) that has the time derivative
+\begin{align}
+	\dot f(t) = \dot {\vec r}\frac{\partial f(t)}{\partial \vec r} + \dot {\vec p}\frac{\partial f(t)}{\partial \vec p} \equiv \liouville f(t),
+\end{align}
+where we have defined the Liouville operator
+\begin{align}
+	\liouville = \dot{\vec r}\frac{\partial }{\partial \vec r} + \dot{\vec p}\frac{\partial }{\partial \vec p}.
+\end{align}
+This allows us to define the time evolution operator $\hat{\mathcal U}(t)$
+\begin{align}
+	\label{eq:liouville_time_evolution}
+	f(t) = \hat{\mathcal U}(t)f(0) = e^{\liouville t}f(0),
+\end{align}
+which is easily verified
+\begin{align}
+	\dot f(t) = \liouville \left[e^{\liouville t}f(0)\right] = \liouville f(t).
+\end{align}
+If we now split the Liouville operator into two parts
+\begin{align}
+	\liouville = \liouviller + \liouvillep,
+\end{align}
+so that
+\begin{align}
+	\liouviller = \dot{\vec r(0)}\frac{\partial }{\partial \vec r}.
+\end{align}
+Let us see what this operator can do if we insert it into equation \eqref{eq:liouville_time_evolution} and expand the exponential
+\begin{align}
+	f(t) &= e^{\liouviller t} f(0) = f(0) + (\liouviller t) f(0) + \frac{(\liouviller t)^2}{2!} f(0) + ...\\
+	&= \exp\left(\dot{\vec r}t\frac{\partial }{\partial \vec r}\right)f(0)\\
+	&= \sum_{n=0}^\infty \frac{(\dot{\vec r(0)}t)}{n!}\frac{\partial}{\partial \vec r} f(0)\\
+	&= f\left[\left(\vec r(0) + \dot{\vec r}(0)t\right), \vec p(0)\right].
+\end{align}
+It does just what we expect it to do, it is a displacement operator, moving the points in the phase space according to their time derivative. The momentum Liouville operator does of course exactly the same, so that by applying the total time evolution operator, we do indeed get
+\begin{align}
+	f(t) &= e^{\liouville t}f(0) = f\left[\left(\vec r(0) + \dot{\vec r}(0)t\right), \left(\vec p(0) + \dot{\vec p}(0)t\right)\right].
+\end{align}
+If we were to use this in a simulation, we normally do not apply the full operator at the same time, we might first treat the positions, then the momenta (usually the velocities). So ideally, we would want all these to be equivalent
+\begin{align}
+	e^{\liouville} = e^{\liouvillep + \liouviller} \neq e^{\liouvillep}e^{\liouviller},
+\end{align}
+but this is not the case since the operators do necessarily commute. However, for two operators $\vec A$ and $\vec B$, we can use the \textit{Trotter identity}\cite{frenkel2001understanding}
+\begin{align}
+	e^{A + B} = \lim_{M\rightarrow\infty}\left(e^{A/2M}e^{B/M}e^{A/2M}\right)^M,
+\end{align}
+which can be truncated
+\begin{align}
+	e^{A + B} = \left(e^{A/2M}e^{B/M}e^{A/2M}\right)^Me^{O(1/M^2)}.
+\end{align}
+This can be used to derive different time integrator schemes. We will now derive the Velocity Verlet scheme which is used in the Molecular Dynamics code.
+\section{Derivation of Velocity Verlet}
+The truncated Trotter identity is neat, we can replace $A$ with the momentum Liouville operator, $B$ with the position Liouville operator
+\begin{align}
+	\frac{\liouvillep}{M} &\equiv \Delta t\dot{\vec p}(0)\frac{\partial}{\partial \vec p}\\
+	\frac{\liouviller}{M} &\equiv \Delta t\dot{\vec r}(0)\frac{\partial}{\partial \vec r}
+\end{align}
+defining the timestep $\Delta t = t/M$. The truncated time evolution operator now reads
+\begin{align}
+	\hat {\mathcal U} (t) = \left(e^{\liouvillep \Delta t/2}e^{\liouviller \Delta t}e^{\liouvillep \Delta t/2}\right)^M
+\end{align}
+where we now identify one timestep iteration
+\begin{align}
+	\hat {\mathcal U} (\Delta t) = e^{\liouvillep \Delta t/2}e^{\liouviller \Delta t}e^{\liouvillep \Delta t/2}.
+\end{align}
+If we now apply this operator on $f(0)$, we first apply the rightmost operator
+\begin{align}
+	e^{\liouvillep \Delta t/2}f\left[\vec p(0), \vec r(0)\right] = f\left\{\vec r(0), \left[\vec p(0) + \frac{\Delta t}{2}\dot{\vec p}(0)\right] \right\},
+\end{align}
+before applying $\exp(\liouviller t)$
+\begin{align}
+	e^{\liouviller t}f\left\{\vec r(0), \left[\vec p(0) + \frac{\Delta t}{2}\dot{\vec p}(0)\right] \right\}\\
+	= f\left\{\left[\vec r(0) + \Delta t \dot{\vec r}(\Delta t/2)\right], \left[\vec p(0) + \frac{\Delta t}{2}\dot{\vec p}(0)\right] \right\}.
+\end{align}
+Our last operator gives the final result
+\begin{align}
+	f\left\{\left[\vec r(0) + \Delta t \dot{\vec r}(\Delta t/2)\right], \left[\vec p(0) + \frac{\Delta t}{2}\dot{\vec p}(0) + \frac{\Delta t}{2}\dot{\vec p}(\Delta t)\right] \right\}.
+\end{align}
+These steps can be summarized as one usually does with time integrators
+\begin{align}
+	\vec v(\Delta t/2) &= \vec v(0) + \frac{\vec F(0)}{m}\frac{\Delta t}{2}\\
+	\vec r(\Delta t) &= \vec r(0) + \vec v(\Delta t/2)\Delta t\\
+	\vec v(\Delta t) &= \vec v(\Delta t/2) + \frac{\vec F(\Delta t)}{m}\frac{\Delta t}{2},
+\end{align}
+where we have replaced $\dot{\vec p}$ with the equivalent $(\vec F/m)$ and $\dot{\vec r}$ with $\vec v$ which is valid if the forces can be calculated from the position. These steps are called the Velocity Verlet algorithm and has, as we now will see, an error $O(\Delta t^3)$.
+\section{Truncation error}
+During one timestep iteration, we approximate the Liouville operator
+\begin{align}
+	e^{\liouville \Delta t} \approx e^{\liouvillep \Delta t/2}e^{\liouviller \Delta t}e^{\liouvillep \Delta t/2} = e^{\liouville \Delta t + \hat{\vec \epsilon}},
+\end{align}
+where we have introduced the \textit{error operator} $\hat{\vec \epsilon}$ that causes our truncation error. 

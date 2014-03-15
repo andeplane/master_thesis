@@ -34,26 +34,26 @@ where $\vec u_{ij}$ is the unit vector pointing from atom $i$ to atom $j$. In th
 \caption{The Lennard-Jones potential as a function of relative distance $r$ between two atoms.}
 \label{fig:md_lennard_jones}
 \end{figure}
-\subsection{Time integration}
-Once we know how to calculate the forces, we have everything we need to evolve the system through time. The system is integrated with Newton's laws with some integration scheme. In MD-simulations, it is common to chooce the Velocity Verlet algorithm. Time is discretized into timesteps, $\Delta t$, so the state variables and the acceleration $\vec a$ at $t=n\Delta t$ are written as
-\begin{align*}
-	\vec r(t) & = \vec r_n\\
-	\vec v(t) & = \vec v_n\\
-	\vec a(t) & = \vec a_n.
-\end{align*}
-Each timestep is computed as follows
-\begin{enumerate}
-	\item $\vec v_{n+1/2} = \vec v_{n} + \frac{1}{2}\vec a_{n}\Delta t$
-	\item $\vec r_{n+1} = \vec v_{n} + \vec v_{n+1/2}\Delta t$
-	\item $\vec a_{n+1} = {1\over m}\vec F(\vec r_{n+1})$
-	\item $\vec v_{n+1}   = \vec v_{n+1/2} + \frac{1}{2}\vec a_{n+1}\Delta t$
-\end{enumerate}
-which gives a local error of order $(\Delta t)^4$ \cite{allen1989computer}. If we look carefully, we notice that step 1 and 4 can be combined to obtain the scheme that contains fewer arithmetic operations
-\begin{enumerate}
-	\item $\vec v_{n+1/2} = \vec v_{n-1/2} + \vec a_{n}\Delta t$
-	\item $\vec r_{n+1} = \vec v_{n} + \vec v_{n+1/2}\Delta t$
-	\item $\vec a_{n+1} = {1\over m}\vec F(\vec r_{n+1})$,
-\end{enumerate}
-where we only at the first timestep have to calculate $\vec v_{1/2}$ by following the first scheme.
+% \subsection{Time integration}
+% Once we know how to calculate the forces, we have everything we need to evolve the system through time. The system is integrated with Newton's laws with some integration scheme. In MD-simulations, it is common to chooce the Velocity Verlet algorithm. Time is discretized into timesteps, $\Delta t$, so the state variables and the acceleration $\vec a$ at $t=n\Delta t$ are written as
+% \begin{align*}
+% 	\vec r(t) & = \vec r_n\\
+% 	\vec v(t) & = \vec v_n\\
+% 	\vec a(t) & = \vec a_n.
+% \end{align*}
+% Each timestep is computed as follows
+% \begin{enumerate}
+% 	\item $\vec v_{n+1/2} = \vec v_{n} + \frac{1}{2}\vec a_{n}\Delta t$
+% 	\item $\vec r_{n+1} = \vec v_{n} + \vec v_{n+1/2}\Delta t$
+% 	\item $\vec a_{n+1} = {1\over m}\vec F(\vec r_{n+1})$
+% 	\item $\vec v_{n+1}   = \vec v_{n+1/2} + \frac{1}{2}\vec a_{n+1}\Delta t$
+% \end{enumerate}
+% which gives a local error of order $(\Delta t)^4$ \cite{allen1989computer}. If we look carefully, we notice that step 1 and 4 can be combined to obtain the scheme that contains fewer arithmetic operations
+% \begin{enumerate}
+% 	\item $\vec v_{n+1/2} = \vec v_{n-1/2} + \vec a_{n}\Delta t$
+% 	\item $\vec r_{n+1} = \vec v_{n} + \vec v_{n+1/2}\Delta t$
+% 	\item $\vec a_{n+1} = {1\over m}\vec F(\vec r_{n+1})$,
+% \end{enumerate}
+% where we only at the first timestep have to calculate $\vec v_{1/2}$ by following the first scheme.
 
 
