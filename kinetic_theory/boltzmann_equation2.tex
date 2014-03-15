@@ -6,6 +6,19 @@ In the section \ref{sec:kinetic_theory_distribution_function}, we introduced the
 	\item an external force, or
 	\item internal collisions.
 \end{itemize}
+We have skipped the derivation in this thesis, because the derivation itself does not contribute to understanding the underlying physics. What we do need to know is what one needs to \textit{assume} to derive the equation. The two first sources to changin $f$ above leads to what's called the collisionless Boltzmann equation which reads
+\begin{align}
+	\label{eq:collisionless_boltzmann}
+	\dpart{f}{t} + \vec v\cdot\nabla_\vec r f + \nabla_\vec v \cdot \frac{\vec F}{ m}f = 0.
+\end{align}
+Here it is assumed that the density $f(\vec r, \vec v, t)$ is continuous, differentiable and well defined within any volume element $\dm \vec r\dm\vec v$. This allows density to flow from a point $(\vec r, \vec v$ through a surface of any volume in the phase space, or have a force acting as a source within that volume.\\
+Since particles can change velocity by colliding, we need to incorporate this effect as well. We then assume that only binary collisions occur, contributions from collisions between three or more particles are negligible. This, together with a rather comprehensive series of computation leads to an additional term in the Boltzmann equation, the right hand side of equation \eqref{eq:collisionless_boltzmann} is replaced with the \textit{collision integral}, or \textit{collision operator} 
+\begin{align}
+	J[f] = \iiint\! 4|\unitvector e\cdot\vec g|\sigma[f'f_1' - ff_1]\,\dm\vec v_1 \dm^2e\\
+	&= \iint\! g \sigma[f'f_1' - ff_1] \,\dm\vec v_1 \dm\Omega.
+\end{align}
+Here we have assumed that two particles $i$ and $j$ before a collision have velocities $\vec v_i$ and $\vec v_j$. Their relative velocity is then $\vec g=\vec v_i - \vec v_j$. After the collision, their velocities have changed to $\vec v_i'$ and $\vec v_j'$ with relative velocity $\vec g'$. 
+
 All three will change $f$ in different ways. For simplicity, we will first assume that the particles do not collide and derive the \textit{collisionless Boltzmann equation}. But do not worry, we will add the collision term later and end up with the full Boltzmann equation.
 
 \subsection{The collisionless Boltzmann equation}
@@ -19,10 +32,7 @@ which becomes
 	\dpart{f}{t} + \nabla_\vec r \cdot(f\vec v) = \dpart{f}{t} + \vec v\cdot\nabla_\vec r f = 0
 \end{align}
 since $\vec v$ is independent of $\vec r$. We can extend this equation by adding the effects of an external force $\vec F$ that changes the velocity in the same way as the position was changed above (except for the factor $1/m$)
-\begin{align}
-	\label{eq:collisionless_boltzmann}
-	\dpart{f}{t} + \vec v\cdot\nabla_\vec r f + \nabla_\vec v \cdot \frac{\vec F}{ m}f = 0,
-\end{align}
+
 which we call the collisionless Boltzmann equation. It is a good approximation to describe the dynamics of very dilute gases where intermolecular collisions occur rarely. But we should not ignore collisions between particles, so as promised, we will now see that by treating collisions will appear as an additional term.
 \subsection{The collision operator}
 \label{sec:boltzmann_collision_operator}
@@ -30,7 +40,7 @@ We consider a dilute gas so we can assume that only binary collisions occur (we 
 \begin{align}
 	\vec g' = \vec g - 2\unitvector e(\unitvector e\cdot\vec g),
 \end{align}
-where $\unitvector e$ is an arbitrary unit vector. If we multiply by $\unitvector e$, we see that 
+where $\unitvector e$ is an arbitrary unit vector. \todo{Illustrate this with a figure?} If we multiply by $\unitvector e$, we see that 
 \begin{align}
 	\unitvector e\cdot \vec g' = \unitvector e\cdot\left[\vec g - 2\unitvector{e}(\unitvector e\cdot\vec g)\right] = -\unitvector e \cdot \vec g
 \end{align}
@@ -133,12 +143,87 @@ which can be written as\cite{mcquarrie1973statistical}
 \end{align}
 The integrand is of the form $-(x-y)\ln(x/y)$ which is negative for $x\neq y$ and zero for $x=y$. This means that
 \begin{align}
-	\frac{\dm H}{\dm t} \leq 0,
+	\frac{\dm H}{\dm t} \leq 0.
 \end{align}
-which is called the $H$-theorem. Since $H(t)$ is bounded (see equation \eqref{eq:h_function} and remember that $f$ indeed is bounded), in the limit $t\rightarrow\infty$, $H(t)$ reaches an equilibrium state as $\dm H/\dm t = 0$. This in turn means that the integrand in \eqref{eq:h_theorem_integral} must be zero as well which happens if
+Since $H(t)$ is bounded (see equation \eqref{eq:h_function} and remember that $f$ indeed is bounded), in the limit $t\rightarrow\infty$, $H(t)$ reaches an equilibrium state as $\dm H/\dm t = 0$. This in turn means that the integrand in \eqref{eq:h_theorem_integral} must be zero as well which happens if
 \begin{align}
 	\label{eq:equilibrium_f_relation}
 	f'f_1' = ff_1,
 \end{align}
 which allows us calculate the equilibrium velocity distribution.
+\section{Maxwell-Boltzmann distribution as equilibrium}
+\label{sec:maxwell_boltzmann_distribution}
+We will now find out which $f$ that satisfies equation \eqref{eq:equilibrium_f_relation} which can be rewritten by taking the logarithm on both sides
+\begin{align}
+	\ln f' + \ln f_1' = \ln f + \ln f_1.
+\end{align}
+So the \textit{sum} of these is unchanged during a collision. As we required in subsection \ref{sec:boltzmann_collision_operator}, energy, momentum and mass are conserved quantities, so $\ln f$ must be a linear combination of these
+\begin{align}
+	\ln f = \alpha m + \vec \beta\cdot(m\vec v) - \gamma\frac{mv^2}{2} = \alpha m + \frac{m}{2}\frac{\beta\cdot\beta}{\gamma} - \frac{m\gamma}{2}\left(\vec v - \frac{\beta}{\gamma}\right)^2.
+\end{align}
+We combine all quantities not dependent of $\vec v$ into one parameter $\ln c$ so that
+\begin{align}
+	\ln f = \ln c - \frac{m\gamma}{2}\left(\vec v - \frac{\vec \beta}{\gamma}\right)^2,
+\end{align}
+which we can write as
+\begin{align}
+	\label{eq:almost_maxwell}
+	f(\vec r, \vec v) = c\exp\left[-\frac{m\gamma}{2}\left(\vec v - \frac{\beta}{\gamma}\right)^2\right].
+\end{align}
+By using that 
+\begin{align}
+	\rho_n(\vec r, t) = \int\!f \,\dm\vec v,
+\end{align}
+and 
+\begin{align}
+	\vec v_0 = \bar {\vec v} = \frac{1}{\rho}\int\!\vec v f\,\dm \vec v
+\end{align}
+in addition to the equipartition theorem
+\begin{align}
+	\frac{3}{2}k_B T = \frac{m}{2}\bar{(\vec v - \vec v_0)}
+\end{align}
+we can write equation \eqref{eq:almost_maxwell} as \cite{mclennan1989introduction}
+\begin{align}
+	\label{eq:maxwell_boltzmann_distribution}
+	f(\vec r, \vec v) = \rho_n \left(\frac{m}{2\pi k_B T}\right)^{3/2}e^\frac{-m|\vec v|^2}{2k_BT},
+\end{align}
+which is the \textit{Maxwell-Boltzmann distribution}. We will use this to validate both the Direct Simulation Monte Carlo code and the Molecular Dynamics code in sections \ref{sec:dsmc_code_validation} and \ref{sec:md_code_validation}. The next important quantity we need is the mean free path. It is needed to define the Knudsen number which we discussed in section \ref{sec:knudsen_number}.
+\section{Mean free path}
+\label{sec:mean_free_path_calculation}
+The mean free path $\lambda$ is the average distance a particle travels before it collides with other particles. For a gas, we can estimate $\lambda$ by looking at the \textit{effective collision area}, see figure \ref{fig:effective_collision_area}. The effective collision area is then
+\begin{align}
+	A = \pi d^2,
+\end{align}
+where $d$ is the diameter of one particle. Two particles with velocities $\vec v_1$ and $\vec v_2$ have the relative velocity $\vec v_{rel} = \vec v_1 - \vec v_2$. The norm is given by
+\begin{align}
+	v_{rel} &= \sqrt{\vec v_{rel}\cdot \vec v_{rel} } = \sqrt{ (\vec v_1 - \vec v_2)(\vec v_1 - \vec v_2)}\\
+	&= \sqrt{\vec v_1\cdot \vec v_1 - 2\vec v_1\vec v_2 + \vec v_2\vec v_2}.
+\end{align}
+The average relative velocity is calculated by assuming that the velocities are completely random and hence not correlated, and that the particles have the same mean speed $\langle v\rangle$
+\begin{align}
+	\bar v_{rel} &= \sqrt{\vec v_1^2 + \vec v_2^2} = \sqrt 2 \langle v\rangle,
+\end{align}li
+During a time $\tau$ and average relative velocity $\sqrt 2 \langle v\rangle$, the total volume sweeped out by the particle is given as
+\begin{align}
+	V = \sqrt 2 \pi d^2\langle v\rangle \tau,
+\end{align}
+which in turn gives the number of collisions during such a volume
+\begin{align}
+	\label{eq:num_collisions}
+	n_{coll} = V\rho_n = \sqrt 2 \pi d^2\langle v\rangle \rho_n \tau,
+\end{align}
+where $\rho_n$ is the number density. The mean free path is then calculated as the length of the path divided by the number of collisions
+\begin{align}
+	\label{eq:mean_free_path}
+	\lambda = \frac{\langle v\rangle \tau}{ \sqrt 2 \pi d^2\langle v\rangle \rho_n\tau} = \frac{1 }{ \sqrt 2 \pi d^2 \rho_n}
+\end{align}+
+\section{Mean collision time}
+\begin{align}
+	\label{eq:coll_frequency}
+	f_\text{coll} = \rho_n \pi \sigma^2 \langle v_r \rangle
+\end{align}
 
+\begin{align}
+	\label{eq:kinetic_theory_mean_collision_time}
+	\tau_{coll} = \frac{1}{\sqrt 2 \pi \sigma^2 \rho_n \langle v \rangle}.
+\end{align}

@@ -1,0 +1,53 @@
+\section{The Maxwell-Boltzmann distribution}
+\label{sec:maxwell_boltzmann_distribution}
+We will now find out which $f$ that satisfies equation \eqref{eq:equilibrium_f_relation} which we rewrite by taking the logarithm on both sides
+\begin{align}
+	\ln f' + \ln f_1' = \ln f + \ln f_1.
+\end{align}
+This states that the \textit{sum} of of the logarithm of $f$ is unchanged during a collision. As we required in subsection \ref{sec:boltzmann_collision_operator}, energy, momentum and mass are conserved quantities, so $\ln f$ must be a linear combination of these
+\begin{align}
+	\ln f &= \alpha m + \vec \beta\cdot(m\vec v) - \gamma\frac{mv^2}{2}\\
+	&= \alpha m + \frac{m}{2}\frac{\beta\cdot\beta}{\gamma} - \frac{m\gamma}{2}\left(\vec v - \frac{\beta}{\gamma}\right)^2.
+\end{align}
+We combine all quantities not dependent of $\vec v$ into one parameter $\ln c$ so that
+\begin{align}
+	\ln f = \ln c - \frac{m\gamma}{2}\left(\vec v - \frac{\vec \beta}{\gamma}\right)^2,
+\end{align}
+which we can write as
+\begin{align}
+	\label{eq:almost_maxwell}
+	f(\vec r, \vec v) = c\exp\left[-\frac{m\gamma}{2}\left(\vec v - \frac{\beta}{\gamma}\right)^2\right].
+\end{align}
+By using that 
+\begin{align}
+	\rho_n(\vec r, t) = \int\!f \,\dm\vec v,
+\end{align}
+and 
+\begin{align}
+	\vec v_0 = \langle \vec v\rangle = \frac{1}{\rho}\int\!\vec v f\,\dm \vec v
+\end{align}
+in addition to the equipartition theorem
+\begin{align}
+	\frac{3}{2}k_B T = \frac{m}{2}\langle(\vec v - \vec v_0)^2\rangle
+\end{align}
+we can write equation \eqref{eq:almost_maxwell} as \cite{mclennan1989introduction}
+\begin{align}
+	\label{eq:maxwell_boltzmann_distribution}
+	f(\vec r, \vec v) = \rho_n \left(\frac{m}{2\pi k_B T}\right)^{3/2}e^\frac{-m|\vec v|^2}{2k_BT},
+\end{align}
+which is the \textit{Maxwell-Boltzmann distribution}. We can integrate out the position part of the distribution to get
+\begin{align}
+	\label{eq:maxwell_boltzmann_vector_probability}
+	P(\vec v)\dm \vec v = \left(\frac{m}{2\pi k_B T}\right)^{3/2}e^\frac{-m|\vec v|^2}{2k_BT} \dm \vec v.
+\end{align}
+We will use this to validate both the Direct Simulation Monte Carlo code and the Molecular Dynamics code in sections \ref{sec:dsmc_code_validation} and \ref{sec:md_code_validation}. Let's use this to find some interesting properties of the gas. Given a temperature $T$ and the mass of the particles $m$, what is the average speed of the particles? First, we need to transform the distribution from a vector distribution to a scalar distribution (the magnitude of the velocity might be a more interesting quantity than a given direction). The distribution in equation \eqref{eq:maxwell_boltzmann_vector_probability} is spherical symmetric, so we should transform to spherical coordinates which gives
+\begin{align}
+	\label{eq:maxwell_boltzmann_scalar_probability}
+	P(v)\dm v = 4\pi\left(\frac{m}{2\pi k_B T}\right)^{3/2}v^2e^\frac{-mv^2}{2k_BT} \dm v.
+\end{align}
+The average speed of the particles can then be found as
+\begin{align}
+	\label{eq:maxwell_boltzmann_average_speed}
+	\langle v\rangle = \int\limits_0^\infty vP(v) \dm v = \frac{2\sqrt 2}{\sqrt \pi}\sqrt\frac{k_B T}{m}.
+\end{align}
+The particles in a high temperature gas moves faster than particles in a gas with low temperature, as expected. The next important quantity we should compute is the mean free path. We're gonna need that to calculate the Knudsen number from section \ref{sec:knudsen_number}.
