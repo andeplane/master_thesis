@@ -1,2 +1,19 @@
 \section{Time integration}
-The idea of doing a Molecular Dynamics simulation is to start from some initial state $(\vec r_0, \vec v_0)$ and compute the time evolution of atoms following Newton's equations through the defined forces. We will use this time evolution to sample statistics from states in the phase space, assuming that the time evolution will guide the system through the phase space with probabilities according to the statistical ensemble. A standard Molecular Dynamics simulation, we want to sample states from the microcanonical ensemble (NVE) where the energy, volume and number of atoms are conserved. Our choice of time integrator should therefore conserve energy as good as possible.\\
+The idea of doing a Molecular Dynamics simulation is to start from some initial state $(\vec r_0, \vec v_0)$ and compute the time evolution of atoms following Newton's equations through the defined forces. We will use this time evolution to sample statistics from states in the phase space, assuming that the time evolution will guide the system through the phase space with probabilities according to the statistical ensemble. This was the assumtion of ergodicity. In a standard Molecular Dynamics simulation, we want to sample states from the microcanonical ensemble (NVE) where the energy, volume and number of atoms are conserved. Our choice of time integrator should therefore conserve energy as good as possible. A good choice is the Velocity Verlet algorithm that is known to both be fast and conserve energy quite well\cite{frenkel2001understanding}.\\
+The Velocity Verlet algorithm requires the knowledge of the positions, velocities and instantaneous accelerations of the particles. The latter is found through the force on an atom $\vec a_i = \vec F_i/m_i$, so it requires the storage of $9N$ variables in a system with $N$ atoms. We have derived the algorithm using the Liouville formulation of time evolution in appendix \ref{app:liouville}. The integration steps are
+\begin{align}
+	\vec v(t + \Delta t/2) &= \vec v(t) + \frac{\vec F(t)}{m}\frac{\Delta t}{2}\\
+	\vec r(t + \Delta t) &= \vec r(t) + \vec v(t + \Delta t/2)\Delta t\\
+	\vec v(t + \Delta t) &= \vec v(t + \Delta t/2) + \frac{\vec F(t + \Delta t)}{m}\frac{\Delta t}{2},
+\end{align}
+which is done each timestep for every atom in the system. We notice that the \textit{last} integration step of a timestep is equivalent to the \textit{first} integration step of the \textit{next} timestep. This means that we can compute the first \textit{half kick} (update the velocity) only the very first timestep, and then do a full kick all the other timesteps to save computation power. For the first timestep, the scheme then looks like
+\begin{align}
+	\vec v(t + \Delta t/2) &= \vec v(t) + \frac{\vec F(t)}{m}\frac{\Delta t}{2}\\
+	\vec r(t + \Delta t) &= \vec r(t) + \vec v(t + \Delta t/2)\Delta t,
+\end{align}
+where all the other timesteps are computed as
+\begin{align}
+	\vec v(t + \Delta t/2) &= \vec v(t - \Delta t/2) + \frac{\vec F(t)}{m}\Delta t\\
+	\vec r(t + \Delta t) &= \vec r(t) + \vec v(t + \Delta t/2)\Delta t.
+\end{align}
+Even though this is a neat trick, we have to be careful. At some point during a timestep, we are going to use the phase space variables to sample statistics, and it is important to sample statistics at the \textit{end} of a timestep. When we combined the two steps above, we cheated a bit, because the end of a timestep is actually in between those steps. Luckily for us, we aren't going to sample every timestep, so we can combine the two methods. If we're not going to sample statistics at a timestep, we can choose the quick algorithm, and the slower one when we are going to. Though this is nice, tt is worth mentioning that the slowest part of an Molecular Dynamics program is the force calculation, not the time integration. 

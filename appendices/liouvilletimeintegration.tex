@@ -1,7 +1,8 @@
 \chapter{The Liouville operator and time integrators}
+\label{app:liouville}
 The derivation of time integrator schemes are usually done in a mathematical sense through Taylor expansions. Given a Taylor expansion $f(x+h) = f(x) + hf'(x) + h^2/2f''(x) + O(h^3)$, we often truncate the taylor expansion yielding a truncation error $O(h^3)$. In physics, there are other properties of a system of which the error doesn't scale as the truncation error. A typical example is the energy of a particle system that ideally should conserve energy. Two different time integrators may have the same truncation error, but yield very different long term behavior if one has a drift in the energy whereas the other doesn't.\\
 There are other properties that might be difficult to measure through a mathematical analysis of the Taylor expansion that may be more important than the truncation error itself. In the Hamiltonian formulation of classical mechanics, we obtain the equations of motion through the energy operator $\vec H = \vec T + \vec V$, where $\vec T$ and $\vec V$ are operators measuring the kinetic and potential energy.\\
-In this chapter we will address the equations of motion by using the Liouville operator to derive a way to create time integrator schemes. We start by looking at the phase space coordinates and define the Liouville operator which can be seen a displacement operator in section \ref{sec:liouville_operator}. We then split the Liouville operator into two operators; one operator acting on the positions and one acting on the momenta. These operators do not commute, so we use the Trotter identity to split the time evolution operator into what ends up being the Velocity Verlet time integrator scheme, which is the one used in the Molecular Dynamics code. We then do an analysis of the mathematical error to find the local error (which is the same as the truncation error). This derivation is done as in \cite{frenkel2001understanding}.
+In this chapter we will address the equations of motion by using the Liouville operator to derive a way to create time integrator schemes. We start by looking at the phase space coordinates and define the Liouville operator which can be seen a displacement operator in section \ref{sec:liouville_operator}. We then split the Liouville operator into two operators; one operator acting on the positions and one acting on the momenta. These operators do not commute, so we use the Trotter identity to split the time evolution operator into what ends up being the Velocity Verlet time integrator scheme, which is the one used in the Molecular Dynamics code. We then do an analysis of the mathematical error to find the local error (which is the same as the truncation error) in section \ref{sec:velocity_verlet_error}. This derivation is done as in \cite{frenkel2001understanding}. In section \ref{sec:multiple_timestep_schemes} we use the Liouville formulation to derive a multiple timestep integration scheme that can be used if the Molecular Dynamics system consists of both light and heavy atoms. Light atoms like hydrogen need a small timestep in order to accurately integrate vibrations of high frequency, whereas the heavier atoms tolerate a higher timestep. 
 \section{Liouville operator}
 \label{sec:liouville_operator}
 The physical system consists of $N$ particles, each having three positions and three momenta defining the phase space point $(\vec r, \vec p)$. Now assume some function of these variables $f(\vec r(t), \vec p(t)) = f(t)$ (the function is indirectly a function of time) that has the time derivative
@@ -46,11 +47,11 @@ If we were to use this in a simulation, we normally do not apply the full operat
 \end{align}
 but this is not the case since the operators do necessarily commute. However, for two operators $\vec A$ and $\vec B$, we can use the \textit{Trotter identity}\cite{frenkel2001understanding}
 \begin{align}
-	e^{A + B} = \lim_{M\rightarrow\infty}\left(e^{A/2M}e^{B/M}e^{A/2M}\right)^M,
+	e^{A + B} = \lim_{N\rightarrow\infty}\left(e^{A/2M}e^{B/M}e^{A/2M}\right)^N,
 \end{align}
 which can be truncated
 \begin{align}
-	e^{A + B} = \left(e^{A/2M}e^{B/M}e^{A/2M}\right)^Me^{O(1/M^2)}.
+	e^{A + B} = \left(e^{A/2N}e^{B/N}e^{A/2N}\right)^Ne^{O(1/N^2)}.
 \end{align}
 This can be used to derive different time integrator schemes. We will now derive the Velocity Verlet scheme which is used in the Molecular Dynamics code.
 \section{Derivation of Velocity Verlet}
@@ -59,11 +60,11 @@ The truncated Trotter identity is neat, we can replace $A$ with the momentum Lio
 	\frac{\liouvillep}{M} &\equiv \Delta t\dot{\vec p}(0)\frac{\partial}{\partial \vec p}\\
 	\frac{\liouviller}{M} &\equiv \Delta t\dot{\vec r}(0)\frac{\partial}{\partial \vec r}
 \end{align}
-defining the timestep $\Delta t = t/M$. The truncated time evolution operator now reads
+defining the timestep $\Delta t = t/N$. The truncated time evolution operator now reads
 \begin{align}
-	\hat {\mathcal U} (t) = \left(e^{\liouvillep \Delta t/2}e^{\liouviller \Delta t}e^{\liouvillep \Delta t/2}\right)^M
+	\hat {\mathcal U} (t) = \left(e^{\liouvillep \Delta t/2}e^{\liouviller \Delta t}e^{\liouvillep \Delta t/2}\right)^N
 \end{align}
-where we now identify one timestep iteration
+where we identify one timestep iteration
 \begin{align}
 	\hat {\mathcal U} (\Delta t) = e^{\liouvillep \Delta t/2}e^{\liouviller \Delta t}e^{\liouvillep \Delta t/2}.
 \end{align}
@@ -87,9 +88,27 @@ These steps can be summarized as one usually does with time integrators
 	\vec v(\Delta t) &= \vec v(\Delta t/2) + \frac{\vec F(\Delta t)}{m}\frac{\Delta t}{2},
 \end{align}
 where we have replaced $\dot{\vec p}$ with the equivalent $(\vec F/m)$ and $\dot{\vec r}$ with $\vec v$ which is valid if the forces can be calculated from the position. These steps are called the Velocity Verlet algorithm and has, as we now will see, an error $O(\Delta t^3)$.
+
 \section{Truncation error}
+\label{sec:velocity_verlet_error}
 During one timestep iteration, we approximate the Liouville operator
 \begin{align}
 	e^{\liouville \Delta t} \approx e^{\liouvillep \Delta t/2}e^{\liouviller \Delta t}e^{\liouvillep \Delta t/2} = e^{\liouville \Delta t + \hat{\vec \epsilon}},
 \end{align}
-where we have introduced the \textit{error operator} $\hat{\vec \epsilon}$ that causes our truncation error. 
+where we have introduced the \textit{error operator} $\hat{\vec \epsilon}$ that represents our truncation error. These are linear operators on which we can use the Campbell-Baker-Hausdorff expansion of general, non-commuting linear operators
+\begin{align}
+	e^{\lambda\hat{\vec A}}e^{\lambda\hat{\vec B}} = e^{\lambda\hat{\vec A} + \lambda\hat{\vec B} + \frac{\lambda^2}{2}[\hat{\vec A},\hat{\vec B}] + \frac{\lambda^3}{12}[\hat{\vec A},[\hat{\vec A},\hat{\vec B}]] + \frac{\lambda^3}{12}[\hat{\vec B},[\hat{\vec A},\hat{\vec B}]] + ...}
+\end{align}
+together with 
+\begin{align}
+	e^{\oper A}e^{\oper B} = e^{\oper B + [\oper A,\oper B] + \frac{1}{2!}[\oper A,[\oper A,\oper B]] + \frac{1}{3!}[\oper A,[\oper A,[\oper A,\oper B]]] + ...}e^{\oper A}
+\end{align}
+to find the leading term in $\hat{\vec \epsilon}$
+\begin{align}
+	-(\Delta t)^3\left(\frac{1}{24}[\liouviller, [\liouviller, \liouvillep]] + \frac{1}{12}[\liouvillep, [\liouviller, \liouvillep]]\right),
+\end{align}
+which is the local truncation error of the Velocity Verlet algorithm. 
+\section{Multiple timestep integration schemes}
+\label{sec:multiple_timestep_schemes}
+We will now address a situation that may occur in an advanced Molecular Dynamics simulation. Let's say we will simulate a system with several atom types, like silica and water. In such a system, we have both hydrogen, oxygen and silicon, which all may feel the appearance of all the other atom types. Hydrogen atoms are 28 times lighter than silicon. A consequence of this is that hydrogen will have much higher velocities than the other atom types, they will typically vibrate very quickly in the water molecules. This will require a much smaller timestep than those of the silicon and oxygen atoms would need. Long range forces like the Coulomb force are other examples of interactions that are accurate with higher timesteps. We will now use the Liouville formulation to derive a scheme that will allow multiple timesteps.\\
+Again we split the Liouville operator into the sum of operators. \todo{Derive this.}
