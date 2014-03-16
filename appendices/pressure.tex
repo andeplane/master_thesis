@@ -1,0 +1,46 @@
+\chapter{Derivation of pressure in Molecular Dynamics}
+\todo{Should I drop this?}
+\label{sec:pressure_derivation}
+A substance in a Molecular Dynamics simulation does not generally satisfy the ideal gas equation of state. The pressure has the general form
+\begin{align}
+    P = k_B T\sum_{m=1}^\infty \rho_n^mB_m(T),
+\end{align}
+where the functions $B_m(t)$ are called what's called the virial coefficients with $B_1(T) = 1$ which gives the ideal gas pressure \cite{ravndal2008statmech}. We will now derive an expression for the pressure of this form by using Clausius' virial function. We have the positions of all atoms in $\vec r$ and define 
+\begin{align}
+    W(\vec{r}) = \sum_{i=1}^N \vec r_i \cdot \vec F_i^\text{TOT},
+\end{align}
+where $\vec F_i^\text{TOT}$ is the total force acting on atom $i$, including external forces. We assume equilibrium, so that the kinetic energy has reached an approximately constant value. We measure the statistical average of $W$ by calculating
+\begin{align}
+    \langle W \rangle &= \lim_{t\rightarrow\infty} {1\over t} \int_0^t d\tau \sum_{i=1}^N \vec r_i(\tau) \cdot m_i \vec{\ddot r}_i(\tau).
+\end{align}
+Integrating by parts gives
+\begin{align}
+    \label{eq:virial_and_equi}
+    \langle W \rangle &= -\lim_{t\rightarrow\infty} {1\over t} \int_0^t d\tau \sum_{i=1}^N m_i |\vec{\dot r}_i(\tau)|^2 = -2E_k = -3Nk_bT,
+\end{align}
+by again using equipartition. Now, assume that the atoms live inside a parallelepipedic container of size $L_x, L_y, Lz$ with hard walls, with origo in one of its corners. If we divide the force into external and interatomic forces, $\vec F_i^{TOT} = \vec F_i + \vec F_i^{EXT}$, and assume that the external forces are forces from the container (no gravity or electric fields), we can calculate $W^{EXT}$. The atoms near the walls apply a pressure on the wall $P = F/A$. As an example, we look at all the atoms that are near the wall located at $x=L_x$. The virial function gives
+\begin{align}
+    W^{EXT}_x = \sum_{n=1}^{N_x}\vec r_n\cdot \vec F_n^{EXT},
+\end{align}
+where $n$ now sums over all atoms that are near the container wall at $x=L_x$. The position vectors are $\vec r_n = (L_x, y_n, z_n)$ and the force only has a component normal to the wall $F_n^{EXT} = 1/N_x(-PL_yL_z, 0, 0)$. We then get
+\begin{align}
+    W^{EXT}_x = -L_xPL_yL_z = -PV,
+\end{align}
+and by doing the same for the other dimensions, we get
+\begin{align}
+    W = -3PV.
+\end{align}
+Inserting this result into \eqref{eq:virial_and_equi} yields
+\begin{align}
+    \left\langle \sum_{i=1}^N \vec r_i \cdot \vec F_i\right\rangle - 3PV = -3Nk_bT
+\end{align}
+which can be rearranged to
+\begin{align}
+    PV = Nk_bT - \frac{1}{3}\left\langle \sum_{i=1}^N \vec r_i \cdot \vec F_i\right\rangle.
+\end{align}
+Using this result, we can define the pressure
+\begin{align}
+    \label{eq:pressure_in_md}
+	P = \rho_n k_bT - \frac{1}{3V}\left\langle \sum_{i=1}^N \vec r_i \cdot \vec F_i\right\rangle,
+\end{align}
+where $\rho_n$ is the density.

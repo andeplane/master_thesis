@@ -2,7 +2,7 @@
 \label{sec:mean_free_path_calculation}
 The mean free path $\lambda$ is the average distance a particle travels before it collides with another particle. We imagine a particle with diameter $d$ moving and find its \textit{effective collision area} to be (see figure \ref{fig:effective_collision_area})
 \begin{align}
-	A = \pi (2d)^2.
+	\sigma = \pi (2d)^2.
 \end{align}
 \begin{figure}[h]
 \begin{center}
@@ -35,7 +35,7 @@ where $\rho_n$ is the number density. The mean free path is then calculated as t
 	\lambda = \frac{\langle v\rangle \tau}{ \sqrt 2 \pi d^2\langle v\rangle \rho_n\tau} = \frac{1 }{ \sqrt 2 \pi d^2 \rho_n}.
 \end{align}
 \section{Mean collision time}
-From the mean free path, it is easy to calculate the mean collision time. The mean collision time $\tau_\text{coll}$ is simply the average \textit{time} a particle travels before it collides with another particle. So, the mean free path was the distance $\lambda$ the average particle will travel. The average speed of the particles were $\langle v \rangle$, so $\tau_\text{coll}$ should then be
+From the mean free path, it is easy to calculate the mean collision time. The mean collision time $\tau_\text{coll}$ is simply the average \textit{time} a particle travels before it collides with another particle. So, if the mean free path $\lambda$ was average distance a particle will travel before a collision and the average speed of the particles were $\langle v \rangle$, the average time $\tau_\text{coll}$ should be
 \begin{align}
 	\label{eq:kinetic_theory_mean_collision_time}
 	\tau_\text{coll} &= \frac{\lambda}{\langle v\rangle} = \frac{1}{\sqrt 2 \pi d^2 \rho_n \langle v \rangle}\\

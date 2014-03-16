@@ -1,64 +1,71 @@
 \section{Measuring physical quantities}
 \label{sec:dsmc_measuring_physical_quantities}
-\todo{Write better introduction here}
-Once the simulation program is written, we can create states with all the information needed to know any microscopic property about the system. However, most macroscopic quantities are of statistical nature and 
- a time average in a steady state to reach the real expectation value. In section \ref{sec:dsmc_steady_state} we will discuss how to verify that we have reached a steady state. 
+The model, or shall we say, the \textit{simulator} is in principle fully described. The particles move and perform collisions with the surface according to some interaction rule. Then the particles will collide with each other. This process goes on an on until we are satisfied or out of computing time. Within this framework, statistical mechanics happens and particles behave as they should (the model solves the Boltzmann equation). But there is no reason to have a simulator if we're not going to use it to learn physics.\\
+The simulator will take the system from some initial state and guide it through the phase space. This was what the ergodicity hypothesis allows us to do (see section \ref{sec:kinetic_theory_ergodicity}). We can evolve the system through time and visit the phase space with probabilities equal to those of the ensemble. The DSMC model is inherently stochastic, so any physical quantity should be computed by averaging many instantaneous measurements. We should assume that there will occur gradients of the physical quantities (for example gradients in density and temperature), so we should calculate local values in the collision cells. In a typical collision cell, there will be maybe ten to a hundred particles, so the instantaneous values will fluctuate significantly. But as we know from statistics, if the system is in equilibrium, the fluctuations (here the standard deviation) in e.g. the energy or temperature will decrease as $1/\sqrt{N_m}$ if measured $N_m$ times assuming that the measurements are uncorrelated. The latter requirement can be obtained by measuring every $n$th timestep. We can measure the correlation between two states through the velocity autocorrelation function given as
+\begin{align}
+	C_v(t) &= \frac{\langle \vec v(t)\vec v(0)\rangle_N}{\langle \vec v(0)\vec v(0)\rangle_N}\\
+	&= \frac{1}{N}\frac{\sum_{n=1}^N \vec v_n(t)\cdot\vec v_n(0)}{\sum_{n=1}^N \vec v_n(0)\cdot\vec v_n(0)},
+\end{align}
+which is equal to one at $t=0$, and decays with time as the system becomes more uncorrelated with the initial state. We should then measure physical quantities with a time interval corresponding to the time where the velocity autocorrelation function has become more or less zero. We will now quickly discuss how to measure the physical quantities we will use in our analysis later on. 
 \subsection{Energy}
-The total energy of a system is as usual given by the sum of the kinetic and potential energy. Since we are using the hard sphere model, we remember that the potential energy is given as
+The total energy of a system is as usual given by the sum of the kinetic and potential energy. Since we are using the hard sphere model, the potential energy is given as
 \begin{align}
 	V(\vec r_1, \vec r_2) = \left\{
 	\begin{array}{lr}
-	0 & \text{if } |\vec r_1  - \vec r_2| \leq d\\
-	\infty & \text{if } |\vec r_1  - \vec r_2| < d\\
+	0 & \text{if } |\vec r_1  - \vec r_2| > d\\
+	\infty & \text{if } |\vec r_1  - \vec r_2| \leq d,\\
 	\end{array}
 	\right .
 \end{align}
-where collisions will make sure that the relative distance between any particle pair always remains larger than the diameter. The total energy of our entire system will then be the kinetic energy
+where collisions will make sure that the relative distance between any particle pair always remains larger than the diameter. The total energy of our entire system will then only be the kinetic energy
 \begin{align}
-	E = E_k = \sum_{n=1}^N {1\over 2}m_iv_i^2
+	E = E_k = \sum_{n=1}^N {1\over 2}m_nv_n^2
 \end{align}
-where $m_i$ is the mass of particle $i$ and $v_i$ is its scalar velocity. An example implementation of how the kinetic energy is calculated is given in listing \ref{lst:dsmc_kinetic_energy}. Remember that in DSMC, each particle represents a given number of real atoms.
+where $m_n$ is the mass of particle $n$ and $v_n$ is its scalar velocity. An example implementation of how the instantaneous kinetic energy is calculated is given in listing \ref{lst:dsmc_kinetic_energy}. Remember that in DSMC, each particle represents a given number of real atoms.
 
 \begin{lstlisting}[caption=Calculation of kinetic energy., label=lst:dsmc_kinetic_energy]
-double calculate_kinetic_energy(vector<Vector3> &velocities, int atoms_per_particle) {
+double calculate_kinetic_energy(vector<Vector3> &velocities) {
 	double kinetic_energy = 0;
-	int num_particles = velocities.size();
-	for(int i=0; i<num_particles; i++) {
-		Vector3 velocity = velocities.at(i);
+	for(int n=0; n<velocities.size(); n++) {
+		Vector3 velocity = velocities.at(n);
 		kinetic_energy += 0.5*mass*atoms_per_particle*velocity.NormSquared();
 	}
 
 	return kinetic_energy;
 }
 \end{lstlisting}
-This is of course the instantaneous energy at a given timestep. The average energy of the system should be found by averaging the instantaneous energy over time.
+Once we have found the kinetic energy, we can easily compute the temperature.
 \subsection{Temperature}
 The temperature is defined through the equipartition theorem using the three momentum degrees of freedom
 \begin{align}
 	\langle E_k \rangle = {3\over 2}Nk_BT,
 \end{align}
-where $\langle E_k \rangle$ is the average kinetic energy, $N$ is the number of particles, $k_B$ is Boltzmann's constant and $T$ is the temperature. The only unknown property in this equation is the temperature
+where $\langle E_k \rangle$ is the average kinetic energy, $N$ is the number of particles, $k_B$ is Boltzmann's constant and $T$ is the temperature. The only unknown quantity in this equation is the temperature
 \begin{align}
 	\label{eq:dsmc_temperature}
 	T = \frac{2E_k}{3Nk_B},
 \end{align}
-where we have dropped the average value brackets of the kinetic energy because we use this to define the instantaneous temperature which, as with the energy, must be averaged over time in order to get the average gas temperature. Note that if the fluid is flowing (the gas has non-zero average velocity), the numerical values of the particle's velocities are higher, which in turn results in higher measured temperatures. But of course, this has to be wrong, the temperature should not be dependent of the frame of reference. Imagine a bacteria swimming in the flowing fluid, the temperature it feels is proportional to \textit{the average kinetic energy compared to the local frame of reference}. This indicates that we should define a \textit{instantaneous local temperature} $T(\vec r, t)$ which we define as
+where we have dropped the average value brackets of the kinetic energy because we use this to define the instantaneous temperature. Note that if the fluid is flowing (the gas has non-zero average velocity), the numerical values of the particle's velocities are higher, which in turn results in higher measured temperatures. But of course, this has to be wrong, the temperature should not depend on the choice of frame of reference. Imagine a bacteria swimming in the flowing fluid, the temperature it feels is proportional to the average kinetic energy compared to the local frame of reference. This indicates that we should define a instantaneous local temperature $T(\vec r, t)$ which we define as
 \begin{align}
 	\label{eq:dsmc_local_temperature}
 	T(\vec r, t) = \frac{2m}{3k_B}\left[\frac{E(\vec r, t)}{\rho(\vec r, t)} - \frac{1}{2}\left(\frac{\vec p(\vec r, t)}{\rho(\vec r, t)}\right)^2\right],
 \end{align}
-where $E(\vec r,t)$, $\rho(\vec r,t)$ and $\vec p(\vec r,t)$ is the average kinetic energy, density and momentum within some volume around the point $\vec r$. This is of course still just the equipartition theorem where we measure the kinetic energy in the frame of reference determined by the fluid around the point $\vec r$. 
+where $E(\vec r,t)$, $\rho(\vec r,t)$ and $\vec p(\vec r,t)$ is the average kinetic energy, density and momentum within some volume around the point $\vec r$. This is of course still just the equipartition theorem where we measure the kinetic energy in the frame of reference determined by the fluid around the point $\vec r$. We usually use the collision cells to compute these local values. Now we need to calculate the density.
 \subsection{Density}
-Since there are no forces between the particles in DSMC, all gas particles may be at the very same point (remember that we used the hard sphere collision model only to calculate the statistical collision rates, not to detect collisions). This will of course not happen, but it is possible to initiate a state in that configuration. The density in any volume $V$ is easily calculated through
+Here we should comment on another detail, a consequence of our intermolecular collision model. Since there are no forces between the particles, all of them can in principle be at the very same point (remember that we used the hard sphere collision model only to calculate the collision rates, not to detect collisions). This will of course not happen, but it is possible to initiate a state in that configuration. The number density $\rho_n$ in any volume $V$ is easily calculated through
 \begin{align}
 	\rho_n = {N \over V},
 \end{align}
-where $N$ is the number of atoms in that volume. This enables us to calculate local densities as well as the global density of the system.
+where $N$ is the number of atoms in that volume. This enables us to calculate local densities as well as the global density of the system. Again we must not forget that each simulated particle represents $N_\text{eff}$ real atoms.
 \subsection{Permeability}
 \label{sec:permeability_dsmc}
-The permeability is defined through Darcy's law (equation \eqref{eq:darcy_1}) which was discussed in section \ref{sec:darcy_law}. We can solve for the permeability $k$
+The permeability $k$ is defined through Darcy's law (equation \eqref{eq:darcy_1}) which we discussed in section \ref{sec:darcy_law}
 \begin{align}
 	\label{eq:permeability_gas}
 	k = \frac{Q \mu L}{A\Delta P},
 \end{align}
-where $L$ is the length of the system in the flow direction, $\mu$ is the viscosity, $Q$ is the volumetric flow rate, $A$ is the cross sectional area, $\Delta P = P_0 - P_L$ are the pressures at $x=L$ and $x=0$. Note that the systems we will study are periodic in the flow direction. This implies that the point $x=0$ actually is the \textit{same point} as $x=L$, which gives $P(x=0) = P(x=L)$. This means that the pressure difference is zero, no matter how we measure the pressure. We do however know how to deal with this. 
+where $L$ is the length of the system in the flow direction, $\mu$ is the viscosity, $Q$ is the volumetric flow rate (the number of cubic meter fluid flowing per second), $A$ is the cross sectional area, $\Delta P = P_0 - P_L$ are the pressures at $x=0$ and $x=L$. The viscosity can be computed with the kinetic theory \cite{alexander1998cell}
+\begin{align}
+	\mu = \frac{5}{16d^2}\sqrt{\frac{mk_B T}{\pi}}.
+\end{align}
+Remember that the systems we will study are periodic in the flow direction. This implies that the point $x=0$ actually is the \textit{same point} as $x=L$, which gives $P(x=0) = P(x=L)$. Hence, the pressure difference is zero, no matter how we measure the pressure. We will now address this problem with a rather comprehensive discussion about pressure. We will get back to the permeability soon enough.
