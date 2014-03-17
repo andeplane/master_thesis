@@ -68,21 +68,3 @@ where $\mathcal{R}_2$ and $\mathcal{R}_3$ are random numbers in the range $(0,1)
 	\vec v_i^* &= \vec v_\text{cm} + \frac{1}{2}\vec v_r^*\\
 	\vec v_j^* &= \vec v_\text{cm} - \frac{1}{2}\vec v_r^*.
 \end{align}
-An example of how this can be implemented is found in listing \ref{lst:post_collisions_velocities}.
-\begin{lstlisting}[caption=Example code showing how to determine post-collision velocities., label=lst:post_collisions_velocities]
-void collide_molecules(Vector3 &v0, Vector3 &v1, Random &rnd) {
-    Vector3 v_center_of_mass = 0.5*(v0 + v1);
-    double v_rel = (v1 - v2).length();
-    
-    double cos_theta = 1.0 - 2.0*rnd.next_double();
-    double sin_theta = sqrt(1.0 - cos_theta*cos_theta);
-    double phi = 2*M_PI*rnd.next_double();
-
-    Vector3 relative_velocity(1,1,1)*v_rel;
-    relative_velocity.x *= cos_theta;
-    relative_velocity.y *= sin_theta*cos(phi);
-    relative_velocity.z *= sin_theta*sin(phi);
-    v0 = v_center_of_mass + 0.5*relative_velocity;
-    v1 = v_center_of_mass - 0.5*relative_velocity;
-}
-\end{lstlisting}
