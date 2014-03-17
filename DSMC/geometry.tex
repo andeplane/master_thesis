@@ -92,3 +92,8 @@ which gives the normalized tangent vectors
 	\vec t_1 &= \frac{ \tilde{\vec t}_1}{|\tilde{\vec t}_1|}\\
 	\vec t_2 &= \vec n\times \vec t_1.
 \end{align}
+The porosity $\phi$ is found by counting the number of empty voxels divided by the total number of voxels
+\begin{align}
+	\label{eq:dsmc_geometry_porosity}
+	\phi = \frac{N_\text{empty}}{N_\text{voxels}}.
+\end{align}

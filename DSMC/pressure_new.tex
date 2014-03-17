@@ -27,6 +27,7 @@ Since the gas satisfies the ideal gas equation of state, this is of course how w
 \end{align}
 since we already know how to calculate the density and the temperature. The local pressure is of course found by using the local values of the density and temperature.
 \subsection{Applying a pressure gradient}
+\label{sec:dsmc_applying_pressured_grad}
 In order to induce flow in a system, it is common to apply a pressure gradient. A pressure gradient means that there acts a nonzero net force on any volume element $\dm V$ in the system. In continuum models like the NSE (see section \ref{sec:theory_of_fluids_euler_navier}), the pressure (and hence the pressure gradients) is incorporated as boundary conditions where pressure is specified at given points. A typical boundary condition is $P(x=0) = P_0$ and $P(x=L) = P_L$, but as we already mentioned, periodic boundary conditions is a problem since the points are the very same point. Instead we will use ideas from continuum mechanics to relate a given pressure gradient to a constant force which we will apply on all particles in the system. In the literature, this is often called gravity driven flow.\\
 We look at a volume element of size $\Delta V = \Delta x\Delta y\Delta z$ in a channel with a continuous fluid and a pressure gradient in the $x$-direction, see figure \ref{fig:pressure_gravity_equivalent}. 
 \begin{figure}[h]

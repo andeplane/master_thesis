@@ -1,42 +1,17 @@
-In this chapter we go into detail about how the DSMC model is implemented in c++. We assume that the reader is familiar with c++ and object orientation. The process of running a simulation consists 
-
-
-First, we discuss how the code is object oriented and how the different classes are structured. We will explain how particles are divided into collision cells and how the collisions are calculated. The algorithm for detecting and performing surface interactions is discussed, in addition to how the code is parallelized with Message Passing Interface (MPI).
-
-
-\section{Code structure and variables}
-The main function of the program initiates an instance of the class \textit{System} which is the main class of the simulator. It also has an object of the \textit{SystemSampler} class that samples the physical quantities following the definitions in section \ref{sec:dsmc_measuring_physical_quantities}. In this section we go through all of the classes and how they are connected (as shown in figure \ref{fig:dsmc_uml_diagram}). 
+The process going from a model description to the actual implementation might sometimes be extrordinary difficult. You should know every little detail of everything. In this chapter we go into detail about how the DSMC model is implemented in C{}\verb!++!. We assume that the reader is familiar with the programming language. Instead of going through all the classes and their relations, we follow the timeline of a simulation, going from the initialization of the system to how the timestep is computed. For convenience, an UML diagram is shown in figure \ref{fig:dsmc_uml_diagram}.
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/dsmcuml.png}
+\includegraphics[width=0.9\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/dsmcuml.png}
 \end{center}
 \caption{A UML-diagram showing how the classes in the DSMC program are related to each other.}
 \label{fig:dsmc_uml_diagram}
 \end{figure}
-\subsection{main.cpp}
-The main function is of course the top level scope of the program. It creates the objects used to read settings, simulate the system and sample statistics. The code is summarized in listing \ref{lst:dsmcmaincpp}.
-\begin{lstlisting}[caption=main.cpp, label=lst:dsmcmaincpp]
-int main(int args, char* argv[]) {
-    // Initialize MPI
-    Settings settings("dsmc.ini");
-    System system;
-    system.initialize(&settings, myid)
-    StatisticsSampler sampler(&system);
-    
-    // Load data from earlier timestep
-
-    for(int timestep=0;timestep<settings.timesteps;timestep++) {
-    	system.step();
-    	sampler.sample();
-    }
-
-    // Save data to file
-    // Finalize
-}
-\end{lstlisting}
-\subsection{Class System}
-The system class is the top level simulator class. It reads all the physical properties of the system (i.e. system size, density, world geometry) and executes each timestep when it's asked to do so. The phase space variables are saved in 
+\\
+The first step of the full program is to create the geometry we want the particles to be confined by. We explain how that is done in section \ref{sec:dsmc_complex_geometries}. Then, we can initialize a system by adding particles randomly inside the geometry. Their velocities should be Maxwell-Boltzmann distributed, as described in section \ref{eq:maxwell_boltzmann_vector_probability}. The initialiation process is explained in section \ref{sec:dsmc_implementation_initialization} before we are ready to perform the timesteps. A timestep is divided into four stages. These stages are
 \begin{itemize}
-\item \textit{std::vector<double> r}
-\item \textit{std::vector<double> v}
+    \item accelerate particles to induce flow,
+    \item move particles and perform surface interactions,
+    \item update collision cells,
+    \item perform collisions between particles,
 \end{itemize}
+which all are discussed in section \ref{sec:dsmc_implementation_timestep}. This is everything we need to run a DSMC program in \textit{any} geometry we want. The only thing left to explain is how we have parallelized the code, allowing it to run on many processors on a supercomputer. This final piece is explained in section \ref{sec:dmsc_parallelization}. 

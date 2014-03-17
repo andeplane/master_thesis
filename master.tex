@@ -1,7 +1,8 @@
-\documentclass[twoside,english, a4paper, 12pt]{uiofysmaster}
+\documentclass[twoside,english, a4paper, 10pt]{uiofysmaster}
 % \usepackage{biblatex}
 \usepackage{todonotes}
 \usepackage{amssymb}
+\usepackage[top=2in, bottom=1.5in, left=1in, right=1in]{geometry}
 
 \author{Anders Hafreager}
 \title{\uppercase{Flow in complex nanoporous media}}
@@ -72,8 +73,9 @@ This is a dedication to my text.
 \begin{chapter}{Implementation}
 \label{chap:dsmc_implementation}
   \input{DSMC/implementation}
-  \input{DSMC/collisions}
   \input{DSMC/geometry}
+  \input{DSMC/initialization}
+  \input{DSMC/timestep}
   \input{DSMC/parallelization}
 \end{chapter}
 \begin{chapter}{Results}
