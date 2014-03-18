@@ -1,6 +1,6 @@
 \section{The Boltzmann equation}
 \label{sec:boltzmann_equation}
-In the section \ref{sec:kinetic_theory_distribution_function}, we introduced the distribution function $f$ that describes the density in a $6N$ dimensional phase space. Now, if we know the distribution function at $t=0$, we could in principle compute any property of the system. But at some later time the distribution function might have changed, unless, of course, $\dm f/\dm t = 0$ (in which the system would be in what we call an equilibrium state). We can, by applying conservation of probability, derive an equation of motion for $f$. This equation is called the Boltzmann equation and describes how $f$ evolves through time by assuming that any change of density (read probability) around a point $(\vec r, \vec v)$ at the time $t$ must be due to
+In the section \ref{sec:kinetic_theory_distribution_function}, we introduced the distribution function $f$ that describes the density in a $6N$ dimensional phase space. Now, if we know the distribution function at $t=0$, we could in principle compute any property of the system. But at some later time the distribution function might have changed, unless, of course, $\dm f/\dm t = 0$ in which the system would be in an equilibrium state. We can, by applying conservation of probability, derive an equation of motion for $f$. This equation is called the Boltzmann equation and describes how $f$ evolves through time by assuming that any change of probability around a point $(\vec r, \vec v)$ at the time $t$ must be due to
 \begin{itemize}
 	\item flow through a surface in the phase space,
 	\item an external force, or
@@ -26,61 +26,61 @@ since $\vec v$ is independent of $\vec r$. We can extend this equation by adding
 which we call the collisionless Boltzmann equation. It is a good approximation to describe the dynamics of very dilute gases where intermolecular collisions occur rarely. But we should not ignore collisions between particles, so as promised, we will now see that by treating collisions will appear as an additional term.
 \subsection{The collision operator}
 \label{sec:boltzmann_collision_operator}
-We consider a dilute gas so we can assume that only binary collisions occur (we ignore the contribution from collisions between three or more particles at a time). We also assume that the total energy, momentum and mass is conserved in all collisions. Then consider two particles $i$ and $j$ moving towards each other with velocities $\vec v$ and $\vec v_1$, and relative velocity $\vec g = \vec v - \vec v_1$. We define particle $i$ as the \textit{incident} particle and $j$ as the \textit{target} particle. After the collision, the particles will have velocities $\vec v'$ and $\vec v_1'$ with relative velocity $\vec g' = \vec v' - \vec v_1'$. In order to make the calculations simpler, we change the frame of reference. If we choose the target particle as initial frame of reference, we see that the velocity of the incident particle becomes $\tilde {\vec v} = \vec g$ and $\tilde {\vec v}' = \vec g'$. Since momentum is conserved, we know that the relative velocity must remain constant $|\vec g| = |\vec g'|$ during the collision. The direction of $\vec g'$ is given by the angles $\phi$ and $\theta$ with $\hat {\vec z}$ along $\vec g$ and $\phi \in [0, 2\pi], \theta \in [0, \pi]$. We can express $\vec g'$ as
+We consider a dilute gas so we can assume that only binary collisions occur (we ignore the contribution from collisions between three or more particles at a time). We also assume that the total energy, momentum and mass is conserved in all collisions. Then consider two particles $i$ and $j$ moving towards each other with velocities $\vec v_i$ and $\vec v_j$, and relative velocity $\vec v_\text{rel} = \vec v_i - \vec v_j$. We define particle $i$ as the \textit{incident} particle and $j$ as the \textit{target} particle. After the collision, the particles will have velocities $\vec v_i'$ and $\vec v_j'$ with relative velocity $\vec v'_\text{rel} = \vec v_i' - \vec v_j'$. In order to make the calculations simpler, we change the frame of reference, in which we label the velocities with a tilde so that $\vec v \rightarrow \tilde{\vec v}$. If we choose the target particle as initial frame of reference, we see that the velocity of the incident particle becomes $\tilde {\vec v}_i = \vec v_\text{rel}$ and $\tilde {\vec v}_i' = \vec v'_\text{rel}$. Since momentum is conserved, we know that the relative velocity must remain constant, $|\vec v_\text{rel}| = |\vec v'_\text{rel}|$, during the collision. The direction of $\vec v'_\text{rel}$ is given by the angles $\phi$ and $\theta$ with $\hat {\vec z}$ along $\vec v_\text{rel}$ and $\phi \in [0, 2\pi], \theta \in [0, \pi]$. We can express $\vec v'_\text{rel}$ as
 \begin{align}
-	\vec g' = \vec g - 2\unitvector e(\unitvector e\cdot\vec g),
+	\vec v_\text{rel}' = \vec v_\text{rel} - 2\unitvector e(\unitvector e\cdot\vec v_\text{rel}),
 \end{align}
 where $\unitvector e$ is an arbitrary unit vector. If we multiply by $\unitvector e$, we see that 
 \begin{align}
-	\unitvector e\cdot \vec g' = \unitvector e\cdot\left[\vec g - 2\unitvector{e}(\unitvector e\cdot\vec g)\right] = -\unitvector e \cdot \vec g
+	\unitvector e\cdot \vec v_\text{rel}' = \unitvector e\cdot\left[\vec v_\text{rel} - 2\unitvector{e}(\unitvector e\cdot\vec v_\text{rel})\right] = -\unitvector e \cdot \vec v_\text{rel}
 \end{align}
 which gives the symmetric relation
 \begin{align}
-	\vec g = \vec g' - 2\unitvector e(\unitvector e\cdot\vec g').
+	\vec v_\text{rel} = \vec v_\text{rel}' - 2\unitvector e(\unitvector e\cdot\vec v_\text{rel}').
 \end{align}
-The angle between $\vec g$ and $\vec g'$ is $\theta$, so
+The angle between $\vec v_\text{rel}$ and $\vec v_\text{rel}'$ is $\theta$, so
 \begin{align}
-	\vec g'\cdot \vec g = g^2\cos\theta = g^2(1 - 2\cos \chi),
+	\vec v_\text{rel}'\cdot \vec v_\text{rel} = v_\text{rel}^2\cos\theta = v_\text{rel}^2(1 - 2\cos \chi),
 \end{align}
-where $\chi$ is the angle between $\unitvector e$ and $\vec g$ which gives the relation
+where $\chi$ is the angle between $\unitvector e$ and $\vec v_\text{rel}$, which gives the relation
 \begin{align}
 	\theta = \pi - 2\chi.
 \end{align}
-We now define the solid angle element $\dm\Omega=\sin\theta \dm\theta \dm\phi$ about $\vec g'$ 
+We now define the solid angle element $\dm\Omega=\sin\theta \dm\theta \dm\phi$ about $\vec v_\text{rel}'$ 
 \begin{align}
-	g \dm\Omega &= g\sin\theta \dm\theta \dm\phi = 2g\sin(\pi - 2\chi)\dm\chi \dm\phi\\
-	&= 4g\cos\chi\sin\chi \dm\chi \dm\phi = 4\left|\unitvector e\cdot\vec g\right|\sin\chi \dm\chi \dm\phi\\
-	&= 4\left|\unitvector e\cdot\vec g\right|\dm^2e,
+	v_\text{rel} \dm\Omega &= v_\text{rel}\sin\theta \dm\theta \dm\phi = 2v_\text{rel}\sin(\pi - 2\chi)\dm\chi \dm\phi\\
+	&= 4v_\text{rel}\cos\chi\sin\chi \dm\chi \dm\phi = 4\left|\unitvector e\cdot\vec v_\text{rel}\right|\sin\chi \dm\chi \dm\phi\\
+	&= 4\left|\unitvector e\cdot\vec v_\text{rel}\right|\dm^2e,
 \end{align}
-where $\dm^2e = \sin\chi \dm\chi \dm\phi$ is a solid angle element about $\unitvector e$. In the following, we will calculate the scattering cross section which is the \textit{area} that describes the likelyhood of an incident particle being scattered by the target particle. We denote the number density $\rho_n$ and find that the incident flux is $\rho_n g$. The rate $h_{\dm\Omega}'$ of scattered particles into $\dm\Omega$ is
+where $\dm^2e = \sin\chi \dm\chi \dm\phi$ is a solid angle element about $\unitvector e$. In the following, we will calculate the scattering cross section which is the \textit{area} that describes the likelyhood of an incident particle being scattered by the target particle. We denote the number density $\rho_n$ and find that the incident flux is $\rho_n v_\text{rel}$. The rate $h_{\dm\Omega}'$ of scattered particles into $\dm\Omega$ is
 \begin{align}
 	\label{eq:partial_scattering_rate}
-	h_{\dm\Omega}' = \rho_n g\sigma \dm\Omega,
+	h_{\dm\Omega}' = \rho_n v_\text{rel}\sigma \dm\Omega,
 \end{align}
-where the proportionality constant $\sigma$ is the cross section. We might have several target particles colliding independently of each other which will contribute to the scattering rate. If we have $n_t$ such particles, we obtain the total scattering rate $h_{\dm\Omega}$ by multiplying \eqref{eq:partial_scattering_rate} by $n_t$
+where the proportionality constant $\sigma$ is the cross sectional area. We might have several target particles colliding independently of each other which will contribute to the scattering rate. If we have $n_t$ such particles, we obtain the total scattering rate $h_{\dm\Omega}$ by multiplying \eqref{eq:partial_scattering_rate} by $n_t$
 \begin{align}
-	h_{\dm\Omega} = n_t\rho_n g\sigma \dm\Omega.
+	h_{\dm\Omega} = n_t\rho_n v_\text{rel}\sigma \dm\Omega.
 \end{align}
-The \textit{differential} cross section $\sigma$ depends on $\vec g$ and $\vec g'$, so we denote it as $\sigma = \sigma(\vec g\rightarrow \vec g')$, whereas the \textit{total} cross section $\sigma_T$ is given by integrating over all solid angles
+The \textit{differential} cross section $\sigma$ depends on $\vec v_\text{rel}$ and $\vec v_\text{rel}'$, so we denote it as $\sigma = \sigma(\vec v_\text{rel}\rightarrow \vec v_\text{rel}')$, whereas the \textit{total} cross section $\sigma_T$ is given by integrating over all solid angles
 \begin{align}
 	\sigma_T = \int\! \sigma \, \dm\Omega.
 \end{align}
 We will now look at particles with velocities in the range $[\vec v, \vec v + \dm\vec v]$ incident on target particles with velocities in the range $[\vec v_1, \vec v_1 + \dm\vec v_1]$. The incident flux is $gf(\vec v,\vec r)\dm\vec v$ and the number of target particles is $f(v_1,\vec r)\dm\vec v_1\dm\vec r$. The rate at which particles with velocity $\vec v_1$ are scattered by particles with velocity $\vec v$ is \todo{Check if these $f$'s should be normalized}
 \begin{align}
-	f(\vec v)f(\vec v_1) g \sigma \, \dm\Omega \dm\vec v \dm\vec v_1 \dm\vec r = f(\vec v)f(\vec v_1)4\left|\unitvector e\cdot \vec g\right| \sigma \,\dm^2e \dm \vec v \dm\vec v_1 \dm \vec r.
+	f(\vec v)f(\vec v_1) v_\text{rel} \sigma \, \dm\Omega \dm\vec v \dm\vec v_1 \dm\vec r = f(\vec v)f(\vec v_1)4\left|\unitvector e\cdot \vec v_\text{rel}\right| \sigma \,\dm^2e \dm \vec v \dm\vec v_1 \dm \vec r.
 \end{align}
 The rate of loss is the rate of which particles in $\dm\vec v\dm\vec r$ are being hit by other particles. We can calulate this by integrating over all solid angles $\dm^2 e$ and incident velocities $\dm \vec v$
 \begin{align}
-	\text{rate of loss} = \left[\iiint\! f(\vec r, \vec v, t)f(\vec r, \vec v_1, t)4\left|\unitvector e \cdot \vec g \right|\sigma \,\dm^2 e\dm \vec v_1\right]\dm \vec v\dm \vec r.
+	\text{rate of loss} = \left[\iiint\! f(\vec r, \vec v, t)f(\vec r, \vec v_1, t)4\left|\unitvector e \cdot \vec v_\text{rel} \right|\sigma \,\dm^2 e\dm \vec v_1\right]\dm \vec v\dm \vec r.
 \end{align}
 We also have the inverse event, incident particles with velocity $\vec v'$ hitting target particles with velocity $\vec v_1'$ so that the final velocity of the target particles is $\vec v$. This is calculated with the same idea
 \begin{align}
-	\text{rate of gain} = \left[\iiint\! f(\vec r, \vec v', t)f(\vec r, \vec v_1', t)4\left|\unitvector e \cdot \vec g \right|\sigma \,\dm^2 e\dm \vec v_1\right]\dm\vec v\dm\vec r,
+	\text{rate of gain} = \left[\iiint\! f(\vec r, \vec v', t)f(\vec r, \vec v_1', t)4\left|\unitvector e \cdot \vec v_\text{rel} \right|\sigma \,\dm^2 e\dm \vec v_1\right]\dm\vec v\dm\vec r,
 \end{align}
-since $|\unitvector e\cdot \vec g| = |\unitvector e\cdot \vec g'|$ and $\dm\vec v'\dm\vec v_1' = \dm\vec v\dm\vec v_1$. The total change in the distribution function is given by the functional $J[f]$
+since $|\unitvector e\cdot \vec v_\text{rel}| = |\unitvector e\cdot \vec v_\text{rel}'|$ and $\dm\vec v'\dm\vec v_1' = \dm\vec v\dm\vec v_1$. The total change in the distribution function is given by the functional $J[f]$
 \begin{align}
-	J[f] &= \iiint\! 4|\unitvector e\cdot\vec g|\sigma[f'f_1' - ff_1]\,\dm\vec v_1 \dm^2e\\
-	&= \iint\! g \sigma[f'f_1' - ff_1] \,\dm\vec v_1 \dm\Omega,
+	J[f] &= \iiint\! 4|\unitvector e\cdot\vec v_\text{rel}|\sigma[f'f_1' - ff_1]\,\dm\vec v_1 \dm^2e\\
+	&= \iint\! v_\text{rel} \sigma[f'f_1' - ff_1] \,\dm\vec v_1 \dm\Omega,
 \end{align}
 where $f = f(\vec r, \vec v, t)$ and $f_1 = f(\vec r, \vec v_1, t)$. The full Boltzmann equation is then given by
 \begin{align}
