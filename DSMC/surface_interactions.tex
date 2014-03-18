@@ -25,7 +25,7 @@ for the velocity component normal on the surface and
 \begin{align}
 	P_t(v_t)\dm v_t = \sqrt{m\over 2\pi k_BT_w}e^{-\frac{mv_t^2}{2k_BT_w}} \dm v_t,
 \end{align}
-for the tangential component. Here $m$ is the mass of the particle and $k_B$ is Boltzmann's constant as usual. However, this distribution does not obey detailed balance since the incoming velocity is completely uncorrelated to the outgoing velocity, but it turns out that it provides great theoretical insight given its simple mathematical form. This, in addition to that it is computationally inexpensive (see section \todo{write it}), it is much used in the literature. 
+for the tangential component. Here $m$ is the mass of the particle and $k_B$ is Boltzmann's constant as usual. However, this distribution does not obey detailed balance since the incoming velocity is completely uncorrelated to the outgoing velocity, but it turns out that it provides great theoretical insight given its simple mathematical form. This, in addition to that it is computationally inexpensive (see section \ref{sec:dsmc_implementation_initialization}), it is much used in the literature. 
 \subsection{The Cercignani-Lampis model}
 A more realistic model is the Cercignani-Lampis model which can be derived requiring detailed balance and wall isotropy (i.e. given incoming velocity $\vec v'$ and outgoing velocity $\vec v$, $P(\vec v' \rightarrow \vec v)$ is unchanged if $\vec v'$ and $\vec v$ are rotated with the same angle about the surface normal vector) \cite{cowling1974cercignani}. The probability of going from an incoming velocity $\vec v'$ to an outgoing velocity $\vec v$ is given as
 \begin{align}

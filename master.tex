@@ -2,10 +2,10 @@
 % \usepackage{biblatex}
 \usepackage{todonotes}
 \usepackage{amssymb}
-\usepackage[top=2in, bottom=1.5in, left=1in, right=1in]{geometry}
+\usepackage[top=1.5in, bottom=1.5in, left=1in, right=1in]{geometry}
 
 \author{Anders Hafreager}
-\title{\uppercase{Flow in complex nanoporous media}}
+\title{\uppercase{Flow of dilute gases in complex nanoporous media}}
 \date{March 2014}
 
 \input{preamble}
@@ -90,17 +90,16 @@ This is a dedication to my text.
   \label{chap:md}
   \input{MD/introduction}
   \input{MD/model}
+  \input{MD/forces}
+  \input{MD/flow}
   \input{MD/timeintegration}
   \input{MD/physicalproperties}
-  \input{MD/stability}
-  \input{MD/steadystate}
   \end{chapter}
 
   \begin{chapter}{Implementation}
   \label{chap:md_implementation}
     \input{MD/implementation}
     \input{MD/parallelization}
-    \input{MD/flow}
     \input{MD/geometry}
   \end{chapter}
 

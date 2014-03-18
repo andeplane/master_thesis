@@ -4,7 +4,7 @@
 
 \subsection{Two-body forces}
 \label{sec:md_implementation_two_body_forces}
-The Lennard-Jones potential gives rise to a two-body force acting only on pairs of atoms. In principle, this means we have to sum over all pairs in the system which for $n$ atoms in the system is $O(n^2)$. This calculation can be reduced to $O(n)$ by realizing that the gradient of the potential (hence the force) is nearly zero at $r \approx 2.5\sigma$, see figure \ref{fig:md_lennard_jones_2}. \todo{Show lennard jones force instead}
+The Lennard-Jones potential gives rise to a two-body force acting on pairs of atoms only. In principle, this means we have to sum over all pairs in the system which for $N$ atoms in the system is $O(N^2)$. This calculation can be reduced to $O(N)$ by realizing that the gradient of the potential (hence the force) is nearly zero at $r \approx 2.5\sigma$, see figure \ref{fig:md_lennard_jones_2}. \todo{Show lennard jones force instead}
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=1.0\textwidth, trim=0cm 0cm 0cm 0cm, clip]{MD/figures/lennard_jones.png}
@@ -12,7 +12,7 @@ The Lennard-Jones potential gives rise to a two-body force acting only on pairs 
 \caption{The Lennard-Jones force. We see that the force is nearly zero at $r\approx 2.5\sigma$, so we don't need to calculate forces between atoms separated by a distance larger than $r_\text{cut} \equiv 2.5\sigma$.}
 \label{fig:md_lennard_jones_2}
 \end{figure}
-We now introduce a certain cut-off distance $r_{cut}$ which we choose as the distance where the force is nearly zero, and set the force to be zero for any $r>r_{cut}$. The force between a pair of atoms $F(r_{ij})$ is then written as
+We now introduce a certain cut-off distance $r_\text{cut}$ which we choose as the distance where the force is nearly zero, and set the force to be zero for any $r>r_\text{cut}$. The force between a pair of atoms $F(r_{ij})$ is then written as
 \begin{align}
 	F(r_{ij}) = \left\{\begin{array}{cc}
 		F_{LJ}(r_{ij}) & \text{if } r \leq r_{cut}\\
@@ -21,3 +21,13 @@ We now introduce a certain cut-off distance $r_{cut}$ which we choose as the dis
 	\right.
 \end{align}
 where $F_{LJ}$ is the standard Lennard-Jones force from eq \eqref{eq:md_lj_force}. We now don't need to sum over atom pairs of which the relative distance is larger than $r_cut$, so the calculation of forces is then globally $O(N)$. 
+\subsection{Cut-off length}
+By introducing the cut-off length $r_\text{cut}$, mathematically speaking, it means that the force is given as
+\begin{align}
+	\vec F(\vec r_{ij}) = \left\{
+	\begin{array}{l l}
+		-24\epsilon\left[2\left(\frac{\sigma^{12}}{r_{ij}^{13}}\right) - \left(\frac{\sigma^6}{r_{ij}^7}\right)\right]\vec u_{ij} & \text{if } r_{ij} \leq r_\text{cut}\\
+		0 & \text{if } r_{ij} > r_\text{cut}.
+	\end{array}\right .
+\end{align}
+This in turns means that we don't have to compute the forces between atoms that are more than $r_\text{cut}$ apart. But by doing so, we must be careful
