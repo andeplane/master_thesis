@@ -1,4 +1,5 @@
 \chapter{Physical units}
+\label{app:physical_units}
 The choice of units does of course not change the physical behavior. It is only a scaling of the the physical quantities so that their numerical values become more convenient. For example, it is common to choose a unit of length $L_0$ so that one unit of length is a typical value in the physical system. There are however only a few \textit{free} choices of units of which the other units follow from. In this appendix, we discuss the choices of units in both the MD and DSMC simulations and derive the other units.
 \section{Choice of units in MD}
 Here we use the so-called MD units. A convenient consequence of these units are that the parameters and masses in the Lennard-Jones force can be factored out which gives simpler calculations. The units we choose are
@@ -31,7 +32,7 @@ We find the temperature $T_0$ by using that we chose the Boltzmann constant to b
 \begin{align}
 	T_0 = \frac{E_0}{k_B}.
 \end{align}
-The pressure is found through $P=F/A$ \todo{check this}
+The pressure is found through $P=F/A$
 \begin{align}
 	P_0 = \frac{F_0}{L_0^2} = \frac{E_0}{L_0^3}.
 \end{align}

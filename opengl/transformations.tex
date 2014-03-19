@@ -1,10 +1,15 @@
 \section{Coordinate transformations}
 \label{sec:opengl_coordinate_transformations}
-OpenGL operates with four coordinate spaces that are heavily used in all OpenGL programs. These are spaces that makes the API convenient to use both from the user's perspective and internally in the OpenGL API. 
+OpenGL operates with four coordinate spaces that are heavily used in all OpenGL programs. These are spaces that makes the API convenient to use both from the user's perspective and internally in the OpenGL API. We will now briefly explain what the different coordinate spaces are and how they are used.
 \subsection{Model space}
-When we create an object, say a triangle, we define its geometrical shape by a set of vertices and the primitive saying how these vertices should be combined to define the surface of the object. The vertices we provide are given in the \textit{model space} (they are the local coordinates) where the origin defines the center position of the object. If we want to render several such objects at different positions, the local coordinates of each object must be translated into the world space, i.e. using \textit{global coordinates}.
+When we create an object, say a triangle, we define its geometrical shape by a set of vertices, and the primitive saying how these vertices should be combined to define the object. The vertices we provide are given in the \textit{model space} (they are the local coordinates) where the origin defines the center position of the object. If we want to render several such objects at different positions, the local coordinates of each object must be translated into the \textit{world space}, i.e. using global coordinates.
 \subsection{World space}
-
+The world space is a fixed coordinate system in which the models are placed. We might want to render a set of spheres, the position of each of these spheres defines where they are positioned relative to each other. Assume now that we have a triangle placed at $\vec r^{w}$ in the world space, the three vertices $\vec v_1^{m}, \vec v_2^{m}, \vec v_3^{m}$ in the model space then get global coordinates in the world space
+\begin{align}
+	\vec v_i^{w} = \vec v_i^{m} + \vec r^{w},
+\end{align}
+for each vertex $i$. In addition, we have to rotate the points around the model center. 
 \subsection{View space}
-
+To decide what objects that will be visible on the screen, we think that we have a camera placed at some position $\vec r_\text{cam}$ pointing towards a target position $\vec r_\text{target}$. This is a more convenient coordinate space than the world space (since only objects in front of the camera will be rendered), we should transform the objects to the \textit{view space}. 
 \subsection{Projection space}
+Our final 

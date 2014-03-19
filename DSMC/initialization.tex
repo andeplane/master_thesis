@@ -1,10 +1,10 @@
 \section{System initialization}
 \label{sec:dsmc_implementation_initialization}
-Now that we know how the geometry is represented, we are ready to discuss the DSMC simulator itself. When we want to run a simulation in a given geometry, we need to decide a few things. We need to know
+Now that we know how the geometry is represented, we are ready to discuss the DSMC simulator itself. When we want to run a simulation in a given geometry, we need to decide a few things. We need to specify
 \begin{itemize}
-	\item which density we want ($\rho_n)$,
-	\item what temperature we want ($T_0$),
-	\item the physical system size ($L_x, L_y, L_z$),
+	\item the density ($\rho_n)$,
+	\item the temperature ($T_0$),
+	\item the physical system size ($L_x, L_y, L_z$), and
 	\item the number of atoms each simulated particle represents ($N_\text{eff}$).
 \end{itemize}
 These are needed input parameters that will affect the initialization process. The first step when the program starts is to load the geometry from disk. We then create the collision cells, before we add all the particles to the system. 
@@ -58,10 +58,8 @@ void create_cells() {
 
             for(int i=0;i<grid.nx;i++) {
                 int c_x = float(i)/grid->nx*cells_x;
-
                 // Find the one-dimensional cell index 
                 int cell_index = cell_index_from_ijk(c_x,c_y,c_z);
-
                 // Count both the total number of voxels
                 // and the number of empty voxels
                 Cell &cell = cells.at(cell_index);
@@ -88,11 +86,7 @@ But we are going to create $M$ particles, each representing $N_\text{eff}$ real 
 \begin{align}
 	M = \frac{N_\text{atoms}}{N_\text{eff}} = \frac{\rho_n V}{N_\text{eff}}.
 \end{align}
-Each of these particles is assigned a random position in the physical space. If the particle is placed inside a wall, then we find a new, random position until it is safely placed inside the available pore space. Each particle gets a velocity according to the input temperature $T_0$ where each velocity component is a normal distribution with standard deviation $\sigma_v = \sqrt{k_BT_0/m}$.\\
-There is just one more thing, once we have found a position for the particle, we need to add
-
-
- An example code showing how this is done is found in listing \ref{lst:dsmc_initialize_particles}.
+Each of these particles is assigned a random position in the physical space. If the particle is placed inside a wall, then we find a new, random position until it is safely placed inside the available pore space. Each particle gets a velocity according to the input temperature $T_0$ where each velocity component is a normal distribution with standard deviation $\sigma_v = \sqrt{k_BT_0/m}$. Once we have found a position for the particle, we need to add it to the collision cell corresponding to its position. An example code showing how this is done is found in listing \ref{lst:dsmc_initialize_particles}.
 \begin{lstlisting}[caption=Particle initialization., label=lst:dsmc_initialize_particles]
 void initialize_particles() {
 	double system_volume = system_size.x * system_size.y * system_size.z;

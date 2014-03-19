@@ -32,16 +32,16 @@ so that
 \end{align}
 Let us see what this operator can do if we insert it into equation \eqref{eq:liouville_time_evolution} and expand the exponential
 \begin{align}
-	f(t) &= e^{\liouviller t} f(0) = f(0) + (\liouviller t) f(0) + \frac{(\liouviller t)^2}{2!} f(0) + ...\\
+	f(t) &= \exp\left(\liouviller t\right) f(0)\\
 	&= \exp\left(\dot{\vec r}t\frac{\partial }{\partial \vec r}\right)f(0)\\
-	&= \sum_{n=0}^\infty \frac{(\dot{\vec r(0)}t)}{n!}\frac{\partial}{\partial \vec r} f(0)\\
+	&= \sum_{n=0}^\infty \frac{(\dot{\vec r}(0)t)^n}{n!}\frac{\partial^n}{\partial \vec r^n} f(0)\\
 	&= f\left[\left(\vec r(0) + \dot{\vec r}(0)t\right), \vec p(0)\right].
 \end{align}
 It does just what we expect it to do, it is a displacement operator, moving the points in the phase space according to their time derivative. The momentum Liouville operator does of course exactly the same, so that by applying the total time evolution operator, we do indeed get
 \begin{align}
 	f(t) &= e^{\liouville t}f(0) = f\left[\left(\vec r(0) + \dot{\vec r}(0)t\right), \left(\vec p(0) + \dot{\vec p}(0)t\right)\right].
 \end{align}
-If we were to use this in a simulation, we normally do not apply the full operator at the same time, we might first treat the positions, then the momenta (usually the velocities). So ideally, we would want all these to be equivalent
+If we were to use this in a simulation, we normally do not apply the full operator at the same time, we might first treat the positions, then the momenta. So ideally, we would want to first apply one operator, then the next one
 \begin{align}
 	e^{\liouville} = e^{\liouvillep + \liouviller} \neq e^{\liouvillep}e^{\liouviller},
 \end{align}
@@ -54,8 +54,8 @@ which can be truncated
 	e^{A + B} = \left(e^{A/2N}e^{B/N}e^{A/2N}\right)^Ne^{O(1/N^2)}.
 \end{align}
 This can be used to derive different time integrator schemes. We will now derive the Velocity Verlet scheme which is used in the Molecular Dynamics code.
-\section{Derivation of Velocity Verlet}
-The truncated Trotter identity is neat, we can replace $A$ with the momentum Liouville operator, $B$ with the position Liouville operator
+\section{Derivation of the Velocity Verlet algorithm}
+The truncated Trotter identity is neat, we can replace $A$ with the $\liouvillep$ and $B$ with $\liouviller$
 \begin{align}
 	\frac{\liouvillep}{M} &\equiv \Delta t\dot{\vec p}(0)\frac{\partial}{\partial \vec p}\\
 	\frac{\liouviller}{M} &\equiv \Delta t\dot{\vec r}(0)\frac{\partial}{\partial \vec r}

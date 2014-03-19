@@ -41,8 +41,9 @@ With the processor id $p$ given, it is easy to determine which subvolume this pr
 \end{align}
 Since the collision cells are independent of each other, collisions will happen in parallel where each processor loops through all of its cells colliding the particles as described in section \ref{sec:dsmc_implementation_timestep}. 
 \subsection{Exchanging particles}
+\label{sec:dsmc_parallelization_exchange_particles}
 During a timestep, a particle can move from one processor to one of the 26 neighbouring nodes (the middle node in a $3\times3\times3$ grid has a 26 neighbours). After each timestep, all processors loop through their particles to find the ones having moved out of the processor's spatial domain. This process is illustrated in listing \ref{lst:dsmc_detecting_particles_moved_out}.
-\begin{lstlisting}[caption=Detecting which particles having moved out of a processor's spatial domain., label=lst:dsmc_detecting_particles_moved_out]
+\begin{lstlisting}[caption=Detecting which particles moved out of a processor's spatial domain., label=lst:dsmc_detecting_particles_moved_out]
 double mpi_move() {
 	for(int n=0; n<num_particles_local; n++) {
 		int node_id = topology->index_from_particle_index(n);
@@ -53,7 +54,7 @@ double mpi_move() {
 }
 \end{lstlisting}
 In principle, there are 26 potential recieving nodes, so each node needs to be able to send information to all of them. The easiest way to implement this is to let each processor directly communicate with all of its neighbours. However, this approach requires a lot more communcation time than actually needed.\\
-If we instead send information about these particles through a 3-step process, we can reduce the number of neighbouring nodes from 26 to six. This idea is best illustrated in two dimensions, but is easily generalized to the three-dimensional case, see figure \ref{fig:parallelization_facet_technique}.
+If we instead send information about these particles through a 3-step process, we can reduce the number of neighbouring nodes from 26 to 6. This idea is best illustrated in two dimensions, but is easily generalized to the three-dimensional case, see figure \ref{fig:parallelization_facet_technique}.
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=0.7\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/parallelization_facet_technique.eps}
