@@ -17,13 +17,13 @@ where $l_i = L_i/P_i$ is the node length. The origin of processor $(p_x, p_y, p_
 \end{align}
 The initialization process consists of creating the atoms, place them at some position and give them velocities according to the Maxwell-Boltzmann distribution (equation \eqref{eq:maxwell_boltzmann_vector_probability}). We will initially place the atoms on an face-centered cubic lattice (FCC lattice).
 \subsection{FCC lattice}
-The FCC lattice is a lattice structure where we place atoms on all 8 corners of a cube in addition to all the faces, hence the name. 
+The FCC lattice is a lattice structure where we place atoms on all 8 corners of a cube in addition to all the faces, hence the name. In figure \ref{fig:md_fcc} we see how the atoms are placed on the FCC lattice.
 \begin{figure}[h!]
 \begin{center}
 \includegraphics[width=0.7\textwidth, trim=0cm 0cm 0cm 0cm, clip]{MD/figures/fcc.png}
 \end{center}
 \caption{The face-centered cubic lattice. There are atoms on all eight corners of a cube, in addition to the six faces. The length $a$ is called the lattice constant. (Image from \url{http://en.wikipedia.org/wiki/File:Lattice_face_centered_cubic.svg}, accessed 19 March, 2014.)}
-\label{fig:md_parallelization_2}
+\label{fig:md_fcc}
 \end{figure}
 An FCC lattice can be constructed from a unit cell consisting of four atoms with local positions (relative to the origin of the unit cell)
 \begin{align}
@@ -77,3 +77,4 @@ void create_fcc_lattice() {
     }
 }
 \end{lstlisting}
+This is the whole initialization process. The atoms are where they should be, they have a statistically correct velocity and we are ready to integrate forward in time.

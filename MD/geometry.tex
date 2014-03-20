@@ -46,7 +46,7 @@ If the atoms forming the solid are dense enough, very few atoms will be inside t
 \begin{center}
 \includegraphics[width=1.0\textwidth, trim=0cm 0cm 0cm 0cm, clip]{MD/figures/solid_model.png}
 \end{center}
-\caption{A naive model of a solid where the green atoms are completely frozen confining the red flowing atoms within a cylinder of radius $R$. The visualization is done in Ovito\footnote{Ovito is an open source visualization software available from \url{http://www.ovito.org/}}.}
+\caption{A naive model of a solid where the green atoms are completely frozen confining the red flowing atoms within a cylinder of radius $R$. The visualization is done in Ovito, an open source visualization tool.}
 \label{fig:md_simple_solid}
 \end{figure}
 
@@ -60,7 +60,6 @@ We can improve the solid model by adding a harmonic oscillator potential to all 
 where $k$ is the strength of the oscillator, $\vec q_i$ is the equilibrium position for atom $i$ and the last part is the Lennard-Jones potential described in section \ref{sec:md_forces}. The energy is of course still conserved with this model, but we can now apply a thermostat on the solid atoms making them act as a large reservoir trying to keep the temperature at some wall temperature $T_w$. With this model, we can study flow in any geometry with a behaviour near that of the DSMC model. An implementation is shown in listing \ref{lst:md_ho_solid}.
 
 \begin{lstlisting}[caption=Implementation of the harmonic oscillator model of a solid., label=lst:md_ho_solid]
-
 void apply_constant_force() {
     for(n=0;n<number_of_atoms;n++) {
         if(atom_type.at(n) != FROZEN) velocities.at(n).at(flow_direction) += acceleration*dt;
