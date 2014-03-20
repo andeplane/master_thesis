@@ -1,5 +1,5 @@
 \section{Timestep}
-We are using the Velocity Verlet algorithm as we discussed in section \ref{sec:md_time_integration}. The timestep calculation starts by what we called a half kick, where the velocities are integrated half a timestep with forward Euler. But to be able to do so, we need to have calculated the forces. This part is the most technical in the whole algorithm, because of two things. We need to find a way to implement the cut-off radius so that we don't loop over too many atom pairs, and each processor needs to have information about the atoms on its neighboring atoms (there are forces between atoms living on different CPUs). We will first discuss how duplicates of atoms, so-called ghost atoms, are copied between nodes before we explain how we use cell lists to compute forces between nearby atoms only. 
+We are using the Velocity Verlet algorithm as we discussed in section \ref{sec:md_time_integration} and derived in appendix \ref{app:liouville}. The timestep calculation starts by what we called a half kick, where the velocities are integrated half a timestep with forward Euler. But to be able to do so, we need to have calculated the forces. This part is the most technical in the whole algorithm, because of two things. We need to find a way to implement the cut-off radius so that we don't loop over too many atom pairs, and each processor needs to have information about the atoms on its neighboring atoms (there are forces between atoms living on different CPUs). We will first discuss how duplicates of atoms, so-called ghost atoms, are copied between nodes before we explain how we use cell lists to compute forces between nearby atoms only. 
 \subsection{Ghost atoms}
 Assume now that we are going to calculate the forces between the atoms on some node with coordinates $(p_x, p_y, p_z)$. The atoms near the boundary will of course feel the presence of the atoms on the next processor (if they are sufficiently near). The node will then, from each of its 26 neighbors, get a copy of the atoms that are less than $r_\text{cut}$ from the node boundary. In figure \ref{fig:md_ghost_atoms}, this is illustrated in a two-dimensional example.
 \begin{figure}[h]
@@ -46,7 +46,7 @@ Its inverse is gives us the higher powers
 \end{align}
 In listing \ref{lst:md_lennard_jones} we have shown the code that calculates the Lennard-Jones force. We see that Newton's third law is implemented by skipping a pair of atoms if \classname{atom\_index\_0}<\classname{atom\_index\_1}, avoiding calculating that pair twice. 
 \begin{lstlisting}[caption=Implementation of the Lennard-Jones force. The code loops over all cells and their neighbors computing the forces between all the atoms in neighboring cells., label=lst:md_lennard_jones]
-void calculate_lennard_jones() {
+void apply_lennard_jones() {
     // Loop through all local cells (not including ghosts)
     for (int cell_index_x=1; cell_index_x<=num_cells.x; cell_index_x++) {
     for (int cell_index_y=1; cell_index_y<=num_cells.y; cell_index_y++) {
@@ -64,7 +64,7 @@ void calculate_lennard_jones() {
     int atom_index_0 = head_atoms[cell_index]; 
 
     while (atom_index_0 != EMPTY) { // The last atom in a cell points at the EMPTY value
-    int atom_index_1 = head_atoms[cell_index_2]; // Index of atom j
+    int atom_index_1 = head_atoms[cell_index_2];
     while (atom_index_1 != EMPTY) {
         if(atom_index_0 < atom_index_1) { // Newton's 3rd law
             double dx = positions.at(atom_index_0).x-positions.at(atom_index_1).x;
@@ -88,9 +88,23 @@ void calculate_lennard_jones() {
                 accelerations.at(atom_index_1).z -= force*mass_inverse*dz;
             }
         }
-        atom_index_1 = linked_list_of_atoms[atom_index_1]; // Next
+        atom_index_1 = linked_list_of_atoms[atom_index_1]; // Next atom
     }
-    atom_index_0 = linked_list_of_atoms[atom_index_0];
+    atom_index_0 = linked_list_of_atoms[atom_index_0]; // Next atom
     }}}}}}}
+}
+\end{lstlisting}
+\subsection{The timestep}
+Now that we can calculate the forces, we can summarize the whole timestep. Assuming that the forces are already calculated, we start by the half kick, integrating the velocity half a timestep. Then we move the atoms by integrating the positions with forward Euler a whole timestep $\Delta t$. Since some atoms now may have changed which processor they live on, we have to move atoms with \classname{MPI}. Once this is done, every processor is ready to calculate the forces, but in order to do so, we need the ghost atoms on every node. It is time to reset the accelerations from the last timestep, before we apply the constant force we added to induce flow in the system. After this is done, we can calculate the forces and do the final half kick, which is the last stage of the timestep. In listing \ref{lst:md_timestep} we show how the \classname{step} function is implemented, simply calling functions performing all the stages we have now explained.
+\begin{lstlisting}[caption=Code showing the stages during a timestep., label=lst:md_timestep]
+void step() {
+    half_kick();
+    move();
+    mpi_move();
+    mpi_copy();
+    reset_accelerations();
+    apply_constant_force();
+    apply_lennard_jones();
+    half_kick();
 }
 \end{lstlisting}
