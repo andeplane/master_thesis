@@ -96,7 +96,7 @@ Consider a layer adjacent to the wall which is thinner than the mean free path $
 It is convenient to introduce the concept of \textit{slip length} $l_s$ to be able to quantify the slip velocity. Slip length is defined as the distance into the wall we would have to extrapolate a velocity profile for it to reach zero value, see figure \ref{fig:slip_length}.
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/slip_length.eps}
+\includegraphics[width=0.8\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/slip_length.eps}
 \end{center}
 \caption{Slip length is the distance into the wall we would have to extrapolate a velocity profile for it to reach zero value. We have the no-slip condition on the left, where the slip length is zero whereas we have a non-zero slip length on the right.}
 \label{fig:slip_length}
@@ -116,9 +116,10 @@ we see that the ratio of the slip length to the channel diameter is proportional
 	v_{\text{wall}} = \alpha\lambda\frac{\dm v}{\dm n},
 \end{align}
 where $n$ is the direction normal on the wall\cite{klinkenberg1941permeability}. We call this a \textit{first order} slip model since it is contains only the first derivative of the velocity. Higher order models exists and give corrections that are important in nanoporous media (which is defined in section \ref{sec:nanoporous_media}) where the channels that contribute to flow are of nanometer scale.
-
 \section{Knudsen number}
 \label{sec:knudsen_number}
+
+
 To get an idea of the length scales where the Knudsen number is about unity, the mean free path for helium at $T=$\unit{273}{\kelvin} and $P=1$ atm is\cite{lillestol2001generell} 
 \begin{align}
 	\label{eq:helium_mfp}
@@ -128,10 +129,16 @@ This means that for systems where the channels have diameter of a few hundred na
 
 \section{Particle models}
 \label{sec:theory_of_fluids_atomic_models}
-For systems where the continuum hypothesis is invalid, we need other models describing the behaviour of the particles in our system. The first idea that might pop our minds might be to study the system at the atomic level. The equations of motion and hence the dynamics of a system can in principle be calculated directly from quantum mechanics by solving Schr\"{o}dinger's equation. Since this requires calculating the wave function of every atom with complex atomic interactions, the size of the system needs to be very small with today's computers. An alternative, popular approach is to use a parameterized potential $U(\vec r^N)$ ($\vec r^N$ being the positions of all atoms), and calculate the forces through the gradient of $U$. Newton's equations of motion is then integrated and the dynamics of the system are determined in a classical, deterministic way where important effects from quantum mechanics are embedded in the potential. This method is called \textit{Molecular Dynamics} and is studied in chapter \ref{chap:md}. Molecular Dynamics is orders of magnitudes faster than models solving Schr\"{o}dinger's equation, but it still needs a detailed describtion of the dynamics of every atom in the system. For many problems, this information is redundant because what's really important is the statistical properties of the system. In statistical mechanics, we don't need the full information about every single atom. We can then develope models using statistical mechanics and save a lot of computation power compared to Molecular Dynamics. One such model is called Direct Simulation Monte Carlo and is studied in chapter \ref{chap:dsmc}. In the limit of low Knudsen number, these models do of course converge towards the continuum models. It is convenient to classify different flow regimes depending on the Knudsen number.
+For systems where the continuum hypothesis is invalid, we need other models describing the behaviour of the particles in our system. The first idea that might pop our minds might be to study the system at the atomic level. The equations of motion and hence the dynamics of a system can in principle be calculated directly from quantum mechanics by solving Schr\"{o}dinger's equation. Since this requires calculating the wave function of every atom with complex atomic interactions, the size of the system needs to be very small with today's computers. An alternative, popular approach is to use a parameterized potential $U(\vec r^N)$ ($\vec r^N$ being the positions of all atoms), and calculate the forces through the gradient of $U$. Newton's equations of motion is then integrated and the dynamics of the system are determined in a classical, deterministic way where important effects from quantum mechanics are embedded in the potential. This method is called \textit{Molecular Dynamics} and is studied in chapter \ref{chap:md}. Molecular Dynamics is orders of magnitudes faster than models solving Schr\"{o}dinger's equation, but it still needs a detailed describtion of the dynamics of every atom in the system. For many problems, this information is redundant because what's really important is the statistical properties of the system. In statistical mechanics, we don't need the full information about every single atom. We can then develope models using statistical mechanics and save a lot of computation power compared to Molecular Dynamics. One such model is called Direct Simulation Monte Carlo and is studied in chapter \ref{chap:dsmc}. The fundamental equation in this case is the Boltzmann equation, which we derive in section \ref{sec:boltzmann_equation}. In the limit of low Knudsen numbers, these models do of course converge towards the continuum models. It is convenient to classify different flow regimes depending on the Knudsen number.
 \section{Flow regimes}
-
-\todo{Discuss flow regimes}
+We can divide the entire Knudsen range into different regimes enabling us to get an overview of which equations and models that are valid for which Knudsen numbers. In the low Knudsen number limit, the continuum hypothesis is valid and we can in principle use any of the models we have discussed. The continuum approach is here of course preferable since it more computationally efficient compared to the particle models. At some point (Kn$\geq 0.01$), the no-slip boundary condition is invalid and we need to incorporate this into the models solving the NSE in order to get accurate solutions. Here starts the slip regime. When the Knudsen number approaches 0.1, we start to see transitional flow where the flow is laminar near the edges and turbulent in the middle of the material, before we at Knudsen numbers larger than 10 have free molecular flow where the particles almost never interact with each other. This is illustrated in figure \ref{flow_regimes} where we have included the regions where different equations are valid.
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.8\textwidth, trim=0cm 0cm 0cm 0cm, clip]{figures/flowregimes.eps}
+\end{center}
+\caption{The four flow regimes covering the important regions in the Knudsen number range where different flow types appear. In the low Knudsen number limit, the fluid can be assumed to be a continuum and we can use equations like the Euler equation or the NSE. For larger Knudsen numbers, the no-slip boundary condition is invalid and we need a model satisfying slip velocity. We reach the transition flow regime at Kn$\approx 0.1$ where the continuum models do no longer hold, even with slip boundary conditions. In the high Knudsen regime particle collisions are so rare that it is classified as free molecular flow. In this range, the collisionless Boltzmann equation is valid (see section \ref{sec:boltzmann_equation}).}
+\label{fig:flow_regimes}
+\end{figure}
 \section{Nanoporous media}
 \label{sec:nanoporous_media}
 A porous medium is a material with pores and channels (the pore network) available for fluids. See figure \ref{fig:history_porous_media}. 
