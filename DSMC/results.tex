@@ -11,11 +11,11 @@ To see how the program efficiency scales with a fixed system size while increasi
 	\eta_s = \frac{t_1}{Nt_N},
 \end{align}
 where $t_1$ is the total run time using one processor and $t_N$ is the total run time using $N$ processors. We see that $\eta_s\in (0,1)$ since $Nt_N$ is the ideal scaling without any communication overhead. In this benchmark, we have run a geometry carved out by 10 random walkers (the algorithm is described in section \ref{sec:dsmc_random_walk_algorithm}), each starting at random positions. Each walker moves 1000 steps (voxels) with a turn probability of 0.1 on a $128\times128\times128$ voxel grid ending up with a porosity of $\phi=0.53635$. The physical system is a cube with side length $L=$\unit{1.0}{\micro\meter} with a density $\rho_n=\unit{1.0\e{25}}{\meter^{-3}}$ which gives a total of 5.3 million atoms. We choose that one DSMC particle represents one atom yielding a total of 5.3 million particles in the whole system. The benchmark was performed for 10000 timesteps ($\Delta t = 0.005$) with $2^N$ processors from 1 CPU to 512 CPUs yielding a good estimate of how efficient the program scales for a relatively large number of processors. In table \ref{tab:dsmc_strong_scaling} we have the scaling results with additional information like the number of intermolecular collisions and the number of wall collisions. These numbers indicates the amount of computation  The strong scaling efficiency is plotted against the number of processors in figure \ref{fig:dsmc_strong_scaling}.
-\begin{table}
+\begin{table}[h]
 \begin{center}
     \begin{tabular}{|l|l|l|l|l|l|l}
     \hline
-    $N_\text{CPU}$ & $N_\text{particles}/N_\text{CPU}$ & $N_\text{collisions}/N_\text{CPU}$ & $N_\text{wall collisions}/N_\text{CPU}$ & Run time[s] & $\eta_s$ \\ \hline
+    $N_\text{CPU}$ & $N_\text{particles}/N_\text{CPU}$ & $N_\text{collisions}/N_\text{CPU}$ & $N_\text{wall collisions}/N_\text{CPU}$ & $t_n$ & $\eta_s$ \\ \hline
     1 & 5.4\e{6} & 1.31\e{8} & 1.09\e{11} & \unit{10571}{\second} & 1.00\\
     \hline
     2 & 2.7\e{6} & 6.55\e{7} & 5.04\e{10} &  \unit{5262}{\second} & 1.00\\
@@ -48,11 +48,11 @@ Another important scaling problem appears when we want to maximize the simulated
 	\eta_w = \frac{t_1}{t_N},
 \end{align}
 where again $t_1$ is the total run time using one processor and $t_N$ is the run time using $N$ processors. If the algorithm scales perfectly, the total run time would remain constant while increasing the number of processors (each CPU is ideally independent), but we expect some overhead. This implies that the range for $\eta_w$ also is between zero and one. We have run the same geometry as for the strong scaling, but each processor controls a volume of \unit{1}{\micro\meter^3} so that the largest system is \unit{512}{\micro\meter^3}. Keeping the same density gives a total of 5.3 million particles per processor. In table \ref{tab:dsmc_weak_scaling}, we see the results for the weak scaling efficiency simulation. 
-\begin{table}
+\begin{table}[h]
 \begin{center}
     \begin{tabular}{|l|l|l|l|l|l|l}
     \hline
-    $N_\text{CPU}$ & $N_\text{particles}$ & $N_\text{collisions}$ & $N_\text{wall collisions}$ & Run time[s] & $\eta_w$ \\ 
+    $N_\text{CPU}$ & $N_\text{particles}$ & $N_\text{collisions}$ & $N_\text{wall collisions}$ & $t_N$ & $\eta_w$ \\ 
     \hline
     1 & 5.4\e{6} & 1.00\e{10} & 1.00\e{10} & \unit{100}{\second} & 1.0\\
     \hline
@@ -82,10 +82,10 @@ where again $t_1$ is the total run time using one processor and $t_N$ is the run
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/strong_scaling.eps}
+\includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/weak_scaling.eps}
 \end{center}
 \caption{The weak and strong scaling efficiency, $\eta_w$ and $\eta_s$, as a funtion of the number of processors $N_\text{CPU}$. We see that at 512 processors, the efficiency is reduced to 25\% because of the large overhead from the MPI communication.}
-\label{fig:dsmc_strong_scaling}
+\label{fig:dsmc_weak_scaling}
 \end{figure}
 \section{Results for simple geometries}
 \label{sec:results_for_simple_geometries}
@@ -113,7 +113,7 @@ which gives the following prediction for the apparent permeability
 \begin{align}
 	k_a = [1 + \alpha(\text{Kn})\text{Kn}]\left[1 + {4\text{Kn}\over 1 + \text{Kn}}\right] {r^2\over 8}.
 \end{align}
-In figure \ref{fig:one_cylinder_varying_knudsen} we have plotted the measured permeability as a function of Knudsen number. We see that the 
+In figure \ref{fig:one_cylinder_varying_knudsen} we have plotted the measured permeability as a function of Knudsen number. We see that the \todo{what da fuq}.
 
 \begin{figure}[h]
 \begin{center}

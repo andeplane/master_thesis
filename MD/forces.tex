@@ -27,7 +27,7 @@ where $\vec u_{ij}$ is the unit vector pointing from atom $i$ to atom $j$. In th
 With this potential, we can in principle calculate the forces between atoms that are 10 meters apart. We already know the answer though, it should be very, very close to zero. Atoms being far away from each other do not interact. This distance is actually not very large. If we insert $r_{ij} = 3.0\sigma$ into equation \eqref{eq:md_lj_force}, and choose units so that $\sigma = \epsilon = 1.0$, we get $F(r=3.0) \approx 0.01$ (compared to the maximum attraction near the potential well $F(r = 1.24) \approx 2.4$, more than 100 times larger). The force decreases slowly towards zero for larger displacements. We can exploit this property and only compute forces between atoms displaced by a distance smaller than some cut-off radius.
 \subsection{Cut-off radius}
 \label{sec:md_implementation_two_body_forces}
-In principle, we have to sum over all pairs in the system which for $N$ atoms is $O(N^2)$. This calculation can be reduced to $O(N)$ by realizing that the gradient of the potential (hence the force) is nearly zero at $r \approx 3.0\sigma$. We now introduce the cut-off radius $r_\text{cut}$, which we choose to be $r_\text{cut} = 3.0\sigma$. The force between a pair of atoms $F(r_{ij})$ is then written as
+In principle, we have to sum over all pairs in the system which for $N$ atoms is $O(N^2)$. This calculation can be reduced to $O(N)$ by realizing that the gradient of the potential (hence the force) is nearly zero at $r \approx 2.5\sigma$. We now introduce the cut-off radius $r_\text{cut}$, which we choose to be $r_\text{cut} = 2.5\sigma$. The force between a pair of atoms $F(r_{ij})$ is then written as
 \begin{align}
 	\vec F(\vec r_{ij}) = \left\{
 	\begin{array}{l l}
