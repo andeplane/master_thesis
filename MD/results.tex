@@ -124,11 +124,11 @@ Here, $\Delta x$ is the system length in the flow direction, $L_z$. We have chos
 	\label{eq:cylinder_knudsen_corrected}
 	k_a = [1 + \alpha(\text{Kn})\text{Kn}]\left[1 + {4\text{Kn}\over 1 + \text{Kn}}\right] {r^2\over 8}.
 \end{align}
-The left figure, using a logarithmic $x$-axis shows that the permeabilities in the lower range of the Knudsen numbers are predicted very by the theory. The right figure shows that the permeabilities in the whole range, two orders of magnitues, follows the expression in equation \eqref{eq:cylinder_knudsen_corrected}. 
+The left figure, using a logarithmic $x$-axis shows that the permeabilities in the lower range of the Knudsen numbers are predicted very by the theory. The right figure shows that the permeabilities in the whole range, two orders of magnitues, follows the expression in equation \eqref{eq:cylinder_knudsen_corrected}. For the high Knudsen numbers, we see an increase in the statistical noise which is explained by the fact that a high Knudsen number is obtained by a low density which gives a low number of atoms. In order to get better statistics, we would need to run the simulation for a longer time.
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=1.0\textwidth, trim=0cm 0cm 0cm 0cm, clip]{MD/figures/permeability_cylinder.eps}
 \end{center}
-\caption{Permeabilities for Knudsen numbers in the range $0.1$ to $10.0$ in a cylinder with radius $r=$\unit{151}{\angstrom}. The left figure has a logarithmic $x-$axis to emphasize the good prediction in the lower Knudsen range. The right figure shows that the MD code produces results according to the Knudsen corrected permeability for a cylinder in equation \eqref{eq:cylinder_knudsen_corrected}.
+\caption{Permeabilities for Knudsen numbers in the range $0.1$ to $10.0$ in a cylinder with radius $r=$\unit{151}{\angstrom}. The left figure has a logarithmic $x-$axis to emphasize the good prediction in the lower Knudsen range. The right figure shows that the MD code produces results according to the Knudsen corrected permeability for a cylinder in equation \eqref{eq:cylinder_knudsen_corrected} in the entire range. The increased statistical noise is explained by that for large Knudsen numbers, the number of gas atoms is low.}
 \label{fig:md_permeability}
 \end{figure}
