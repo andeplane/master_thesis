@@ -14,12 +14,12 @@ The octree is just the three-dimensional version of a binary tree. If all eight 
 
 \subsection{Load balancing}
 \label{sec:future_work_load_balancing}
-The parallelization technique we have used in this thesis distributes the total physical volume equally to all processors so that they compute on gas in equal volumes. Since we study porous media, parts of the total volume are a solid, not available for the gas particles. This can lead to huge deviations in the work load for each processor. A worst case scenario would appear when a processor has zero volume available for particles. In this situation, the processor does not contribute to the simulation since it has no particles. It will finish its timestep very quickly just waiting for the other processor to finish their timesteps. In the DSMC program, this will show up as large MPI Communication times (this happens because the processor reaches the MPI synchronization). In figure \ref{dsmc:mpi_waiting_time_load_balancing}, we have plotted the MPI Communitation time distribution across 512 processors for a system \todo{Describe the system}. A solution to this would be to adjust the size of the volumes each processor controls so that the number of particles per processor is approximately equal. 
+The parallelization technique we have used in this thesis distributes the total physical volume equally to all processors so that they compute gas dynamics in equal volumes. Since we study porous media, parts of the total volume are a solid, not available for the gas particles. This can lead to huge deviations in the work load for each processor. A worst case scenario would appear when a processor has zero volume available for particles. In this situation, the processor does not contribute to the simulation since it has no particles. It will finish its timestep very quickly just waiting for the other processor to finish their timesteps. In the DSMC program, this will show up as large MPI Communication times (this happens because the processor reaches the MPI synchronization). In figure \ref{dsmc:mpi_waiting_time_load_balancing}, we have plotted the MPI Communitation time distribution across 512 processors for a system \todo{Describe the system}. A solution to this would be to adjust the size of the volumes each processor controls so that the number of particles per processor is approximately equal. 
 \missingfigure{MPI Waiting time distribution}
 \subsection{Large system state preparation}
 When studying flow, we need the system to reach a steady state before we can start measuring statistical properties of the system. This process can take quite a while 
 \subsection{Diffusion on the matrix}
-
+\subsection{Modified A* algorithm}
 \subsection{Deformations and fracking}
 \section{MD algorithms}
 
