@@ -40,7 +40,7 @@ which is the \textit{Maxwell-Boltzmann distribution}. We can integrate out the p
 	\label{eq:maxwell_boltzmann_vector_probability}
 	P(\vec v)\dm \vec v = \left(\frac{m}{2\pi k_B T}\right)^{3/2}e^\frac{-m|\vec v|^2}{2k_BT} \dm \vec v.
 \end{align}
-We will use this to validate both the Direct Simulation Monte Carlo code and the Molecular Dynamics code in sections \ref{sec:dsmc_code_validation} and \ref{sec:md_code_validation}. Let's use this to find some interesting properties of the gas. Given a temperature $T$ and the mass of the particles $m$, what is the average speed of the particles? First, we need to transform the distribution from a vector distribution to a scalar distribution (the magnitude of the velocity might be a more interesting quantity than a given direction). The distribution in equation \eqref{eq:maxwell_boltzmann_vector_probability} is spherical symmetric, so we should transform to spherical coordinates which gives
+We will use this to validate the DSMC code section \ref{sec:dsmc_code_validation}. Now, let us use this to find some interesting properties of the gas. Given a temperature $T$ and the mass of the particles $m$, what is the average speed of the particles? First, we need to transform the distribution from a vector distribution to a scalar distribution (the magnitude of the velocity might be a more interesting quantity than a given direction). The distribution in equation \eqref{eq:maxwell_boltzmann_vector_probability} is spherical symmetric, so we should transform to spherical coordinates which gives
 \begin{align}
 	\label{eq:maxwell_boltzmann_scalar_probability}
 	P(v)\dm v = 4\pi\left(\frac{m}{2\pi k_B T}\right)^{3/2}v^2e^\frac{-mv^2}{2k_BT} \dm v.
