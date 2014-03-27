@@ -64,8 +64,20 @@ The permeability $k$ is defined through Darcy's law (equation \eqref{eq:darcy_1}
 	\label{eq:permeability_gas}
 	k = \frac{Q \mu L}{A\Delta P},
 \end{align}
-where $L$ is the length of the system in the flow direction, $\mu$ is the viscosity, $Q$ is the volumetric flow rate (the number of cubic meter fluid flowing per second), $A$ is the cross sectional area, $\Delta P = P_0 - P_L$ are the pressures at $x=0$ and $x=L$. The viscosity can be computed with the kinetic theory \cite{alexander1998cell}
+where $L$ is the length of the system in the flow direction, $\mu$ is the viscosity, $Q$ is the volumetric flow rate, $A$ is the cross sectional area, $\Delta P = P_0 - P_L$ are the pressures at $x=0$ and $x=L$. The viscosity can be computed with the kinetic theory \cite{alexander1998cell}
 \begin{align}
 	\mu = \frac{5}{16d^2}\sqrt{\frac{mk_B T}{\pi}}.
 \end{align}
-Remember that the systems we will study are periodic in the flow direction. This implies that the point $x=0$ actually is the \textit{same point} as $x=L$, which gives $P(x=0) = P(x=L)$. Hence, the pressure difference is zero, no matter how we measure the pressure. We will now address this problem with a rather comprehensive discussion about pressure. We will get back to the permeability soon enough.
+Measuring the permeability then introduces to problems we need to figure out how to solve. The first is how we measure the volumetric flow rate. As the name indicates, it is a measure of how many units of volume passes through a surface per unit time. In DSMC, we will measure this by counting how many particles that undergo a periodic boundary condition shift in the flow direction, this is the number flow rate. Assuming we have $N$ particles, each representing $N_\text{eff}$ real atoms in a system with volume $V$, the volume per particle $v$ is given as
+\begin{align}
+ 	v = \frac{V}{NN_\text{eff}} = \rho^{-1}.
+\end{align} 
+The volumetric flow rate $Q$ is then simply the number flow rate multiplied by the volume per particle. The next problem is that the systems we will study are periodic in the flow direction. This implies that the point $x=0$ actually is the \textit{same point} as $x=L$, which gives $P(x=0) = P(x=L)$. Hence, the pressure difference is zero, no matter how we measure the pressure. In the next section, we will have a rather comprehensive discussion about pressure and find that a constant acceleration $g$ can be related to a pressure difference $\Delta P$ as
+\begin{align}
+	g = \frac{\Delta P}{m\rho_n\Delta x},
+\end{align}
+where $m$ is the mass of an atom, $\rho_n$ is the number density and $\Delta x$ is the distance between the two points of the pressure difference, usually the system length $L$. The permeability is then found as
+\begin{align}
+	k = \frac{Q \mu}{Agm\rho_n},
+\end{align}
+which is how we will measure the permeability.

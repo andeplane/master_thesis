@@ -1,10 +1,9 @@
 \section{The Klinkenberg effect}
-
-In 1941, L.J. Klinkenberg published a paper explaining discrepancies that was found in experiments when measuring the permeability for both liquids and gases in the same material\cite{klinkenberg1941permeability}. His discoveries were of great importance in the oil industry
+In 1941, L.J. Klinkenberg published a paper explaining the discrepancies that was found in experiments when measuring the permeability for both liquids and gases in the same material\cite{klinkenberg1941permeability}. His discoveries were of great importance in the oil industry
 \begin{aquote}{Klinkenberg, 1941}
 	It has become common practice in the oil industry to determine the permeability of core material with dry air; the equipment usually employed for this determination is arranged to operate with the outlet of the sample at or near atmospheric pressure.
 \end{aquote}
-He introduced a linear scaling function $f_c(\text{Kn})$ that relates what he called the \textit{apparent permeability} $k_a$, the permeability measured in the lab for a fluid with arbitrary density, to the \textit{absolute permeability} $k_\infty$, the permeability for a liquid in the high density limit. The absolute permeability is a constant dependent only on the porous medium (which is the whole idea of the permeability). The relation is given as
+He introduced a linear scaling function $f_c(\text{Kn})$ that relates what he called the \textit{apparent permeability} $k_a$ - the permeability measured in the lab for a fluid with arbitrary density - to the \textit{absolute permeability} $k_\infty$, the permeability for a liquid in the high density limit. The absolute permeability is a constant dependent only on the porous medium. The relation is given as
 \begin{align}
 	k_a = f_c k_\infty = \left(1 + 4\alpha\frac{\lambda}{L}\right)k_\infty = \left(1 + 4\alpha\text{Kn}\right)k_\infty,
 \end{align}
@@ -12,7 +11,7 @@ where $L$ is the diameter of the channel and $\alpha\approx 1.15$ is the no-slip
 \begin{align}
 	f_c = \left(1 + \frac{b}{\bar P}\right),
 \end{align}
-where $b$ is a constant depending on the material. In figure \ref{fig:klinkenberg_correction_factor}, we see that the Klinkenberg correction factor predicts a permeability that almost fifty times higher for a gas in a material with $\text{Kn}=10$. The figure also contains the Knudsen correction factor which is discussed in the next subsection. The Klinkenberg correction factor is derived using the first order slip velocity in equation \eqref{eq:linear_slip_velocity} which is not sufficient for high Knudsen numbers as we will see in section \ref{sec:results_for_simple_geometries}. Based on higher order slip velocity models, one can derive better permeability corrections. 
+where $b$ is a constant depending on the material. In figure \ref{fig:klinkenberg_correction_factor}, we see that the Klinkenberg correction factor predicts a permeability that almost fifty times higher for a gas in a material with $\text{Kn}=10$. The figure also contains the Knudsen correction factor which is discussed in the next section. The Klinkenberg correction factor is derived using the first order slip velocity in equation \eqref{eq:linear_slip_velocity} which is not sufficient for high Knudsen numbers as we will see in section \ref{sec:results_for_simple_geometries}. Based on higher order slip velocity models, one can derive better permeability corrections. 
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{figures/klinkenberg.eps}
