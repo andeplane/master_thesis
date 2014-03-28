@@ -43,7 +43,7 @@ void create_cylinder(double radius) {
 \end{lstlisting}
 Notice the last line there, the function \textit{calculate\_normals\_tangents\_and\_inner\_points()}. After all voxels are marked as filled or empty, we need to identify the surface voxels and calculate their tangent and normal vectors.
 \subsection{Identifying the surface voxels}
-A voxel that is filled, but not part of the surface, will be completely surrounded by filled voxels. We \textit{define} the surface voxels as \textit{the filled voxels that have less than 26 neighbouring filled voxels}. The algorithm can be implemented like in listing \ref{lst:dsmc_geometry_identify_surface} (we also need to take care of the periodic boundary conditions, but the idea is best illustrated without that complication).
+A voxel that is filled, but not part of the surface, will be completely surrounded by filled voxels. We \textit{define} the surface voxels as \textit{the filled voxels that have less than 26 neighboring filled voxels}. The algorithm can be implemented like in listing \ref{lst:dsmc_geometry_identify_surface} (we also need to take care of the periodic boundary conditions, but the idea is best illustrated without that complication).
 \begin{lstlisting}[caption=An example showing how to identify the surface voxels. The world\_matrix contains all the voxel values (zeros and ones)., label=lst:dsmc_geometry_identify_surface]
 bool is_surface(int voxel_index_i, int voxel_index_j, int voxel_index_k) {
 	for(int i=-1;i<=1;i++) {
@@ -76,7 +76,7 @@ where $m_{ij} \in \{1,0\}$ and $\vec r_{ij}$ is the coordinate of the voxel with
 	\vec n = \frac{\vec{r_\text{cm}}}{|\vec{r_\text{cm}}|}.
 \end{align}
 In figure \ref{fig:dsmc_normal_vectors}, we have computed the normal vector for four different voxel configurations where we see that the direction of the normal vectors seems reasonable. 
-\begin{figure}[ht]
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.9\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/normal_vectors.png}
 \end{center}

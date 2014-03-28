@@ -48,7 +48,7 @@ As we remember from section \ref{sec:dsmc_collisions_model}, we will perform col
 	\nonumber
 	M_\text{coll} = \frac{N_c(N_c-1)N_\text{eff}\pi d^2\langle v_r \rangle \Delta t}{2 V_c}.
 \end{align}
-We see that one of the factors is the cell volume $V_c$. But some of the cells may have large parts of their volume inavailable for fluids, they have a \textit{local porosity}. This is okay, we just need to loop through all of the voxels within a cell and compute the local porosity. An example of how this can be done is shown in listing \ref{lst:dsmc_initialize_cells}.
+We see that one of the factors is the cell volume $V_c$. But some of the cells may have large parts of their volume unavailable for fluids, they have a \textit{local porosity}. This is okay, we just need to loop through all of the voxels within a cell and compute the local porosity. An example of how this can be done is shown in listing \ref{lst:dsmc_initialize_cells}.
 \begin{lstlisting}[caption=Example code showing how to find porosity and volume of the collision cells., label=lst:dsmc_initialize_cells]
 void create_cells() {
     for(int k=0;k<grid.nz;k++) {

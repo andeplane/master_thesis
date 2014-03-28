@@ -1,11 +1,11 @@
 \section{Billboards}
 \label{sec:vis_billboards}
-We could in principle create a spherical shape by connecting triangles and/or other primitives as illustrated in figure \ref{fig:visualization_glut_spheres}. The figure contains two spheres with different numbers of primitives. We need a substantial number of primitives to get a shape that looks like a sphere (200 in the left sphere in the figure), but we can cheat a bit, by instead rendering something that \textit{looks} like a sphere
+We could in principle create a spherical shape by connecting triangles or other primitives as illustrated in figure \ref{fig:visualization_glut_spheres}. The figure contains two spheres with different numbers of primitives. We need a substantial number of primitives to get a shape that looks like a sphere (200 in the left sphere in the figure), but we can cheat a bit, by instead rendering something that \textit{looks} like a sphere
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=0.8\textwidth, trim=0cm 0cm 0cm 0cm, clip]{visualization/figures/glut_spheres.png}
 \end{center}
-\caption{A sphere can be created by connecting triangles and/or other primitives. The sphere to the left is made of 200 primitives whereas the one to the right is made of 25 primitives. It is clear that we need a certain number, more than 25, of primitives before we are convinced that the object should represent a sphere.}
+\caption{A sphere can be created by connecting triangles or other primitives. The sphere to the left is made of 200 primitives whereas the one to the right is made of 25 primitives. It is clear that we need a certain number, more than 25, of primitives before we are convinced that the object should represent a sphere.}
 \label{fig:visualization_glut_spheres}
 \end{figure}
 A billboard is, as the name suggests, a rectangle filled with a texture, always pointing towards the camera. The texture is going to be a circle (a sphere does indeed look like a circle when rendered on the screen anyway). It is quite easy to render such a rectangle with OpenGL, we already have a primitive called \textit{GL\_QUADS} which is exactly what we need. The only thing we need to do is provide four vertices, the corners in the rectangle, and give each vertex a texture coordinate. The four vertices $\vec v_i$ can be calculated from one single vertex $\vec r$, the particle position, by
@@ -27,7 +27,8 @@ where ($L_x = 2\Delta x, L_y = 2\Delta y$) is the size of the billboard, see fig
 \caption{A billboard is made of four vertices $\vec v_1, \vec v_2, \vec v_3$ and $\vec v_4$ that can be calculated from one vertex $\vec r$ (equation \eqref{eq:vis_vertices_billboard}).}
 \label{fig:visualization_billboard_vertices}
 \end{figure}
-This is already what Ovito does\footnote{See the source code at \url{http://www.ovito.org/index.php/download2}}, but we are going to improve this even more. Instead of computing the four vertices and uploading these as \textit{GL\_QUADS} to the GPU, we will only upload the positions of the particles, and exploit the geometry shader to create the billboard vertices on the GPU.\\
+This is already what Ovito does\footnote{See the source code at \url{http://www.ovito.org/index.php/download2}}, but we are going to improve this even more. Instead of computing the four vertices and uploading these as \textit{GL\_QUADS} to the GPU, we will only upload the positions of the particles, and exploit the geometry shader to create the billboard vertices on the GPU.
+
 Before we start visualizing the data, all timesteps of a simulation are uploaded as VBO's on the GPU so that we don't need to upload data every frame. The VBO is rendered as \textit{GL\_POINTS} so each vertex represents the center position of a particle. We will now follow a single vertex through the pipeline
 \subsection{The pipeline}
 The VBO can now be seen as one OpenGL model containing the positions of all the particles. The vertices are then in the \textit{model space}. Every single vertex starts its life in the pipeline by going into the vertex shader. The vertex shader is pretty simple in this case, it just transforms the input vertex from the model space to the projection space as we can see in listing \ref{lst:simplevertexshaderbillboard}.
@@ -67,7 +68,8 @@ void main(void) {
     EndPrimitive();
 }
 \end{lstlisting}
-This is done with every single position vertex in the VBO (once per particle per frame) and all the output primitives from the geometry shader will be rasterized, clipped and texture coordinates are interpolated into the fragment shader that is run once per pixel per visible primitive. Before we discuss the fragment shader, we should take a look at the texture that each billboard will have.\\
+This is done with every single position vertex in the VBO (once per particle per frame) and all the output primitives from the geometry shader will be rasterized, clipped and texture coordinates are interpolated into the fragment shader that is run once per pixel per visible primitive. Before we discuss the fragment shader, we should take a look at the texture that each billboard will have.
+
 We didn't lie before, we will use a circle that actually is a real sphere rendered in the 3D modeling program Blender\footnote{Available from \url{http://www.blender.org/}.}. With some lighting, we get this nice shiny effect making the \"spheres\" look more interesting. This texture is shown in figure \ref{fig:visualization_billboard_texture}, where we also see that all the pixels outside the circles are transparent. This is very important so that we can discard these contributions in the fragment shader.
 \begin{figure}[h]
 \begin{center}
@@ -162,7 +164,7 @@ void main(void) {
 \end{lstlisting}
 \subsection{Rendering benchmark}
 \label{sec:vis_benchmark}
-A typical benchmark for a visualization program is the number of frames per second (FPS) the program is able to render a given amount of primitives. In this benchmark, we have used the multibillboard class\footnote{Source code available from \url{http://github.com/dragly/multibillboard}.} that has implemented the shader pipeline explained above. It renders a box with $N$ billboard spheres and adds 26 copies in the geometry shader making the total number of visible spheres $N_\text{spheres} = 27N$. In table \ref{tab:vis_fps_scaling} we have shown a representable subset of the data showing the performance of the billboard class. We have run the program with the number of visible spheres in the range a few thousand to more than one billion. In figure \ref{fig:rendering_benchmark} we have plotted the data from table \ref{tab:vis_fps_scaling} with more data points near the sudden drops of frame rate. We assume that these drops can be explained by meeting different limits on the graphics card. It seems to happen at specific number of vertices emitted by the geometry shader, so our guess would be the bandwidth on the GPU. We have not used any shader profiling tools, so we cannot draw any conclusion without further investigation. 
+A typical benchmark for a visualization program is the number of frames per second (FPS) the program is able to render a given amount of primitives. In this benchmark, we have used the multibillboard class\footnote{Source code available from \url{http://github.com/ComputationalPhysics/compphys-qt3d-additions}.} that has implemented the shader pipeline explained above. It renders a box with $N$ billboard spheres and adds 26 copies in the geometry shader making the total number of visible spheres $N_\text{spheres} = 27N$. In table \ref{tab:vis_fps_scaling} we have shown a representable subset of the data showing the performance of the billboard class. We have run the program with the number of visible spheres in the range a few thousand to more than one billion. In figure \ref{fig:rendering_benchmark} we have plotted the data from table \ref{tab:vis_fps_scaling} with more data points near the sudden drops of frame rate. We assume that these drops can be explained by meeting different limits on the graphics card. It seems to happen at specific number of vertices emitted by the geometry shader, so our guess would be the bandwidth on the GPU. We have not used any shader profiling tools, so we cannot draw any conclusion without further investigation. 
 \begin{table}[h]
 \begin{center}
     \begin{tabular}{|l|l|}

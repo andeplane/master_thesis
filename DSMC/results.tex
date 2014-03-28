@@ -39,7 +39,7 @@ where $t_1$ is the total run time using one processor and $t_N$ is the total run
 \end{table}
 
 \subsection{Weak scaling}
-Another important scaling problem appears when we want to maximize the simulated system size. If we keep a constant system size \textit{per cpu}, and increase the number of processors, the limitation of how big we efficiently can create the system is controlled by the weak scaling. We then introduce the \textit{weak scaling efficiency} $\eta_w$ defined as
+Another important scaling problem appears when we want to maximize the simulated system size. If we keep a constant system size \textit{per CPU}, and increase the number of processors, the limitation of how big we efficiently can create the system is controlled by the weak scaling. We then introduce the \textit{weak scaling efficiency} $\eta_w$ defined as
 \begin{align}
 	\eta_w = \frac{t_1}{t_N},
 \end{align}
@@ -80,7 +80,7 @@ where again $t_1$ is the total run time using one processor and $t_N$ is the run
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/scaling.eps}
 \end{center}
-\caption{The weak and strong scaling efficiency, $\eta_w$ and $\eta_s$, as a funtion of the number of processors $N_\text{CPU}$. We see that at 512 processors, both efficiencies are reduced to 60-70\% because of the MPI communication overhead. Despite the bad statistics, it seems like the efficiency has more or less converged to a satisfactory level.}
+\caption{The weak and strong scaling efficiency, $\eta_w$ and $\eta_s$, as a function of the number of processors $N_\text{CPU}$. We see that at 512 processors, both efficiencies are reduced to 60-70\% because of the MPI communication overhead. Despite the bad statistics, it seems like the efficiency has more or less converged to a satisfactory level.}
 \label{fig:dsmc_scaling}
 \end{figure}
 

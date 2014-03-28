@@ -52,7 +52,7 @@ We now define the solid angle element $\dm\Omega=\sin\theta \dm\theta \dm\phi$ a
 	&= 4v_\text{rel}\cos\chi\sin\chi \dm\chi \dm\phi = 4\left|\unitvector e\cdot\vec v_\text{rel}\right|\sin\chi \dm\chi \dm\phi\\
 	&= 4\left|\unitvector e\cdot\vec v_\text{rel}\right|\dm^2e,
 \end{align}
-where $\dm^2e = \sin\chi \dm\chi \dm\phi$ is a solid angle element about $\unitvector e$. In the following, we will calculate the scattering cross section which is the \textit{area} that describes the likelyhood of an incident particle being scattered by the target particle. We denote the number density $\rho_n$ and find that the incident flux is $\rho_n v_\text{rel}$. The rate $h_{\dm\Omega}'$ of scattered particles into $\dm\Omega$ is
+where $\dm^2e = \sin\chi \dm\chi \dm\phi$ is a solid angle element about $\unitvector e$. In the following, we will calculate the scattering cross section which is the \textit{area} that describes the likelihood of an incident particle being scattered by the target particle. We denote the number density $\rho_n$ and find that the incident flux is $\rho_n v_\text{rel}$. The rate $h_{\dm\Omega}'$ of scattered particles into $\dm\Omega$ is
 \begin{align}
 	\label{eq:partial_scattering_rate}
 	h_{\dm\Omega}' = \rho_n v_\text{rel}\sigma \dm\Omega,
@@ -69,7 +69,7 @@ We will now look at particles with velocities in the range $[\vec v, \vec v + \d
 \begin{align}
 	f(\vec v)f(\vec v_1) v_\text{rel} \sigma \, \dm\Omega \dm\vec v \dm\vec v_1 \dm\vec r = f(\vec v)f(\vec v_1)4\left|\unitvector e\cdot \vec v_\text{rel}\right| \sigma \,\dm^2e \dm \vec v \dm\vec v_1 \dm \vec r.
 \end{align}
-The rate of loss is the rate of which particles in $\dm\vec v\dm\vec r$ are being hit by other particles. We can calulate this by integrating over all solid angles $\dm^2 e$ and incident velocities $\dm \vec v$
+The rate of loss is the rate of which particles in $\dm\vec v\dm\vec r$ are being hit by other particles. We can calculate this by integrating over all solid angles $\dm^2 e$ and incident velocities $\dm \vec v$
 \begin{align}
 	\text{rate of loss} = \left[\iiint\! f(\vec r, \vec v, t)f(\vec r, \vec v_1, t)4\left|\unitvector e \cdot \vec v_\text{rel} \right|\sigma \,\dm^2 e\dm \vec v_1\right]\dm \vec v\dm \vec r.
 \end{align}
@@ -89,7 +89,7 @@ where $f = f(\vec r, \vec v, t)$ and $f_1 = f(\vec r, \vec v_1, t)$. The full Bo
 \end{align}
 In the derivation of the collision operator $J[f]$, we assumed binary collisions only. This is a decent approximation that holds for low densities. By defining the force range $D$ and the dimensionless parameter $\nu = \rho_n D^3$, the Boltzmann equation is valid when $\nu$ is small \cite{mclennan1989introduction}. $D^3$ defines a volume around a particle in which the forces cannot be neglected. This makes $\nu$ the average number of particles within that volume. If that number is small (less than unity) then we can safely neglect collisions between three or more particles.
 \section{\textit{H}-theorem}
-Now we have an integro differential equation describing how the distribution function evolves through time. We will now look at Boltzmann's $H$-theorem which is a powerful result that gives us all the theoretical tools we need to implement the DSMC method. We will use this to derive what velocity distribution a gas in equilibrium obeys. In addition, we will find the mean free path and the mean collision time which both will be used in the Direct Simulation Monte Carlo method. Let us define the $H$-function as
+Now we have an integro-differential equation describing how the distribution function evolves through time. We will now look at Boltzmann's $H$-theorem which is a powerful result that gives us all the theoretical tools we need to implement the DSMC method. We will use this to derive what velocity distribution a gas in equilibrium obeys. In addition, we will find the mean free path and the mean collision time which both will be used in the Direct Simulation Monte Carlo method. Let us define the $H$-function as
 \begin{align}
 	\label{eq:h_function}
 	H(t) = \langle \ln f \rangle = \iint\! f(\vec r, \vec v, t)\ln f(\vec r, \vec v, t)\,\dm \vec r \dm\vec v,

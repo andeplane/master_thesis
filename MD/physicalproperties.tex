@@ -1,21 +1,38 @@
-\section{Physical properties}
-The phase space variables can be used to sample statistical properties of the system, very similar to the techniques we used in DSMC (section \ref{sec:dsmc_measuring_physical_quantities}). Properties of interest are kinetic and potential energy, temperature and pressure. In this section, we will define these properties and discuss how we measure them.
-\subsection{Kinetic and potential energy}
-We measure the kinetic energy directly through its definition for point particles
+\section{Thermostat}
+When $N$ atoms move around, their temperature are defined as in DSMC, through the equipartition theorem
 \begin{align}
-	E_k = \sum_n \frac{1}{2} m_nv_n^2,
+	T = \frac{2E_k}{3Nk_B},
 \end{align}
-where $m_n$ is the mass of particle $n$ and $v_n$ is its scalar velocity. The potential energy is measured by evaluating the Lennard-Jones potential (equation \eqref{eq:md_potential_energy}). We again define temperature by applying the equipartition theorem using the momentum degrees of freedom
-\begin{align*}
-	\langle E_k \rangle = \frac{3N}{2}k_BT,
-\end{align*}
-which gives the instantaneous temperature (we drop the average value brackets meaning the instantaneous value of the kinetic energy)
+where $E_k$ is the instantaneous kinetic energy. But what if we would like another temperature? If we want to increase the temperature, we see that increasing the kinetic energy would do the job. This is in fact a decent way to control the temperature. We say that when we push the system towards a given temperature, we apply a thermostat. A much used thermostat is the Berendsen thermostat. Assume that the system has a temperature $T$, and we would like to push the system towards a new temperature $T_0$. We can think of this as a heat bath in contact with the system. The Berendsen thermostat is defined in a way so that
 \begin{align}
-	T = \frac{2E_k}{3Nk_B}.
+	\frac{\dm T}{\dm t} = \frac{T_0 - T}{\tau},
 \end{align}
-\subsection{Pressure}
-In DSMC, we found the gas to satisfy the ideal gas equation of state (see section \ref{sec:dsmc_pressure}). However, in an MD simulation, we get a non-zero virial term (see appendix \ref{sec:pressure_derivation} for a full derivation), so that we compute the pressure of the fluid as
+for some time constant $\tau$ which essentially determines how fast the system reaches the desired temperature. A simple algorithm obeying the above convergence rate is by multiplying the velocities of all atoms by a factor 
 \begin{align}
-	P = \rho_n k_bT - \frac{1}{3V}\left\langle \sum_{i>j}^N \vec r_{ij} \cdot \vec F_{ij}\right\rangle,
+	\gamma = \sqrt{1 + \frac{\Delta t}{\tau}\left(\frac{T_0}{T} - 1\right)},
 \end{align}
-where the first term is the ideal gas pressure and the last term is the virial. 
+where $\Delta t$ is the timestep. We see that if the temperature $T$ is \textit{higher} than the temperature of the heat bath $T_0$, $\gamma$ becomes smaller than one, reducing the velocities of all the atoms. If the temperature is lower than desired, $\gamma$ is larger than one. While this is a efficient way to gain a desired temperature, it does affect the system in a non-physical way. 
+
+Without a thermostat, the states of the system live in the microcanonical ensemble where the number of atoms, volume and energy is constant. By applying a thermostat, the energy is clearly not conserved and it is tempting to say that we instead have a constant temperature which is the canonical ensemble. The Berendsen thermostat might produce states not only from this ensemble, so it should be used with care. 
+
+% \section{Physical properties}
+% The phase space variables can be used to sample statistical properties of the system, very similar to the techniques we used in DSMC (section \ref{sec:dsmc_measuring_physical_quantities}). Properties of interest are kinetic and potential energy, temperature and pressure. In this section, we will define these properties and discuss how we measure them.
+% \subsection{Kinetic and potential energy}
+% We measure the kinetic energy directly through its definition for point particles
+% \begin{align}
+% 	E_k = \sum_n \frac{1}{2} m_nv_n^2,
+% \end{align}
+% where $m_n$ is the mass of particle $n$ and $v_n$ is its scalar velocity. The potential energy is measured by evaluating the Lennard-Jones potential (equation \eqref{eq:md_potential_energy}). We again define temperature by applying the equipartition theorem using the momentum degrees of freedom
+% \begin{align*}
+% 	\langle E_k \rangle = \frac{3N}{2}k_BT,
+% \end{align*}
+% which gives the instantaneous temperature (we drop the average value brackets meaning the instantaneous value of the kinetic energy)
+% \begin{align}
+% 	T = \frac{2E_k}{3Nk_B}.
+% \end{align}
+% \subsection{Pressure}
+% In DSMC, we found the gas to satisfy the ideal gas equation of state (see section \ref{sec:dsmc_pressure}). However, in an MD simulation, we get a non-zero virial term (see appendix \ref{sec:pressure_derivation} for a full derivation), so that we compute the pressure of the fluid as
+% \begin{align}
+% 	P = \rho_n k_bT - \frac{1}{3V}\left\langle \sum_{i>j}^N \vec r_{ij} \cdot \vec F_{ij}\right\rangle,
+% \end{align}
+% where the first term is the ideal gas pressure and the last term is the virial. 

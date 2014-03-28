@@ -1,4 +1,4 @@
-In this chapter we go into detail about how the DSMC model is implemented in C{}\verb!++!. We assume that the reader is familiar with the programming language. Instead of going through all the classes and their relations, we follow the timeline of a simulation, going from the initialization of the system to how the timestep is computed. For convenience, an UML diagram is shown in figure \ref{fig:dsmc_uml_diagram}.
+In this chapter we go into detail about how the DSMC model is implemented in C{}\verb!++!. We assume that the reader is familiar with the programming language. Instead of going through all the classes and their relations, we follow the time line of a simulation, going from the initialization of the system to how the timestep is computed. For convenience, an UML diagram is shown in figure \ref{fig:dsmc_uml_diagram}.
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=0.9\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/dsmcuml.png}
@@ -7,7 +7,7 @@ In this chapter we go into detail about how the DSMC model is implemented in C{}
 \label{fig:dsmc_uml_diagram}
 \end{figure}
 \\
-The first step of the full program is to create the geometry we want the particles to be confined by. We explain how that is done in section \ref{sec:dsmc_complex_geometries}. Then, we can initialize a system by adding particles randomly inside the geometry. Their velocities should be Maxwell-Boltzmann distributed, as described in section \ref{eq:maxwell_boltzmann_vector_probability}. The initialiation process is explained in section \ref{sec:dsmc_implementation_initialization} before we are ready to perform the timesteps. A timestep is divided into four stages. These stages are
+The first step of the full program is to create the geometry we want the particles to be confined by. We explain how that is done in section \ref{sec:dsmc_complex_geometries}. Then, we can initialize a system by adding particles randomly inside the geometry. Their velocities should be Maxwell-Boltzmann distributed, as described in section \ref{eq:maxwell_boltzmann_vector_probability}. The initialization process is explained in section \ref{sec:dsmc_implementation_initialization} before we are ready to perform the timesteps. A timestep is divided into four stages. These stages are
 \begin{itemize}
     \item accelerate particles to induce flow,
     \item move particles and perform surface interactions,

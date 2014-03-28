@@ -7,7 +7,7 @@ Assume now that we are going to calculate the forces between the atoms on some n
 \begin{center}
 \includegraphics[width=0.8\textwidth, trim=0cm 0cm 0cm 0cm, clip]{MD/figures/parallelization_ghost_atoms.eps}
 \end{center}
-\caption{The middle processor with coordinates (1,1) in a two-dimensional system recieves a copy of all the atoms less than $r_\text{cut}$ from the boundary (ghost atoms, marked red) from the neighboring eight processors. The gray area is the region with the ghost atoms. The black dots are the atoms on node $(1,1)$, gray dots are atoms that do not contribute to the forces of the black atoms.}
+\caption{The middle processor with coordinates (1,1) in a two-dimensional system receives a copy of all the atoms less than $r_\text{cut}$ from the boundary (ghost atoms, marked red) from the neighboring eight processors. The gray area is the region with the ghost atoms. The black dots are the atoms on node $(1,1)$, gray dots are atoms that do not contribute to the forces of the black atoms.}
 \label{fig:md_ghost_atoms}
 \end{figure}
 Since we don't calculate forces between atoms displaced by more than the cut-off radius, we actually compute all the forces we want. This process is done for every processor, every timestep, so that all nodes have all the information they need to compute the forces (and potential energy).
