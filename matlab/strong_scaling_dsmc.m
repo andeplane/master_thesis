@@ -1,9 +1,9 @@
-cpus = 2.^linspace(0,9,10);
-
-t = [ ];
+cpus = [1, 8, 16, 32, 64, 128, 256, 512];
+t = [90802, 15372, 6752, 3805, 1706, 785, 415, 250];
 eta_s = t(1)./(cpus.*t)
 
-plot(cpus,eta_s);
+%plot(cpus,eta_s);
+semilogx(cpus,eta_s);
 
 fontsize = 20;
 hax = gca;
