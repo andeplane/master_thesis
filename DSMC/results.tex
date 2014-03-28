@@ -10,7 +10,7 @@ To see how the program efficiency scales with a fixed system size while increasi
 \begin{align}
 	\eta_s = \frac{t_1}{Nt_N},
 \end{align}
-where $t_1$ is the total run time using one processor and $t_N$ is the total run time using $N$ processors. We see that $\eta_s\in (0,1)$ since $Nt_N$ is the ideal scaling without any communication overhead. In this benchmark, we have run the simulation in an empty geometry - there are no surfaces to collide with. The physical system is a cube with side length $L=$\unit{1.0}{\micro\meter} with a density $\rho_n=\unit{1.0\e{27}}{\meter^{-3}}$ which gives a total of one billion atoms. We choose that one DSMC particle represents 50 atoms, yielding a total of 20 million particles in the whole system. The benchmark was performed for 10000 timesteps ($\Delta t = 0.005$) with $2^N$ processors from 1 CPU to 512 CPUs yielding a good estimate of how efficient the program scales for a relatively large number of processors. In table \ref{tab:dsmc_strong_scaling} we have the scaling results with additional information like the number of intermolecular collisions per processor. This indicates the amount of computation each processor has to perform. The strong scaling efficiency is plotted together with the weak scaling against the number of processors in figure \ref{fig:dsmc_scaling}. 
+where $t_1$ is the total run time using one processor and $t_N$ is the total run time using $N$ processors. We see that $\eta_s\in (0,1)$ since $Nt_N$ is the ideal scaling without any communication overhead. In this benchmark, we have run the simulation in an empty geometry - there are no surfaces to collide with. The physical system is a cube with side length $L=$\unit{1.0}{\micro\meter} with a density $\rho_n=\unit{1.0\e{27}}{\meter^{-3}}$ which gives a total of one billion atoms. We choose that one DSMC particle represents 50 atoms, yielding a total of 20 million particles in the whole system. The benchmark was performed for 10000 timesteps ($\Delta t = 0.005$) with $2^N$ processors from 1 CPU to 512 CPUs yielding a good estimate of how efficient the program scales for a relatively large number of processors. In table \ref{tab:dsmc_strong_scaling} we have the scaling results with additional information like the number of intermolecular collisions per processor. This indicates the amount of computation each processor has to perform. The strong scaling efficiency is plotted together with the weak scaling against the number of processors in figure \ref{fig:dsmc_scaling}. We see that the program scales great with only 30\% overhead for 512 processors. The weird behavior we see at 128 processors, where the efficiency \textit{increases} to 0.9, is probably due to random \"luck\" on the supercomputer where all nodes are physically close to each other. In order to get better statistics, this benchmark should be run several times.
 \begin{table}[h]
 \begin{center}
     \begin{tabular}{|l|l|l|l|l|l}
@@ -33,17 +33,17 @@ where $t_1$ is the total run time using one processor and $t_N$ is the total run
     512 & 3.9\e{4} & 2.27\e{8} &  \unit{250}{\second} & 0.71\\
     \hline
     \end{tabular}
-    \caption{Benchmark results showing the strong scaling efficiency $\eta_s$ for the DSMC program. We see that the program scales great with only 30\% overhead for 512 processors. The weird behavior we see at 128 processors, where the efficiency \textit{increases} to 0.9 is probably due to random \"luck\" on the supercomputer where all nodes are close to each other. In order to get better statistics, this benchmark should be run several times.}
+    \caption{Benchmark results showing the strong scaling efficiency $\eta_s$ for the DSMC program. We see that the program scales great with only 30\% overhead for 512 processors. The weird behavior we see at 128 processors, where the efficiency \textit{increases} to 0.9, is probably due to random \"luck\" on the supercomputer where all nodes are physically close to each other. In order to get better statistics, this benchmark should be run several times.}
     \label{tab:dsmc_strong_scaling}
     \end{center}
 \end{table}
-\todo{Discuss behavior}
+
 \subsection{Weak scaling}
 Another important scaling problem appears when we want to maximize the simulated system size. If we keep a constant system size \textit{per cpu}, and increase the number of processors, the limitation of how big we efficiently can create the system is controlled by the weak scaling. We then introduce the \textit{weak scaling efficiency} $\eta_w$ defined as
 \begin{align}
 	\eta_w = \frac{t_1}{t_N},
 \end{align}
-where again $t_1$ is the total run time using one processor and $t_N$ is the run time using $N$ processors. If the algorithm scales perfectly, the total run time would remain constant while increasing the number of processors (each CPU is ideally independent), but we expect some overhead. This implies that the range for $\eta_w$ also is between zero and one. We have run the same geometry as for the strong scaling, but each processor controls a volume of \unit{1}{\micro\meter^3} so that the largest system is \unit{512}{\micro\meter^3}. Keeping the same density, but using 500 atoms per particle, gives a total of 2 million particles per processor. In table \ref{tab:dsmc_weak_scaling} and figure \ref{fig:dsmc_scaling}, we see the results for the weak scaling efficiency simulation. 
+where again $t_1$ is the total run time using one processor and $t_N$ is the run time using $N$ processors. If the algorithm scales perfectly, the total run time would remain constant while increasing the number of processors (each CPU is ideally independent), but we expect some overhead. This implies that the range for $\eta_w$ also is between zero and one. We have run the same geometry as for the strong scaling, but each processor controls a volume of \unit{1}{\micro\meter^3} so that the largest system is \unit{512}{\micro\meter^3}. Keeping the same density, but using 500 atoms per particle, gives a total of 2 million particles per processor. In table \ref{tab:dsmc_weak_scaling} and figure \ref{fig:dsmc_scaling}, we see the results for the weak scaling efficiency simulation. The weak scaling also shows promising results with a reasonable low overhead.
 \begin{table}[h]
 \begin{center}
     \begin{tabular}{|l|l|l|l|l|l}
@@ -101,8 +101,7 @@ which gives the following prediction for the apparent permeability
 \begin{align}
 	k_a = [1 + \alpha(\text{Kn})\text{Kn}]\left[1 + {4\text{Kn}\over 1 + \text{Kn}}\right] {r^2\over 8}.
 \end{align}
-After 200k timesteps with sampling, the permeability was calculated according to equation 
-In figure \ref{fig:one_cylinder_varying_knudsen} we have plotted the measured permeability as a function of Knudsen number. We see that the \todo{what da fuq}.
+After 200k timesteps with sampling, the permeability was calculated according to equation \ref{eq:permeability_measure}. In figure \ref{fig:one_cylinder_varying_knudsen} we have plotted the measured permeability as a function of Knudsen number. We see that the \todo{what da fuq}.
 
 \begin{figure}[h]
 \begin{center}
@@ -118,7 +117,7 @@ If we instead keep the Knudsen number constant ($\text{Kn}=1.0$), we can vary th
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/cylinder_radius_permeability.eps}
 \end{center}
-\caption{Logarithmic plot of the permeability for different cylinders with radii in the range $0.1 \mu m$ to $0.45 \mu m$ with an applied pressure difference $\Delta P = 1.1P_0$. The blue line is the Knudsen corrected analytical solution from \cite{karniadakis2005microflows}.}
+\caption{Logarithmic plot of the permeability for different cylinders with radii in the range $0.1 \mu m$ to $0.45 \mu m$ with an applied pressure difference $\Delta P = 0.1P_0$. The blue line is the Knudsen corrected analytical solution from \cite{karniadakis2005microflows}.}
 \label{fig:one_cylinder_varying_radii_result}
 \end{figure}
 

@@ -1,10 +1,11 @@
-Most people have an intuition about what a substance is. A substance is just \textit{something}, like water, wood, butter or glass. A metal is a substance. The blood in your body is a substance. All of these are made up of atoms that form molecules in ways giving them very different properties. We know that a substance can exist in different phases, for example plasma, solid, liquid and gas \cite{ravndal2008statmech}, in which the same substance can behave very differently. Liquids and gases are often called fluids because they share the property that they do not have a fixed shape and are often easily deformed. The theory that describes how fluids behave is called fluid mechanics.\\
-We start this chapter by discussing the Euler equations and the Navier-Stokes equations in section \ref{sec:theory_of_fluids_euler_navier}. They assume that the fluid can be described as a continuum, which turns out not to be true for what is called \textit{microflows}. The distinction between macroflows and microflows leads to what is called the breakdown of continuum, which is addressed in section \ref{sec:continuum_breakdown}. When studying microflows, one very important effect emerges; the slip velocity. It turns out that the slip velocity has major consequences for the permeability. This is discussed in section \ref{sec:slip_length}, before we in section \ref{sec:knudsen_number} introduce the Knudsen number which allows us to define different flow regimes in which we can categorize the validity of different fluid flow models.\\
-We then define what a nanoporous media is before we in section \ref{sec:darcy_law} discuss Darcy's law, permeability and that we need to apply corrections to the permeability because of the effects of slip velocity.
+Most people have an intuition about what a substance is. A substance is just \textit{something}, like water, wood, butter or glass. A metal is a substance. The blood in your body is a substance. All of these are made up of atoms that form molecules in ways giving them very different properties. We know that a substance can exist in different phases, for example plasma, solid, liquid and gas \cite{ravndal2008statmech}, in which the same substance can behave very differently. Liquids and gases are often called fluids because they share the property that they do not have a fixed shape and are often easily deformed. The theory that describes how fluids behave is called fluid mechanics.
 
-\section{Continuum}
+We start this chapter by discussing the Euler equations and the Navier-Stokes equations in section \ref{sec:theory_of_fluids_euler_navier}. They assume that the fluid can be described as a continuum, which turns out not to be true for what is called \textit{microflows}. The distinction between macroflows and microflows leads to what is called the breakdown of continuum, which is addressed in section \ref{sec:continuum_breakdown}. When studying microflows, one very important effect emerges; the slip velocity. It turns out that the slip velocity has major consequences for the permeability. This is discussed in section \ref{sec:slip_length}, before we in section \ref{sec:knudsen_number} introduce the Knudsen number which allows us to define different flow regimes in which we can categorize the validity of different fluid flow models. We then define what a nanoporous media is before we in section \ref{sec:darcy_law} discuss Darcy's law, permeability and that we need to apply corrections to the permeability because of the effects of slip velocity.
+
+\section{The continuum}
 \label{sec:continuum}
-In reality, we know that a fluid is composed of an enormous number of atoms which are separated by mostly empty space. The atoms interact through quantum mechanics that allows molecules to form. Even though this is the true nature (well, every physicist should be careful to say that something really is the \textit{true nature}) of the fluid, it turns out that we can describe it as a continuum, that is, we assume that the mass is continuously distributed in the total volume of the fluid. This also means that macroscopic quantities like temperature, density, energy and the fluid velocity are well defined in \textit{every} point in space. This is great, continuum mathematics is so much easier to work with than discrete mathematics. Calculus tells us that well behaved functions (as we prefer to work with) can both be integrated and differentiated. They also treat us rather nice, they do what we expect them to do.\\
+In reality, we know that a fluid is composed of an enormous number of atoms which are separated by mostly empty space. The atoms interact through quantum mechanics that allows molecules to form. Even though this is the true nature (well, every physicist should be careful to say that something really is the \textit{true nature}) of the fluid, it turns out that we can describe it as a continuum, that is, we assume that the mass is continuously distributed in the total volume of the fluid. This also means that macroscopic quantities like temperature, density, energy and the fluid velocity are well defined in \textit{every} point in space. This is great, continuum mathematics is so much easier to work with than discrete mathematics. Calculus tells us that well behaved functions (as we prefer to work with) can both be integrated and differentiated. They also treat us rather nice, they do what we expect them to do.
+
 In physics we strongly believe in conserved quantities. A fluid in motion will internally (far away from the boundaries in the container) have conserved energy, mass and momentum. This can be formulated beautifully with mathematics, and gives rise to what we today know as the Euler equations and the Navier-Stokes equations.
 \section{The Euler equations and the Navier-Stokes equations}
 \label{sec:theory_of_fluids_euler_navier}
@@ -14,7 +15,8 @@ With the concept of continuum, we think that every point in space has well defin
 	\dpart{\rho_m \vec u}{t} + \nabla \cdot (\vec u \otimes (\rho_m\vec u)) + \nabla P &= 0\qquad \text{momentum}\\
 	\dpart{E}{t} + \nabla\cdot (\vec u(E + P)) &= 0\qquad \text{energy},
 \end{align}
-where $\rho_m$ is the mass density, $\vec u(\vec r, t)$ is the velocity field, $E(\vec r, t)$ is the total energy per unit volume, $P(\vec r, t)$ is the pressure field and $\otimes$ is the tensor product. These can be combined to one vector equation, but its origin, the connection to conservation laws, is more clear when they are separated like this. In the original paper, Euler only derived the first two equations, but the full set is usually referred to as the Euler equations. They describe the motion of fluids with \textit{negligible viscosity}, which is a decent approximation for many fluids.\\
+where $\rho_m$ is the mass density, $\vec u(\vec r, t)$ is the velocity field, $E(\vec r, t)$ is the total energy per unit volume, $P(\vec r, t)$ is the pressure field and $\otimes$ is the tensor product. These can be combined to one vector equation, but its origin, the connection to conservation laws, is more clear when they are separated like this. In the original paper, Euler only derived the first two equations, but the full set is usually referred to as the Euler equations. They describe the motion of fluids with \textit{negligible viscosity}, which is a decent approximation for many fluids.
+
 Some 80 years later, in the 1840s, Sir George Stokes published the Navier-Stokes equations (NSE) which can be seen as an extension of the Euler equations where effects caused by the viscosity of the fluid are included \cite{batchelor2000introduction}. The Navier-Stokes equations for an incompressible fluid can be written as one vector equation
 \begin{align}
 	\label{eq:nse}
@@ -25,12 +27,27 @@ where $\vec F$ is an external force (i.e. gravity or an electrostatic field), $\
 	\frac{D}{Dt} = \dpart{}{t} + \vec u\cdot \nabla.
 \end{align}
 The NSE have quite a few interesting analytically solvable solutions, but for most real systems, the geometry confining the fluid is so complicated that it is usually solved on computers. When solving the NSE, we have to provide boundary conditions to get a unique solution for the system. If we at one end of the container apply some pressure $P_0$, and some other value $P_1$ in the other end, we get a flowing fluid since there acts a net force on the fluid. This defines the pressure difference $\Delta P$. We then also specify the velocity at the boundary which often is the no-slip boundary condition, i.e. that the fluid velocity is zero at the container walls. It turns out that for real fluids, this is not always true. In section \ref{sec:slip_length} we discuss the effects of slip velocity and how this affects the flow properties of the fluid. 
-\section{Flow}
-When a fluid flows through some material (this could for example be a tube or a sponge), the amount that flows through a surface per unit time is called volumetric flow rate (how many cubic meters per second). If we choose the surface to be the inlet to the material (or the plane at the inlet orthogonal to the flow direction), the volumetric flow rate is the amount of fluid we are able to push through the system per unit time. If we increase the pressure difference, we expect a higher flow rate. This is indeed true, in fact, the volumetric flow rate is proportional to the pressure difference.
+\section{Flow in porous media}
+Fluid flow can be defined as fluid in motion relative to its container - the material confining the fluid. A material with parts of its volume available for fluids is called a \textit{porous medium} (see figure \ref{fig:porous_medium}).
+
+\begin{figure}[htb]
+\begin{center}
+\includegraphics[width=0.8\textwidth, trim=0cm 0cm 0cm 0cm, clip]{figures/metal_foam.png}
+\end{center}
+\caption{An example of a porous medium. Here we see a metal foam - a solid metal with pore space available for a fluid. A nanoporous medium is a porous medium where the size of the pores are at the nanometer scale. Image from \url{http://en.wikipedia.org/wiki/File:Metal_Foam_in_Scanning_Electron_Microscope,_magnification_10x.GIF}, accessed 28 March, 2014.}
+\label{fig:porous_medium}
+\end{figure}
+
+We call the larger regions available for fluids \textit{pores} whereas channels connecting these pores are called the \textit{pore network}. All available such space is called the \textit{pore space}. If the porous medium has a total volume $V$, and the pore space takes up a volume $V_p$, we define the \textit{porosity} $\phi$ as
+\begin{align}
+	\phi = \frac{\text{Pore space volume}}{\text{Total volume}} = \frac{V_p}{V}.
+\end{align}
+When a fluid flows through the material, the amount that flows through a surface per unit time is called the \textit{volumetric flow rate} and is usually denoted by $Q$. This quantity measures how many cubic meters of fluid we can push through a surface orthogonal to the flow direction per unit time. If we increase the pressure difference, we expect a higher flow rate. This is indeed true. In fact, the volumetric flow rate is proportional to the pressure difference.
+
 \section{Darcy's law}
 \label{sec:darcy_law}
 When we apply a pressure difference on each side of a material filled with a fluid, the fluid will start to flow in the direction of lower pressure. In 1856, H. Darcy found a linear relation between the pressure difference and the fluid flow rate. This relation is called Darcy's law and tells us what volumetric flow rate $Q$ we can expect from an \textit{incompressible} fluid through a material of length $L$, when we apply a pressure difference $\Delta P$, see figure \ref{fig:darcys_law}. 
-\begin{figure}[h!]
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.75\textwidth, trim=0cm 0cm 0cm 0cm, clip]{kinetic_theory/figures/darcy.eps}
 \end{center}
@@ -49,7 +66,8 @@ where $u$ is the \textit{volumetric flux} (volumetric flow rate per unit area), 
 where $\mu$ is the viscosity and $k$ is the permeability.
 \section{Permeability}
 \label{sec:permeability}
-The motivation of introducing the concept permeability is to separate the proportionality constant into two parts; one that depends on the liquid only, the viscosity $\mu$, and the permeability, a material specific constant $k$. This means that we in principle can do an experiment with a liquid with known viscosity, say water, and measure the permeability of some material (Darcy studied a sand filled cylinder in his original experiment). Once you know the permeability, you are able to predict the flow rate through the material for \textit{any} other liquid with a well known viscosity. This is of great importance for i.e. the oil industry where they ideally would like to take a sample of the rock in which the oil and/or gas is confined, measure the permeability with e.g. air, and then use this to predict the recovery rate.\\
+The motivation of introducing the concept permeability is to separate the proportionality constant into two parts; one that depends on the liquid only, the viscosity $\mu$, and the permeability, a material specific constant $k$. This means that we in principle can do an experiment with a liquid with known viscosity, say water, and measure the permeability of some material (Darcy studied a sand filled cylinder in his original experiment). Once you know the permeability, you are able to predict the flow rate through the material for \textit{any} other liquid with a well known viscosity. This is of great importance for i.e. the oil industry where they ideally would like to take a sample of the rock in which the oil and/or gas is confined, measure the permeability with e.g. air, and then use this to predict the recovery rate.
+
 This is of course not completely true in all circumstances. While Darcy originally found the relation as an empiric equation based on experiments, it can be derived from the Navier-Stokes equations. Darcy's law is only correct if the fluid flow satisfies the no-slip condition.
 \section{Macroflows and microflows}
 \label{sec:theory_of_fluids_microflows}
@@ -76,16 +94,17 @@ where $\rho_n$ is the number density and $m$ and $d$ are the mass and diameter o
 
 \section{Knudsen number}
 \label{sec:knudsen_number}
-The Knudsen number is the ratio between the mean free path - the average distance a particle moves between colliding with another particle - and a characteristic length in the system. This length could be the radius of a cylinder or the radius of a spherical pore or some other length scale that is representable for the system. In other words, it can be related to how often a particle collides with the surface compared to other particles. A Knudsen number larger than one indicates that a particle travels longer before it collides with another particle than the distance to the surface which means that surface effects are of increasingly importance as the Knudsen number increases.\\
+The Knudsen number is the ratio between the mean free path - the average distance a particle moves between colliding with another particle - and a characteristic length in the system. This length could be the radius of a cylinder or the radius of a spherical pore or some other length scale that is representable for the system. In other words, it can be related to how often a particle collides with the surface compared to other particles. A Knudsen number larger than one indicates that a particle travels longer before it collides with another particle than the distance to the surface which means that surface effects are of increasingly importance as the Knudsen number increases.
+
 To get an idea of the length scales where the Knudsen number is about unity, we first need to calculate the mean free path. An oxygen atom in air at room temperature has a mean free path \cite{denny1993air}
 \begin{align}
 	\label{eq:air_mfp}
-	\lambda{\text{Air}} = \unit{8.0\e{-8}}{\meter},
+	\lambda_{\text{Air}} = \unit{8.0\e{-8}}{\meter},
 \end{align}
 whereas in water has
 \begin{align}
 	\label{eq:water_mfp}
-	\lambda{\text{Water}} = \unit{\e{-11}}{\meter}.
+	\lambda_{\text{Water}} = \unit{\e{-11}}{\meter}.
 \end{align}
 This means that air in a nanoporous media with typical pore size about \unit{80}{\nano\meter}, the Knudsen number is of order unity and the continuum hypothesis is invalid. Water in the same system has a Knudsen number approximately $1\e{-4}$ and continuum models should in principle hold. 
 
@@ -144,7 +163,3 @@ We can divide the entire Knudsen range into different regimes enabling us to get
 \caption{The four flow regimes covering the important regions in the Knudsen number range where different flow types appear. In the low Knudsen number limit, the fluid can be assumed to be a continuum and we can use equations like the Euler equation or the NSE. For larger Knudsen numbers, the no-slip boundary condition is invalid and we need a model satisfying slip velocity. We reach the transition flow regime at Kn$\approx 0.1$ where the continuum models do no longer hold, even with slip boundary conditions. In the high Knudsen regime particle collisions are so rare that it is classified as free molecular flow. In this range, the collisionless Boltzmann equation is valid (see section \ref{sec:boltzmann_equation}).}
 \label{fig:flow_regimes}
 \end{figure}
-\section{Nanoporous media}
-\label{sec:nanoporous_media}
-A porous medium is a material with pores and channels - the pore network - available for fluids. A typical example most people immediately understand is a sponge. We call the skeletal portion of the material the matrix. This is what confines the fluid within the system. The term nanoporous media is used when the pore network is of nanometer size, see figure \ref{fig:history_porous_media}. 
-\missingfigure{Make a sketch of a porous medium.}

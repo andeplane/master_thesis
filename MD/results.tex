@@ -1,4 +1,7 @@
+In this chapter we discuss the results of our MD simulations. Here we start by a scaling performance benchmark in section \ref{sec:md_benchmark} before we in section \ref{sec:md_cylinder_result} move on to a validation of the Knudsen correction we confirmed with the DSMC model. Most of the concepts are equivalent as in DSMC in section \ref{sec:dsmc_parallelization_performance}, so the reader is is assumed to have read that section.
+
 \section{Parallelization performance}
+\label{sec:md_benchmark}
 The parallelization scheme we have used in MD is very similar to the one we used in DSMC. In section \ref{sec:dsmc_parallelization_performance}, we measured both the strong and the weak scaling efficiency ($\eta_s$ and $\eta_w$) which measure two different ways of scaling the program. We will not repeat the discussion about these except present the result for both scaling for the MD program. 
 
 \subsection{Strong scaling}
@@ -94,6 +97,7 @@ where again $t_1$ is the total run time using one processor and $t_N$ is the run
 \end{figure}
 
 \section{Flow in a cylinder, varying Knudsen number}
+\label{sec:md_cylinder_result}
 We have used the MD program to simulate flow in a cylinder with a fixed radius $R$, just like we did in section \ref{sec:results_for_simple_geometries} with DSMC. We will measure the permeability to see how well the Knudsen correction factor (see section \ref{sec:knudsen_correction}) predicts the permeability for very small pores (here a cylinder) with an atomic model. The cylinder was created with the solid model we described in section \ref{sec:md_simple_model_of_a_solid}. Since the solid now consists of atoms (in DSMC it was just a scalar field defining the surface), we should create the cylinder carefully. We have prepared the system with the following steps
 \begin{itemize}
 	\item Heat the system 2000 timesteps, $T=$\unit{300}{\kelvin}

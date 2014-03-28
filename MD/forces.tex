@@ -36,3 +36,13 @@ In principle, we have to sum over all pairs in the system which for $N$ atoms is
 	\end{array}\right .
 \end{align}
 This means that we don't have to compute the forces between atoms that are more than $r_\text{cut}$ apart. So \textit{locally}, within this radius $r_\text{cut}$, the number of pairs we need to sum over is proportional to $\rho_n^2$, but if we double the system size, most of the extra atoms do not feel the forces from the atoms already in the system since they are separated by more than $r_\text{cut}$. So the calculation of forces is $O(N)$.
+
+We need to be careful here, because the potential energy is calculated with the same rules at the forces. So an atom just outside $r_\text{cut}$ will have zero potential energy whereas an atom just \textit{inside} will have a non-zero energy. This can lead to erroneous fluctuations in the energy. We will fix that by shifting the potential energy so that $U(r_\text{cut})$ is zero. The potential energy is then 
+\begin{align}
+	U(r_{ij}) = \left\{
+	\begin{array}{l l}
+		 U_{LJ}(r_{ij}) - U(r_\text{cut}) & \leq r_\text{cut}\\
+		0 & \text{if } r_{ij} > r_\text{cut},
+	\end{array}\right .
+\end{align}
+where $U_{LJ}(r_{ij})$ is the same as in equation \ref{eq:md_potential_energy}. 
