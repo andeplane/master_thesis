@@ -6,10 +6,65 @@ When we are running simulations to study flow in nanoporous media, one single ex
 	\item Reach a steady state
 	\item Sample statistics.
 \end{enumerate}
-Some of these steps aren't even performed by the same C{}\verb!++! program, so we have developed a scripting framework in Python wrapping all the functionality from the different C{}\verb!++! programs into one scripting framework. This simplifies the workflow all the way from the very idea of some physical problem to running the simulation to study it. In this appendix we will discuss the Python framework and show the workflow of how to study problem, from idea to simulation, using DSMC.
+Some of these steps aren't even performed by the same C{}\verb!++! program, so we have developed a scripting framework in Python wrapping all the functionality from the different C{}\verb!++! programs into one scripting framework. This simplifies the workflow all the way from the very idea of some physical problem to running the simulation to study it. In this appendix we will discuss the Python framework and show the workflow of how to study problem, from idea to simulation, using DSMC. First, we quickly explain the basic principles of the Python framework.
+
+\section{The Python framework}
+The framework is a Python class with a lot of convenience methods built-in. Its main job is to compile the C{}\verb!++! programs and simplify the generation of config files that are used by the C{}\verb!++! DSMC program. The class is called DSMC and is best explained by a code example, see listing \ref{lst:dsmc_framework}. This allows us to quickly create a script running a full simulation consisting on several steps in a short amount of time.
+% \"\_\_value\_\_\"
+\begin{lstlisting}[caption=dsmcconfig.py. This program illustrates how the framework script is created. A lot of convenience functions are built-in so that running a simulation is a simple process. The create\_config\_file() function replaces the string \_\_value\_\_ in a dummy config file with the real value stored in the class. , label=lst:dsmc_framework, language=Python]
+	class DSMC:
+	def __init__(self, compiler = "mpic++", dt=0.001, nx=1, ny=1, nz=1):
+		# Physical parameters
+		self.unit_converter = DSMC_unit_converter(self)
+		self.temperature = unit_converter.temperature_from_si(T=300) 
+		self.density = unit_converter.density_from_si(rho=1.0e25)
+		self.diam = unit_converter.length_from_si(3.62e-10)
+		self.mass = unit_converter.mass_from_si(6.63e-26)
+
+		self.dt = dt
+		self.compiler = compiler
+		self.nx = nx
+		self.ny = ny
+		self.nz = nz
+
+		self.timesteps = 10000
+		self.surface_interaction = "thermal"
+		# ...
+
+	def save_state(self, path):
+		# ...
+
+	def load_state(self, path):
+		# ...
+
+	def prepare_new_system(self):
+		# ...
+
+	def apply_pressure_gradient_percentage(self, factor_of_ideal_gas_pressure):
+		# ...
+
+	def create_config_file(self):
+		original_file = open("program/000_config_files/dsmc.ini,'r');
+		output_file   = open('dsmc.ini','w');
+
+		for line in original_file:
+			line = line.replace('__dt__',str(self.dt) )
+			line = line.replace('__density__',str(self.density) )
+			# ...
+			output_file.writelines(line)
+		# ...
+
+	def compile(self):
+		# ...
+
+	def run(self):
+		# ...
+}
+\end{lstlisting}
+
 \section{From idea to simulation}
 \subsection{Create the geometry}
-The program package we have developed is an excellent tool to study flow of dilute gases in complex nanoporous media. So what we usually do is to come up with the idea of some interesting geometry to study. This could either be a real sample dataset, a mathematical description or some other creative way to create the geometry. An example could be the packed spheres discussed in section \ref{sec:dsmc_packed_spheres_results} where each sphere is placed out randomly inside the volume defined by the $N_x\times N_y \times N_z$ voxel grid. All the voxels within a given distance (the sphere radius) from the sphere center are marked as solid voxels. Any other geometry can made with this technique with the code in the \textit{complexgeometry.cpp} file. 
+The DSMC program package we have developed is an excellent tool to study flow of dilute gases in complex nanoporous media. So what we usually do is to come up with the idea of some interesting geometry to study. This could either be a real sample dataset, a mathematical description or some other creative way to create the geometry. An example could be the packed spheres discussed in section \ref{sec:dsmc_packed_spheres_results} where each sphere is placed out randomly inside the volume defined by the $N_x\times N_y \times N_z$ voxel grid. All the voxels within a given distance (the sphere radius) from the sphere center are marked as solid voxels. Any other geometry can made with this technique with the code in the \textit{complexgeometry.cpp} file. 
 \subsection{Initialize system}
 Once we have the geometry of the system we would like to study, we need to insert gas particles inside the system. The gas could in principle have different densities based on position or other properties, but in this thesis we are placing the particles uniformly in the pore volume, i.e. in voxels marked as empty. We choose velocities from the Maxwell-Boltzmann distribution (equation \eqref{eq:maxwell_boltzmann_distribution}) so that the gas has the temperature we want.
 \subsection{Reach a steady state}
@@ -86,4 +141,3 @@ Finally, after having defined all the steps in our scheme, we can gather everyth
 	program.run(dsmc)
 }
 \end{lstlisting}
-\section{The Python framework}
