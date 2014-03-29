@@ -10,7 +10,11 @@ To see how the program efficiency scales with a fixed system size while increasi
 \begin{align}
 	\eta_s = \frac{t_1}{Nt_N},
 \end{align}
-where $t_1$ is the total run time using one processor and $t_N$ is the total run time using $N$ processors. We see that $\eta_s\in (0,1)$ since $Nt_N$ is the ideal scaling without any communication overhead. In this benchmark, we have run the simulation in an empty geometry - there are no surfaces to collide with. The physical system is a cube with side length $L=$\unit{1.0}{\micro\meter} with a density $\rho_n=\unit{1.0\e{27}}{\meter^{-3}}$ which gives a total of one billion atoms. We choose that one DSMC particle represents 50 atoms, yielding a total of 20 million particles in the whole system. The benchmark was performed for 10000 timesteps ($\Delta t = 0.005$) with $2^N$ processors from 1 CPU to 512 CPUs yielding a good estimate of how efficient the program scales for a relatively large number of processors. In table \ref{tab:dsmc_strong_scaling} we have the scaling results with additional information like the number of intermolecular collisions per processor. This indicates the amount of computation each processor has to perform. The strong scaling efficiency is plotted together with the weak scaling against the number of processors in figure \ref{fig:dsmc_scaling}. We see that the program scales great with only 30\% overhead for 512 processors. The weird behavior we see at 128 processors, where the efficiency \textit{increases} to 0.9, is probably due to random \"luck\" on the supercomputer where all nodes are physically close to each other. In order to get better statistics, this benchmark should be run several times.
+where $t_1$ is the total run time using one processor and $t_N$ is the total run time using $N$ processors. We see that $\eta_s\in (0,1)$ since $Nt_N$ is the ideal scaling without any communication overhead. In this benchmark, we have run the simulation in an empty geometry - there are no surfaces to collide with.
+
+The physical system is a cube with side length $L=$\unit{1.0}{\micro\meter} with a density $\rho_n=\unit{1.0\e{27}}{\meter^{-3}}$ which gives a total of one billion atoms. We choose that one DSMC particle represents 50 atoms, yielding a total of 20 million particles in the whole system. The benchmark was performed for 10000 timesteps ($\Delta t = 0.005$) with $2^N$ processors from 1 CPU to 512 CPUs yielding a good estimate of how efficient the program scales for a relatively large number of processors. In table \ref{tab:dsmc_strong_scaling} we have the scaling results with additional information like the number of intermolecular collisions per processor. This indicates the amount of computation each processor has to perform. 
+
+The strong scaling efficiency is plotted together with the weak scaling against the number of processors in figure \ref{fig:dsmc_scaling}. We see that the program scales great with only 30\% overhead for 512 processors. The weird behavior we see at 128 processors, where the efficiency \textit{increases} to 0.9, is probably due to random \"luck\" on the supercomputer where all nodes are physically close to each other. In order to get better statistics, this benchmark should be run several times.
 \begin{table}[h]
 \begin{center}
     \begin{tabular}{|l|l|l|l|l|l}
@@ -99,15 +103,16 @@ The analytical absolute permeability for a cylinder with radius $r$ is given by\
 \end{align}
 which gives the following prediction for the apparent permeability
 \begin{align}
+    \label{eq:knudsen_corrected_cylinder}
 	k_a = [1 + \alpha(\text{Kn})\text{Kn}]\left[1 + {4\text{Kn}\over 1 + \text{Kn}}\right] {r^2\over 8}.
 \end{align}
-After 200k timesteps with sampling, the permeability was calculated according to equation \ref{eq:permeability_measure}. In figure \ref{fig:one_cylinder_varying_knudsen} we have plotted the measured permeability as a function of Knudsen number. We see that the \todo{what da fuq}.
+After 200k timesteps with sampling, the permeability was calculated according to equation \ref{eq:permeability_measure}. In figure \ref{fig:one_cylinder_varying_knudsen} we have plotted the measured permeability as a function of Knudsen number with the Knudsen corrected analytical solution. The left figure has the Knudsen numbers on a logarithmic $x$-axis to emphasize the lower Knudsen numbers. We see that the measured permeability is slightly lower than predicted for the higher Knudsen numbers. This is probably an effect from the voxelization of the cylinder where the effective radius is slightly smaller than desired. By reducing the radius by a factor $0.99$ in equation \eqref{eq:knudsen_corrected_cylinder}, the measured permeability perfectly overlaps the analytical solution.
 
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/cylinder_knudsen_permeability.eps}
 \end{center}
-\caption{Permeability as a function of Knudsen number for a cylinder with radius \unit{0.45}{\micro\meter} and length \unit{1}{\micro\meter} with an applied pressure difference $\Delta P = 1.1P_0$ ($P_0$ being the ideal gas pressure). We control the Knudsen number by varying the density. The blue line is the Knudsen corrected analytical solution from \cite{karniadakis2005microflows}. The DSMC results confirm that the Knudsen correction factor works very well for a system with a well defined Knudsen number.}
+\caption{Permeability as a function of Knudsen number for a cylinder with radius \unit{0.45}{\micro\meter} and length \unit{1}{\micro\meter} with an applied pressure difference $\Delta P = 0.1P_0$, $P_0$ being the ideal gas pressure. We control the Knudsen number by varying the density. The blue line is the Knudsen corrected analytical solution in equation \eqref{eq:knudsen_corrected_cylinder}. We see a slightly lower permeability than the analytical solution. This is probably an effect from the voxelization of the cylinder where the effective radius is slightly smaller than desired. By reducing the radius by a factor $0.99$ in equation \eqref{eq:knudsen_corrected_cylinder}, the measured permeability perfectly overlaps the analytical solution.}
 \label{fig:one_cylinder_varying_knudsen}
 \end{figure}
 
@@ -117,7 +122,7 @@ If we instead keep the Knudsen number constant ($\text{Kn}=1.0$), we can vary th
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/cylinder_radius_permeability.eps}
 \end{center}
-\caption{Logarithmic plot of the permeability for different cylinders with radii in the range $0.1 \mu m$ to $0.45 \mu m$ with an applied pressure difference $\Delta P = 0.1P_0$. The blue line is the Knudsen corrected analytical solution from \cite{karniadakis2005microflows}.}
+\caption{Logarithmic plot of the permeability for different cylinders with radii in the range $0.1 \mu m$ to $0.45 \mu m$ with an applied pressure difference $\Delta P = 0.1P_0$. The blue line is the Knudsen corrected analytical solution from \cite{karniadakis2005microflows}. The permeability scales with the radius as $r^2$.}
 \label{fig:one_cylinder_varying_radii_result}
 \end{figure}
 

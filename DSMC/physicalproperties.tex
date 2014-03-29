@@ -1,6 +1,7 @@
 \section{Measuring physical quantities}
 \label{sec:dsmc_measuring_physical_quantities}
-The model, or shall we say, the \textit{simulator} is in principle fully described. The particles move and perform collisions with the surface according to some interaction rule. Then the particles will collide with each other. This process goes on an on until we are satisfied or out of computing time. Within this framework, statistical mechanics happens and particles behave as they should (the model solves the Boltzmann equation). But there is no reason to have a simulator if we're not going to use it to learn physics.\\
+The model, or shall we say, the \textit{simulator} is in principle fully described. The particles move and perform collisions with the surface according to some interaction rule. Then the particles will collide with each other. This process goes on an on until we are satisfied or out of computing time. Within this framework, statistical mechanics happens and particles behave as they should (the model solves the Boltzmann equation). But there is no reason to have a simulator if we're not going to use it to learn physics.
+
 The simulator will take the system from some initial state and guide it through the phase space. This was what the ergodicity hypothesis allows us to do (see section \ref{sec:kinetic_theory_ergodicity}). We can evolve the system through time and visit the phase space with probabilities equal to those of the ensemble. The DSMC model is inherently stochastic, so any physical quantity should be computed by averaging many instantaneous measurements. We should assume that there will occur gradients of the physical quantities (for example gradients in density and temperature), so we should calculate local values in the collision cells. In a typical collision cell, there will be maybe ten to a hundred particles, so the instantaneous values will fluctuate significantly. But as we know from statistics, if the system is in equilibrium, the fluctuations (here the standard deviation) in e.g. the energy or temperature will decrease as $1/\sqrt{N_m}$ if measured $N_m$ times assuming that the measurements are uncorrelated. The latter requirement can be obtained by measuring every $n$th timestep. We can measure the correlation between two states through the velocity autocorrelation function given as
 \begin{align}
 	C_v(t) &= \frac{\langle \vec v(t)\vec v(0)\rangle_N}{\langle \vec v(0)\vec v(0)\rangle_N}\\
@@ -19,7 +20,7 @@ The total energy of a system is as usual given by the sum of the kinetic and pot
 \end{align}
 where collisions will make sure that the relative distance between any particle pair always remains larger than the diameter. The total energy of our entire system will then only be the kinetic energy
 \begin{align}
-	E = E_k = \sum_{n=1}^N {1\over 2}m_nv_n^2
+	E = E_k = \sum_{n=1}^N \frac{1}{2}m_nv_n^2
 \end{align}
 where $m_n$ is the mass of particle $n$ and $v_n$ is its scalar velocity. An example implementation of how the instantaneous kinetic energy is calculated is given in listing \ref{lst:dsmc_kinetic_energy}. Remember that in DSMC, each particle represents a given number of real atoms.
 
@@ -38,7 +39,7 @@ Once we have found the kinetic energy, we can easily compute the temperature.
 \subsection{Temperature}
 The temperature is defined through the equipartition theorem using the three momentum degrees of freedom
 \begin{align}
-	\langle E_k \rangle = {3\over 2}Nk_BT,
+	\langle E_k \rangle = \frac{3}{2}Nk_BT,
 \end{align}
 where $\langle E_k \rangle$ is the average kinetic energy, $N$ is the number of particles, $k_B$ is Boltzmann's constant and $T$ is the temperature. The only unknown quantity in this equation is the temperature
 \begin{align}
@@ -54,7 +55,7 @@ where $E(\vec r,t)$, $\rho(\vec r,t)$ and $\vec p(\vec r,t)$ is the average kine
 \subsection{Density}
 Here we should comment on another detail, a consequence of our intermolecular collision model. Since there are no forces between the particles, all of them can in principle be at the very same point (remember that we used the hard sphere collision model only to calculate the collision rates, not to detect collisions). This will of course not happen, but it is possible to initiate a state in that configuration. The number density $\rho_n$ in any volume $V$ is easily calculated through
 \begin{align}
-	\rho_n = {N \over V},
+	\rho_n = \frac{N}{V},
 \end{align}
 where $N$ is the number of atoms in that volume. This enables us to calculate local densities as well as the global density of the system. Again we must not forget that each simulated particle represents $N_\text{eff}$ real atoms.
 \subsection{Permeability}

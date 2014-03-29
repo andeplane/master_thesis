@@ -5,7 +5,7 @@ Pressure plays an important role in the field of fluid flow. An applied pressure
 \label{sec:dsmc_eos}
 The free \textit{modules} in a DSMC program are the collision operator $\mathcal C$ and the move operator $\mathcal M$ which fully (stochastically) determine the time evolution of the system. For systems with pairwise interactions (such as hard spheres or the Lennard-Jones potential which we meet in section \ref{sec:md_model}), the pressure may be defined as (see appendix \ref{sec:pressure_derivation} for a derivation)
 \begin{align}
-	P = \rho_nk_BT + {1\over 3V}\bigg\langle \sum_{i<j} \vec F(\vec r_{ij})\cdot \vec r_{ij}\bigg\rangle,
+	P = \rho_nk_BT + \frac{1}{3V}\bigg\langle \sum_{i<j} \vec F(\vec r_{ij})\cdot \vec r_{ij}\bigg\rangle,
 \end{align}
 where the first term is the ideal gas pressure whereas the second term is called the virial of the pressure. Here $\vec F(\vec r_{ij})$ is the force between particle $i$ and $j$, and $\vec r_{ij}$ is their relative distance. In DSMC we don't have the details about the forces, but we can formulate a similar expression using that the force is the change in momentum per time
 \begin{align}

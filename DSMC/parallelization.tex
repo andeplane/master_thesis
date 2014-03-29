@@ -54,7 +54,8 @@ double mpi_move() {
 	}
 }
 \end{lstlisting}
-In principle, there are 26 potential receiving nodes, so each node needs to be able to send information to all of them. The easiest way to implement this is to let each processor directly communicate with all of its neighbors. However, this approach requires a lot more communication time than actually needed.\\
+In principle, there are 26 potential receiving nodes, so each node needs to be able to send information to all of them. The easiest way to implement this is to let each processor directly communicate with all of its neighbors. However, this approach requires a lot more communication time than actually needed.
+
 If we instead send information about these particles through a 3-step process, we can reduce the number of neighboring nodes from 26 to 6. This idea is best illustrated in two dimensions, but is easily generalized to the three-dimensional case, see figure \ref{fig:parallelization_facet_technique}.
 \begin{figure}[htpb]
 \begin{center}

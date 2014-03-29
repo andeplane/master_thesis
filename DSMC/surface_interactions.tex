@@ -9,7 +9,7 @@ When a particle with energy $E_i$ hits a surface, some of the energy might be tr
 \end{align}
 where $E_i$ is the energy of the incoming particles, $E_r$ is the energy of the outgoing particles and $E_w$ is the energy corresponding to the surface temperature $T_w$. A thermal accommodation coefficient equal to zero would mean that there is no energy exchange, and we will get the specular wall model described below. $\sigma_n=1$ on the other hand means that all the reflected particles have energies corresponding to the surface temperature. This is what we call the thermal wall (or diffuse reflection\cite{karniadakis2005microflows}), and there is no correlation between the incoming and outgoing velocities. More intricate models may use other values of the accommodation coefficients so the particles \textit{remember} their incoming velocities. We can also define the \textit{tangential momentum accommodation coefficient}
 \begin{align}
-	\sigma_t = {\tau_i - \tau_r\over \tau_i - \tau_w},
+	\sigma_t = \frac{\tau_i - \tau_r}{\tau_i - \tau_w},
 \end{align}
 where $\tau_i$ and $\tau_r$ are the incoming and outgoing tangential momentum and $\tau_w$ is the momentum of the surface (e.g. a moving surface). 
 
@@ -19,11 +19,11 @@ The specular wall behaves just like how a classical mirror reflects light. The c
 \subsection{Thermal wall}
 If we instead think of the wall as a reservoir with a given temperature $T_w$, we can imagine that the particles go into the wall, collide with the wall atoms for a while, and at some point, return with no correlation with the incoming velocity. In principle, the outgoing particles doesn't have to be the same as those that go into the wall, but as long as there is no net particle flux we might as well assume this for simplicity. Once a particle has hit the surface, we can choose a new, random velocity vector from a distribution so that the reflected particles have an average velocity according to the wall temperature. Since faster particles collide with the wall more often (this would also be true if we got \textit{new} particles from the reservoir), this distribution has to reflect this fact. A distribution that satisfies this property is the \textit{biased} Maxwell-Boltzmann distribution\cite{alexander1997direct} 
 \begin{align}
-	P_n(v_n)\dm v_n = {m\over k_BT_w}v_n e^{-\frac{mv_n^2}{2k_BT_w}} \dm v_n,
+	P_n(v_n)\dm v_n = \frac{m}{k_BT_w}v_n e^{-\frac{mv_n^2}{2k_BT_w}} \dm v_n,
 \end{align}
 for the velocity component normal on the surface and
 \begin{align}
-	P_t(v_t)\dm v_t = \sqrt{m\over 2\pi k_BT_w}e^{-\frac{mv_t^2}{2k_BT_w}} \dm v_t,
+	P_t(v_t)\dm v_t = \sqrt\frac{m}{2\pi k_BT_w}e^{-\frac{mv_t^2}{2k_BT_w}} \dm v_t,
 \end{align}
 for the tangential component. Here $m$ is the mass of the particle and $k_B$ is Boltzmann's constant as usual. However, this distribution does not obey detailed balance since the incoming velocity is completely uncorrelated to the outgoing velocity, but it turns out that it provides great theoretical insight given its simple mathematical form. This, in addition to that it is computationally inexpensive (see section \ref{sec:dsmc_implementation_initialization}), it is much used in the literature. 
 
@@ -45,5 +45,5 @@ where $v_n$ and $v_t$ are the normal and tangential components of the velocities
 \caption{The Cercignani-Lampis normal component distribution for $T_w=\unit{100}{\kelvin}$, $m=\unit{39.948}{\atomicmassunit}$ (argon), $\alpha_n=0.5$. We see that particles with high velocities are on average reflected with a slightly lower velocity, converging towards the velocity corresponding to the wall temperature $T_w$. The mean velocity for this temperature is $\langle v \rangle = $\unit{144}{\meter\per\second}.}
 \label{fig:cercignani_lampis}
 \end{figure}
-\\
+
 To draw random numbers from this distribution is orders of magnitudes slower than that of the thermal wall, since it isn't trivial (if even possible) to invert the cumulative distribution function. Instead we must use the von Neumann algorithm which is a accept-reject Monte Carlo algorithm\cite{allen1989computer}. Our main focus in this thesis is to validate the DSMC model by comparing it to theoretical results of which most have used the thermal wall. The Cercignani-Lampis model is available in the DSMC-code, but due to its computational cost and the low number of comparable theoretical results, we have used the thermal wall in all of our simulations. 

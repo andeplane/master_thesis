@@ -94,7 +94,8 @@ A model of an object contains all the information fully defining how a geometric
 	\item a local texture coordinate array, and
 	\item a normal vector array.
 \end{itemize}
-We have discussed the vertices, the primitive, the color and texture coordinate arrays (remember, one color and one texture coordinate per vertex). We also need a \textit{texture id} (which is just an int variable) allowing us to tell the GPU which texture it should apply to this primitive object. In addition, we can assign a \textit{normal vector} to each vertex which can be used to create realistic lighting and other effects. It's time for an example of a model.\\
+We have discussed the vertices, the primitive, the color and texture coordinate arrays (remember, one color and one texture coordinate per vertex). We also need a \textit{texture id} (which is just an int variable) allowing us to tell the GPU which texture it should apply to this primitive object. In addition, we can assign a \textit{normal vector} to each vertex which can be used to create realistic lighting and other effects. It's time for an example of a model.
+
 We now want a model of a die. A die is a cube with six faces. The model $\mathcal M$ would then contain six primitive objects $\mathcal P_i$, each having an array of four vertices. The primitive type would be \textit{GL\_QUADS} where the color of course could be your favorite color. We need to upload six textures (one face has one dot, another face has two dots etc) which gives us six different texture id's. The local texture coordinate array is simply the four corners of the unit square whereas the normal vectors should point outwards from the cube. In figure \ref{fig:opengl_die} we have used this technique to draw a red die.
 \begin{figure}[h]
 \begin{center}
