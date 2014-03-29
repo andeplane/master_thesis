@@ -111,9 +111,9 @@ void main(void) {
 
 \subsection{Periodic copies}
 We used the geometry shader to create a \textit{GL\_TRIANGLE\_STRIP} creating the billboard from one single vertex (the particle position). Then, one may ask, why not use the geometry shader to create \textit{several} billboards, adding periodic copies of every particle in the system? This makes sense if the simulation operates with periodic boundary conditions so we have periodic symmetry on all directions. So, if the system is a box of size $L_x\times L_y \times L_z$, we can create 26 copies of the whole system giving a larger box of size $3L_x\times 3L_y\times 3L_z$, making the impression that the system is larger. This provides an important effect near the boundaries of the system, see figure \ref{fig:visualization_billboard_periodic_copies}.
-\begin{figure}[h]
+\begin{figure}[htb]
 \begin{center}
-\includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{visualization/figures/periodic_copies.png}
+\includegraphics[width=0.9\textwidth, trim=0cm 0cm 0cm 0cm, clip]{visualization/figures/periodic_copies.png}
 \end{center}
 \caption{Adding periodic copies of the system provides an important effect when looking at atoms near the boundary. The upper image shows a visualization with no periodic copies of the atoms. This shows that the system clearly has a finite size. In the lower image, by adding 26 periodic copies of the whole system, it is not obvious that we are at the edge of the system.}
 \label{fig:visualization_billboard_periodic_copies}
@@ -165,7 +165,7 @@ void main(void) {
 \subsection{Rendering benchmark}
 \label{sec:vis_benchmark}
 A typical benchmark for a visualization program is the number of frames per second (FPS) the program is able to render a given amount of primitives. In this benchmark, we have used the multibillboard class\footnote{Source code available from \url{http://github.com/ComputationalPhysics/compphys-qt3d-additions}.} that has implemented the shader pipeline explained above. It renders a box with $N$ billboard spheres and adds 26 copies in the geometry shader making the total number of visible spheres $N_\text{spheres} = 27N$. In table \ref{tab:vis_fps_scaling} we have shown a representable subset of the data showing the performance of the billboard class. We have run the program with the number of visible spheres in the range a few thousand to more than one billion. In figure \ref{fig:rendering_benchmark} we have plotted the data from table \ref{tab:vis_fps_scaling} with more data points near the sudden drops of frame rate. We assume that these drops can be explained by meeting different limits on the graphics card. It seems to happen at specific number of vertices emitted by the geometry shader, so our guess would be the bandwidth on the GPU. We have not used any shader profiling tools, so we cannot draw any conclusion without further investigation. 
-\begin{table}[h]
+\begin{table}[htb]
 \begin{center}
     \begin{tabular}{|l|l|}
     \hline
@@ -202,7 +202,7 @@ A typical benchmark for a visualization program is the number of frames per seco
     \end{center}
 \end{table}
 
-\begin{figure}[h]
+\begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.8\textwidth, trim=0cm 0cm 0cm 0cm, clip]{visualization/figures/benchmark.eps}
 \end{center}
