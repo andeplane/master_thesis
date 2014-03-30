@@ -80,7 +80,7 @@ where again $t_1$ is the total run time using one processor and $t_N$ is the run
     \end{center}
 \end{table}
 
-\begin{figure}[h]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/scaling.eps}
 \end{center}
@@ -108,11 +108,11 @@ which gives the following prediction for the apparent permeability
 \end{align}
 After 200k timesteps with sampling, the permeability was calculated according to equation \ref{eq:permeability_measure}. In figure \ref{fig:one_cylinder_varying_knudsen} we have plotted the measured permeability as a function of Knudsen number with the Knudsen corrected analytical solution. The left figure has the Knudsen numbers on a logarithmic $x$-axis to emphasize the lower Knudsen numbers. We see that the measured permeability is slightly lower than predicted for the higher Knudsen numbers. This is probably an effect from the voxelization of the cylinder where the effective radius is slightly smaller than desired. By reducing the radius by a factor $0.99$ in equation \eqref{eq:knudsen_corrected_cylinder}, the measured permeability perfectly overlaps the analytical solution.
 
-\begin{figure}[h]
+\begin{figure}[H]
 \begin{center}
-\includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/cylinder_knudsen_permeability.eps}
+\includegraphics[width=\textwidth, trim=5cm 0cm 5cm 0cm, clip]{DSMC/figures/cylinder_knudsen_permeability.eps}
 \end{center}
-\caption{Permeability as a function of Knudsen number for a cylinder with radius \unit{0.45}{\micro\meter} and length \unit{1}{\micro\meter} with an applied pressure difference $\Delta P = 0.1P_0$, $P_0$ being the ideal gas pressure. We control the Knudsen number by varying the density. The blue line is the Knudsen corrected analytical solution in equation \eqref{eq:knudsen_corrected_cylinder}. We see a slightly lower permeability than the analytical solution. This is probably an effect from the voxelization of the cylinder where the effective radius is slightly smaller than desired. By reducing the radius by a factor $0.99$ in equation \eqref{eq:knudsen_corrected_cylinder}, the measured permeability perfectly overlaps the analytical solution.}
+\caption{Permeability as a function of Knudsen number for a cylinder with radius \unit{0.45}{\micro\meter} and length \unit{1}{\micro\meter} with an applied pressure difference $\Delta P = 0.1P_0$, $P_0$ being the ideal gas pressure. We control the Knudsen number by varying the density. The blue line is the Knudsen corrected analytical solution in equation \eqref{eq:knudsen_corrected_cylinder}. We see a slightly lower permeability than the analytical solution, which probably is an effect from the voxelization of the cylinder where the effective radius is slightly smaller than desired. By reducing the radius by a factor $0.99$ in equation \eqref{eq:knudsen_corrected_cylinder}, the measured permeability perfectly overlaps the analytical solution.}
 \label{fig:one_cylinder_varying_knudsen}
 \end{figure}
 

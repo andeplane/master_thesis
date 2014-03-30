@@ -41,12 +41,12 @@ where $t_1$ is the total run time using one processor and $t_N$ is the total run
     \label{tab:md_strong_scaling}
     \end{center}
 \end{table}
-
-\begin{figure}[h!]
+\newpage
+\begin{figure}[htb]
 \begin{center}
-\includegraphics[width=0.7\textwidth, trim=0cm 0cm 0cm 0cm, clip]{MD/figures/strong_scaling.eps}
+\includegraphics[width=0.9\textwidth, trim=0cm 0cm 0cm 0cm, clip]{MD/figures/scaling.eps}
 \end{center}
-\caption{Benchmark results showing the strong scaling efficiency $\eta_s$ for the MD program. We see that when going from one to two processors, we get a more than ideal speedup with $\eta_s(N_\text{CPU}=2)=1.17$ which can be explained by the CPU cache. When a processor compute with a value stored at some memory address, it will first look in the three levels of cache to see if the value of the memory address is cached there. Cached values are much faster available for computation than those only in the memory. When going from one processor to two, a larger part of the positions array (which is used in the force calculation) can be cached, hence a more than double speedup is obtainable. When using a larger number of processors, the MPI communication time starts increasing so that the total time increases per CPU.}
+\caption{Benchmark results showing the strong and the weak scaling efficiency, $\eta_s$ and $\eta_w$, for the MD program. We see that when going from one to two processors, we get a more than ideal speedup with $\eta_s(N_\text{CPU}=2)=1.17$ which can be explained by the CPU cache. When a processor compute with a value stored at some memory address, it will first look in the three levels of cache to see if the value of the memory address is cached there. Cached values are much faster available for computation than those only in the memory. When going from one processor to two, a larger part of the positions array (which is used in the force calculation) can be cached, hence a more than double speedup is obtainable. When using a larger number of processors, the MPI communication time starts increasing so that the total time increases per CPU. The weak scaling shows similar scaling in the whole range of processors. In order to reduce the statistical noise, several benchmarks should be run and averaged.}
 \label{fig:md_strong_scaling}
 \end{figure}
 
@@ -55,7 +55,7 @@ If we increase the number of processors, but keep the nubmer of atoms per proces
 \begin{align}
 	\eta_w = \frac{t_1}{t_N},
 \end{align}
-where again $t_1$ is the total run time using one processor and $t_N$ is the run time using $N$ processors. In this benchmark, we chose $10\times10\times10=1000$ unit cells per processor yielding a total of 4000 atoms per CPU. The timestep here as well is $\Delta t = 0.02$ with the same initial temperature as in the strong scaling so that the final temperature is approximately $T=$\unit{60}{\kelvin}. In table \ref{tab:md_weak_scaling} and figure \ref{fig:md_weak_scaling}, we have presented the results for the weak scaling. 
+where again $t_1$ is the total run time using one processor and $t_N$ is the run time using $N$ processors. In this benchmark, we chose $10\times10\times10=1000$ unit cells per processor yielding a total of 4000 atoms per CPU. The timestep here as well is $\Delta t = 0.02$ with the same initial temperature as in the strong scaling so that the final temperature is approximately $T=$\unit{60}{\kelvin}. In table \ref{tab:md_weak_scaling} and figure \ref{fig:md_strong_scaling}, we have presented the results for the weak scaling. 
 
 \begin{table}[h]
 \begin{center}
@@ -87,14 +87,6 @@ where again $t_1$ is the total run time using one processor and $t_N$ is the run
     \label{tab:md_weak_scaling}
     \end{center}
 \end{table}
-
-\begin{figure}[h!]
-\begin{center}
-\includegraphics[width=0.7\textwidth, trim=0cm 0cm 0cm 0cm, clip]{MD/figures/weak_scaling.eps}
-\end{center}
-\caption{Benchmark results showing the weak scaling efficiency $\eta_w$ for the MD program.}
-\label{fig:md_weak_scaling}
-\end{figure}
 
 \section{Flow in a cylinder, varying Knudsen number}
 \label{sec:md_cylinder_result}
@@ -131,7 +123,7 @@ Here, $\Delta x$ is the system length in the flow direction, $L_z$. We have chos
 The left figure, using a logarithmic $x$-axis shows that the permeabilities in the lower range of the Knudsen numbers are predicted very by the theory. The right figure shows that the permeabilities in the whole range, two orders of magnitudes, follows the expression in equation \eqref{eq:cylinder_knudsen_corrected}. For the high Knudsen numbers, we see an increase in the statistical noise which is explained by the fact that a high Knudsen number is obtained by a low density which gives a low number of atoms. In order to get better statistics, we would need to run the simulation for a longer time.
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=1.0\textwidth, trim=0cm 0cm 0cm 0cm, clip]{MD/figures/permeability_cylinder.eps}
+\includegraphics[width=1.0\textwidth, trim=3cm 0cm 3cm 0cm, clip]{MD/figures/permeability_cylinder.eps}
 \end{center}
 \caption{Permeabilities for Knudsen numbers in the range $0.1$ to $10.0$ in a cylinder with radius $r=$\unit{151}{\angstrom}. The left figure has a logarithmic $x-$axis to emphasize the good prediction in the lower Knudsen range. The right figure shows that the MD code produces results according to the Knudsen corrected permeability for a cylinder in equation \eqref{eq:cylinder_knudsen_corrected} in the entire range. The increased statistical noise is explained by that for large Knudsen numbers, the number of gas atoms is low.}
 \label{fig:md_permeability}

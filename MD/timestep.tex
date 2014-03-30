@@ -3,13 +3,7 @@
 We are using the Velocity Verlet algorithm as we discussed in section \ref{sec:md_time_integration} and derived in appendix \ref{app:liouville}. The timestep calculation starts by what we called a half kick, where the velocities are integrated half a timestep with forward Euler. But to be able to do so, we need to have calculated the forces. This part is the most technical in the whole algorithm, because of two things. We need to find a way to implement the cut-off radius so that we don't loop over too many atom pairs, and each processor needs to have information about the atoms on its neighboring atoms (there are forces between atoms living on different CPUs). We will first discuss how duplicates of atoms, so-called ghost atoms, are copied between nodes before we explain how we use cell lists to compute forces between nearby atoms only. 
 \subsection{Ghost atoms}
 Assume now that we are going to calculate the forces between the atoms on some node with coordinates $(p_x, p_y, p_z)$. The atoms near the boundary will of course feel the presence of the atoms on the next processor (if they are sufficiently near). The node will then, from each of its 26 neighbors, get a copy of the atoms that are less than $r_\text{cut}$ from the node boundary. In figure \ref{fig:md_ghost_atoms}, this is illustrated in a two-dimensional example.
-\begin{figure}[h]
-\begin{center}
-\includegraphics[width=0.8\textwidth, trim=0cm 0cm 0cm 0cm, clip]{MD/figures/parallelization_ghost_atoms.eps}
-\end{center}
-\caption{The middle processor with coordinates (1,1) in a two-dimensional system receives a copy of all the atoms less than $r_\text{cut}$ from the boundary (ghost atoms, marked red) from the neighboring eight processors. The gray area is the region with the ghost atoms. The black dots are the atoms on node $(1,1)$, gray dots are atoms that do not contribute to the forces of the black atoms.}
-\label{fig:md_ghost_atoms}
-\end{figure}
+
 Since we don't calculate forces between atoms displaced by more than the cut-off radius, we actually compute all the forces we want. This process is done for every processor, every timestep, so that all nodes have all the information they need to compute the forces (and potential energy).
 \subsection{Cell lists}
 We will now sort the atoms on a node into cells, similar to the collision cells in DSMC (see section \ref{sec:dsmc_implementation_timestep}). Each processor has atoms with coordinates in the range $[0, l_i)$, $l_i$ being the node length in the $i$th dimension, and ghost atoms with coordinates $(-r_\text{cut}, 0) \cup [l_i, l_i + r_\text{cut})$. We choose the cells to be about the same size as the cut-off radius, which gives the number of such cells $N_f$ (force cells) in the $i$th dimension
@@ -19,7 +13,15 @@ We will now sort the atoms on a node into cells, similar to the collision cells 
 where we have added two extra \textit{ghost cells} containing the ghost atoms, $\ceil{a}$ is the ceiling function of $a$, that is, the smallest integer number not larger than $a$. The reason we use the ceiling function is so the length of the node exactly matches the combined length of the cells (minus the two extra ghost cells). The size of the cells is then at least $r_\text{cut}$ so that the atoms within a cell will not feel the presence of atoms from any other cells than the 26 nearest neighbors. In figure \ref{fig:md_cells} we have illustrated the idea in a two-dimensional system. We see the total spatial domain of a processor with the copied ghost atoms (in the gray area), divided into cells of size $r_\text{cut}$. The yellow cell will compute forces between all of its atoms and the atoms in the green cells. This is done for every inner cell (the ghost atoms are computed on another processor).
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=0.8\textwidth, trim=0cm 0cm 0cm 0cm, clip]{MD/figures/cells.eps}
+\includegraphics[width=0.7\textwidth, trim=0cm 0cm 0cm 0cm, clip]{MD/figures/parallelization_ghost_atoms.eps}
+\end{center}
+\caption{The middle processor with coordinates (1,1) in a two-dimensional system receives a copy of all the atoms less than $r_\text{cut}$ from the boundary (ghost atoms, marked red) from the neighboring eight processors. The gray area is the region with the ghost atoms. The black dots are the atoms on node $(1,1)$, gray dots are atoms that do not contribute to the forces of the black atoms.}
+\label{fig:md_ghost_atoms}
+\end{figure}
+\newpage
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.7\textwidth, trim=0cm 0cm 0cm 0cm, clip]{MD/figures/cells.eps}
 \end{center}
 \caption{The spatial domain for a processor with the added ghost atoms in the gray area. The domain is divided into cells of size $r_\text{cut}$ so that the yellow cell only needs to compute forces between atoms in the cell and the neighboring 8 green cells. The processor will only process the cells (the ghost atoms are computed on another processor).}
 \label{fig:md_cells}
@@ -34,7 +36,8 @@ and if we choose the so-called MD units ($\sigma = 1.0, \epsilon = 1.0$, see app
 	\label{eq:md_implementation_timestep_lj}
 	F_x(r_{ij}) = -24\left[\left(\frac{2}{r_{ij}^{12}}\right) - \left(\frac{1}{r_{ij}^6}\right)\right]\frac{\Delta x}{r_{ij}^2},
 \end{align}
-where $\Delta x$ is the $x-$component of $\vec r_{ij}$. Notice that we have factored out $1/r_{ij}^2$. This is arithmetical convenient for the implementation, because, as we see in equation \eqref{eq:md_implementation_timestep_lj}, we need $r_{ij}^{-6}$ and $r_{ij}^{-12}$, which both are easily calculated from $r_{ij}^{-2}$ as powers.\\
+where $\Delta x$ is the $x-$component of $\vec r_{ij}$. Notice that we have factored out $1/r_{ij}^2$. This is arithmetical convenient for the implementation, because, as we see in equation \eqref{eq:md_implementation_timestep_lj}, we need $r_{ij}^{-6}$ and $r_{ij}^{-12}$, which both are easily calculated from $r_{ij}^{-2}$ as powers.
+
 First, we skip atoms displaced by a distance larger than $r_\text{cut}$ and compute the square of the relative distance
 \begin{align}
 	r_{ij}^2 = \left|\vec r_i - \vec r_j\right|^2.

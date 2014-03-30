@@ -109,7 +109,7 @@ to find the leading term in $\hat{\vec \epsilon}$
 \begin{align}
 	-(\Delta t)^3\left(\frac{1}{24}[\liouviller, [\liouviller, \liouvillep]] + \frac{1}{12}[\liouvillep, [\liouviller, \liouvillep]]\right),
 \end{align}
-where we see that $\Delta t^3$ is the local truncation error in the Velocity Verlet algorithm. 
+where we see that $\Delta t^3$ is the global truncation error in the Velocity Verlet algorithm after $n$ timesteps. The local truncation error is then $\Delta t^4$.
 % \section{Multiple timestep integration schemes}
 % \label{sec:multiple_timestep_schemes}
 % We will now address a situation that may occur in an advanced Molecular Dynamics simulation. Let's say we will simulate a system with several atom types, like silica and water. In such a system, we have both hydrogen, oxygen and silicon, which all may feel the appearance of all the other atom types. Hydrogen atoms are 28 times lighter than silicon. A consequence of this is that hydrogen will have much higher velocities than the other atom types, they will typically vibrate very quickly in the water molecules. This will require a much smaller timestep than those of the silicon and oxygen atoms would need. Long range forces like the Coulomb force are other examples of interactions that are accurate with higher timesteps. We will now use the Liouville formulation to derive a scheme that will allow multiple timesteps.\\
