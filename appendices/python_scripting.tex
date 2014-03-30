@@ -63,15 +63,18 @@ The framework is a Python class with a lot of convenience methods built-in. Its 
 \end{lstlisting}
 
 \section{From idea to simulation}
-\subsection{Create the geometry}
+\begin{description}
+  \item[Create the geometry] \hfill \\
 The DSMC program package we have developed is an excellent tool to study flow of dilute gases in complex nanoporous media. So what we usually do is to come up with the idea of some interesting geometry to study. This could either be a real sample dataset, a mathematical description or some other creative way to create the geometry. An example could be the packed spheres discussed in section \ref{sec:dsmc_packed_spheres_results} where each sphere is placed out randomly inside the volume defined by the $N_x\times N_y \times N_z$ voxel grid. All the voxels within a given distance (the sphere radius) from the sphere center are marked as solid voxels. Any other geometry can made with this technique with the code in the \textit{complexgeometry.cpp} file. 
-\subsection{Initialize system}
+\item[Initialize system] \hfill \\
 Once we have the geometry of the system we would like to study, we need to insert gas particles inside the system. The gas could in principle have different densities based on position or other properties, but in this thesis we are placing the particles uniformly in the pore volume, i.e. in voxels marked as empty. We choose velocities from the Maxwell-Boltzmann distribution (equation \eqref{eq:maxwell_boltzmann_distribution}) so that the gas has the temperature we want.
-\subsection{Reach a steady state}
+\item[Reach a steady state] \hfill \\
 Now that we have our gas particles inside the (possibly) complex geometry, we want to apply a pressure gradient inducing flow. In the beginning, all the particles are (on average) at rest, so we should wait until we have reached a steady state before we start sampling statistics. Methods to determine whether or not a system has reached a steady state was discussed in section \ref{sec:dsmc_steady_state}. 
-\subsection{Sample statistics}
+\item[Sample statistics] \hfill \\
 If we assume that the system finally has reached a steady state, we can start measuring the physical quantities discussed in section \ref{sec:dsmc_measuring_physical_quantities}. The main focus in this thesis has been to study the permeability for different geometries. 
-\subsection{The run script - example.py}
+\end{description}
+
+\section{The run script - example.py}
 Finally, after having defined all the steps in our scheme, we can gather everything into one single Python script. This example script shows how to perform all the steps discussed above. 
 \begin{lstlisting}[caption=example.py, label=lst:dsmc_example_script, language=Python]
 	from dsmcconfig import *
