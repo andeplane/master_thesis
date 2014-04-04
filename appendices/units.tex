@@ -5,9 +5,9 @@ The choice of units does of course not change the physical behavior. It is only 
 Here we use the so-called MD units. A convenient consequence of these units are that the parameters and masses in the Lennard-Jones force can be factored out which gives simpler calculations. The units we choose are
 \begin{align}
 	\text{Length } L_0 &= \unit{3.405\e{-10}}{\meter},\\
-	\text{Mass } m_0 &= \unit{1.66053886\e{-27}}{\kilogram},\\
-	\text{Energy } E_0 &= \unit{1.65088\e{-21}}{\joule},\\
-	\text{Boltzmann constant } k_B^* &= 1.0.
+	\text{Mass } m_0 &= \unit{1.66\e{-27}}{\kilogram},\\
+	\text{Energy } E_0 &= \unit{1.65\e{-21}}{\joule},\\
+	\text{Temperature } T_0 &= \unit{119.6}{\kelvin}
 \end{align}
 \section{Choice of units in DSMC}
 In DSMC, we use the same initial units as in MD, but with another unit of length since the systems normally are a few orders of magnitude larger. Here we use
@@ -15,14 +15,14 @@ In DSMC, we use the same initial units as in MD, but with another unit of length
 	\text{Length } L_0 &= \unit{1.0\e{-6}}{\meter},\\
 	\text{Mass } m_0 &= \unit{1.66053886\e{-27}}{\kilogram},\\
 	\text{Energy } E_0 &= \unit{1.65088\e{-21}}{\joule},\\
-	\text{Boltzmann constant } k_B^* &= 1.0.
+	\text{Temperature } T_0 &= \unit{119.6}{\kelvin}
 \end{align}
 Note that the mass, energy and the Boltzmann constant are equal in both MD and DSMC. 
 \section{Derivation of the other units}
 The other units can be derived from the four basis units through relations like $E=mc^2$ and $P=F/A$. Together, these physical formulas form a set of equations that can be solved for each physical quantity. We find the time unit $t_0$ through $E=mc^2$
 \begin{align}
-	E0 = m_0\frac{L_0^2}{t_0^2}\\
-	t_0 = L_0\sqrt\frac{m_0}{E_0}.
+	E0 &= m_0\frac{L_0^2}{t_0^2}\\
+	t_0 &= L_0\sqrt\frac{m_0}{E_0}.
 \end{align}
 The force unit $F_0$ is found by using Newton's second law
 \begin{align}

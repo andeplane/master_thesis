@@ -23,9 +23,9 @@ The processors are divided into a three dimensional grid with $(P_x, P_y, P_z)$ 
 When starting a program with MPI, each process is provided a unique identification number $p$ in the range $[0, P-1]$ for $P$ processors. This can be mapped to the 3-dimensional grid coordinates through
 \begin{align}
 	\nonumber
-	p_x(p) &= {p \over P_yP_z}\\
+	p_x(p) &= \frac{p }{ P_yP_z}\\
 	\nonumber
-	p_y(p) &= {p \over P_z} \bmod P_y\\
+	p_y(p) &= \frac{p }{ P_z} \bmod P_y\\
 	p_z(p) &= p \bmod P_z
 \end{align}
 whereas the inverted mapping is 

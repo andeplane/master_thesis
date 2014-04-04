@@ -1,7 +1,7 @@
 In this chapter we go into detail about how the DSMC model is implemented in C{}\verb!++!. We assume that the reader is familiar with the programming language. Instead of going through all the classes and their relations, we follow the time line of a simulation, going from the initialization of the system to how the timestep is computed. For convenience, an UML diagram is shown in figure \ref{fig:dsmc_uml_diagram}.
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=0.9\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/dsmcuml.png}
+\includegraphics[width=0.9\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/dsmcuml.eps}
 \end{center}
 \caption{A UML-diagram showing how the classes in the DSMC program are related to each other.}
 \label{fig:dsmc_uml_diagram}
@@ -14,4 +14,4 @@ The first step of the full program is to create the geometry we want the particl
     \item update collision cells,
     \item perform collisions between particles,
 \end{itemize}
-which all are discussed in section \ref{sec:dsmc_implementation_timestep}. This is everything we need to run a DSMC program in \textit{any} geometry we want. The only thing left to explain is how we have parallelized the code, allowing it to run on many processors on a supercomputer. This final piece is explained in section \ref{sec:dmsc_parallelization}. 
+which all are discussed in section \ref{sec:dsmc_implementation_timestep}. This is everything we need to run a DSMC program in \textit{any} geometry we want. The only thing left to explain is how we have parallelized the code, allowing it to run on many processors on a supercomputer. This final piece is explained in section \ref{sec:dmsc_parallelization}. The full code is available, on demand, by contacting the author at \url{anderhaf@fys.uio.no}.

@@ -2,7 +2,7 @@ Every time a scientist creates or implements a model, it is important to verify 
 \begin{aquote}{George E.P. Box, 1987}
 Essentially, all models are wrong, but some are useful.
 \end{aquote}
-A good model should be in agreement with already existing theories (at least those we believe are reliable). Take special relativity for example, in the limit of low velocities, it reproduces the results of Newtonian mechanics (e.g. the effects time dilation and length contraction vanishes). In this chapter we will first validate the model by comparing the outcome of the model to established theoretical results in section \ref{sec:dsmc_code_validation}. In section \ref{sec:dsmc_parallelization_performance} we discuss how well the performance of the implementation scales for an increasing number of processors. We then, in section \ref{sec:results_for_simple_geometries}, analyze the Knudsen correction for the permeability for flow in a cylinder for various Knudsen numbers and cylinder radii. We conclude the chapter by studying a more complicated geometry, randomly packed spheres, in section \ref{sec:dsmc_packed_spheres_results}.
+A good model should be in agreement with already existing theories (at least those we believe are reliable). Take special relativity for example, in the limit of low velocities, it reproduces the results of Newtonian mechanics (e.g. the effects time dilation and length contraction vanishes). In this chapter we will first validate the model by comparing the outcome of the model to established theoretical results in section \ref{sec:dsmc_code_validation}. In section \ref{sec:dsmc_parallelization_performance} we discuss how well the performance of the implementation scales for an increasing number of processors. We then, in section \ref{sec:results_for_simple_geometries}, analyze the Knudsen correction for the permeability for flow in a cylinder for various Knudsen numbers and cylinder radii. We conclude the chapter by studying a more complicated geometry, randomly packed spheres, in section \ref{sec:dsmc_packed_spheres_results}. In all simulations we have done, the mass $m$ was chosen to be \unit{6.63\e{-26}}{\kilo\gram} and the diameter $d$ is \unit{3.62\e{-10}}{\meter}. These are values describing argon, meaning the gas in the system is an argon gas. The timestep is approximately \unit{1}{\pico\second} in all simulations. This is smaller than the mean collision time for gases with density less than \unit{4.0\e{27}}{\meter^{-3}} (equation \eqref{eq:kinetic_theory_mean_collision_time}).
 
 \section{Code validation}
 \label{sec:dsmc_code_validation}
@@ -19,14 +19,14 @@ We showed in section \ref{sec:maxwell_boltzmann_distribution} that the particles
 \end{align}
 where $v_0$ is some velocity chosen so that $T\approx 300K$. There are no walls the particles can exchange energy with, so the total energy is conserved. The reason we have chosen this initial velocity distribution is that the net momentum will be zero if $N$ is an even number (each particle's velocity components is canceled out by the next particle). This is is of course not the Maxwell-Boltzmann distribution - we are not in an equilibrium state. We expect that after some time, the system will equilibrate and approach the Maxwell-Boltzmann distribution which is given as (equation \eqref{eq:maxwell_boltzmann_distribution})
 \begin{align}
-	P(v_i)\dm {v_i} = \sqrt{m\over 2\pi k_BT}e^{-mv_i^2\over 2k_BT}\dm {v_i},
+	P(v_i)\dm {v_i} = \sqrt\frac{m}{2\pi k_BT}e^{-mv_i^2\over 2k_BT}\dm {v_i},
 \end{align}
 where $i\in \{x,y,z\}$ indicates the velocity component. We ran the simulation for $10^5$ timesteps, and as we see in figure \ref{fig:velocity_distribution}, the collision algorithm reproduces this distribution perfectly. The temperature that was measured to be $T=\unit{298.5}{\kelvin}$.
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.7\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/velocity_distribution.eps}
 \end{center}
-\caption{The system clearly reaches the Maxwell-Boltzmann distribution when the initial velocity distribution follows equation \ref{eq:weird_velocity_distribution}. Here the final temperature was measured to $T=$\unit{298.5}{\kelvin} which reproduces the expected distribution perfectly.}
+\caption{The system clearly reaches the Maxwell-Boltzmann distribution when the initial velocity distribution follows equation \ref{eq:weird_velocity_distribution}. Here the final temperature was measured to $T =$\unit{298.5}{\kelvin} which reproduces the expected distribution perfectly.}
 \label{fig:velocity_distribution}
 \end{figure}
 
@@ -50,6 +50,6 @@ In all runs, we chose the number of real atoms per particle $N_\text{eff}$ = 10.
 \begin{figure}[htpb]
 \includegraphics[width=\textwidth, trim=6cm 0cm 5cm 0cm, clip]{DSMC/figures/validation_poiseuille.eps}
 \centering
-\caption{Non-dimensionalized velocity distribution for flow between infinite parallel thermal plates for different Knudsen numbers over two orders of magnitude. Each run is compared to the linearized Boltzmann solution of Ohwada et al\cite{ohwada1989numerical} which shows that the algorithm produces correctly the behavior in all regions, near the wall and internally in the channel. An applied pressure difference $\Delta P = P_A - P_B$ with $P_A = 1.1P_B$ is applied. The initial temperature is $T$=\unit{300}{\kelvin}. We see how the slip velocity becomes larger for increasing Knudsen numbers, as expected from the discussion in section \ref{sec:slip_length}. }
+\caption{Non-dimensionalized velocity distribution for flow between infinite parallel thermal plates for different Knudsen numbers over two orders of magnitude. Each run is compared to the linearized Boltzmann solution of Ohwada et al. \cite{ohwada1989numerical} which shows that the algorithm produces correctly the behavior in all regions, near the wall and internally in the channel. An applied pressure difference $\Delta P = P_A - P_B$ with $P_A = 1.1P_B$ is applied. The initial temperature is $T$=\unit{300}{\kelvin}. We see how the slip velocity becomes larger for increasing Knudsen numbers, as expected from the discussion in section \ref{sec:slip_length}. }
 \label{fig:dsmc_validation_poiseuille}
 \end{figure}

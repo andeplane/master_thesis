@@ -14,7 +14,7 @@ where $t_1$ is the total run time using one processor and $t_N$ is the total run
 
 The physical system is a cube with side length $L=$\unit{1.0}{\micro\meter} with a density $\rho_n=\unit{1.0\e{27}}{\meter^{-3}}$ which gives a total of one billion atoms. We choose that one DSMC particle represents 50 atoms, yielding a total of 20 million particles in the whole system. The benchmark was performed for 10000 timesteps ($\Delta t = 0.005$) with $2^N$ processors from 1 CPU to 512 CPUs yielding a good estimate of how efficient the program scales for a relatively large number of processors. In table \ref{tab:dsmc_strong_scaling} we have the scaling results with additional information like the number of intermolecular collisions per processor. This indicates the amount of computation each processor has to perform. 
 
-The strong scaling efficiency is plotted together with the weak scaling against the number of processors in figure \ref{fig:dsmc_scaling}. We see that the program scales great with only 30\% overhead for 512 processors. The weird behavior we see at 128 processors, where the efficiency \textit{increases} to 0.9, is probably due to random \"luck\" on the supercomputer where all nodes are physically close to each other. In order to get better statistics, this benchmark should be run several times.
+The strong scaling efficiency is plotted together with the weak scaling against the number of processors in figure \ref{fig:dsmc_scaling}. We see that the program scales great with only 30\% overhead for 512 processors. The weird behavior we see at 128 processors, where the efficiency \textit{increases} to 0.9, is probably due to random luck on the supercomputer where all nodes are physically close to each other. In order to get better statistics, this benchmark should be run several times.
 \begin{table}[h]
 \begin{center}
     \begin{tabular}{|l|l|l|l|l|l}
@@ -37,7 +37,7 @@ The strong scaling efficiency is plotted together with the weak scaling against 
     512 & 3.9\e{4} & 2.27\e{8} &  \unit{250}{\second} & 0.71\\
     \hline
     \end{tabular}
-    \caption{Benchmark results showing the strong scaling efficiency $\eta_s$ for the DSMC program. We see that the program scales great with only 30\% overhead for 512 processors. The weird behavior we see at 128 processors, where the efficiency \textit{increases} to 0.9, is probably due to random \"luck\" on the supercomputer where all nodes are physically close to each other. In order to get better statistics, this benchmark should be run several times.}
+    \caption{Benchmark results showing the strong scaling efficiency $\eta_s$ for the DSMC program. We see that the program scales great with only 30\% overhead for 512 processors. The weird behavior we see at 128 processors, where the efficiency \textit{increases} to 0.9, is probably due to random luck on the supercomputer where all nodes are physically close to each other. In order to get better statistics, this benchmark should be run several times.}
     \label{tab:dsmc_strong_scaling}
     \end{center}
 \end{table}
@@ -117,12 +117,12 @@ After 200k timesteps with sampling, the permeability was calculated according to
 \end{figure}
 
 \subsection{Flow in a cylinder, varying radius}
-If we instead keep the Knudsen number constant ($\text{Kn}=1.0$), we can vary the radius to verify equation \eqref{eq:permeability_cylinder}. We have studied radii in the range \unit{0.1}{\micro\meter} to \unit{0.45}{\micro\meter} with the same pressure difference as in the previous simulation ($\Delta P = 1.1P_0)$. In figure \ref{fig:one_cylinder_varying_radii_result} we have plotted the measured permeability as a function of cylinder radius. The straight line confirms the quadratic dependency in equation \eqref{eq:permeability_cylinder}.
+If we instead keep the Knudsen number constant ($\text{Kn}=1.0$), we can vary the radius to verify equation \eqref{eq:permeability_cylinder}. We have studied radii in the range \unit{0.1}{\micro\meter} to \unit{0.45}{\micro\meter} with the same pressure difference as in the previous simulation ($\Delta P = 0.1P_0)$. In figure \ref{fig:one_cylinder_varying_radii_result} we have plotted the measured permeability as a function of cylinder radius. The straight line confirms the quadratic dependency in equation \eqref{eq:permeability_cylinder}.
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/cylinder_radius_permeability.eps}
 \end{center}
-\caption{Logarithmic plot of the permeability for different cylinders with radii in the range $0.1 \mu m$ to $0.45 \mu m$ with an applied pressure difference $\Delta P = 0.1P_0$. The blue line is the Knudsen corrected analytical solution from \cite{karniadakis2005microflows}. The permeability scales with the radius as $r^2$.}
+\caption{Logarithmic plot of the permeability for different cylinders with radii in the range \unit{0.1}{\micro\meter} to \unit{0.45}{\micro\meter} with an applied pressure difference $\Delta P = 0.1P_0$, $P_0$ being the ideal gas pressure. The blue line is the Knudsen corrected analytical solution from \cite{karniadakis2005microflows}. The permeability scales with the radius as $r^2$.}
 \label{fig:one_cylinder_varying_radii_result}
 \end{figure}
 
