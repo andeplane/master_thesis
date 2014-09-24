@@ -32,15 +32,15 @@
 
 \input{packages.tex}
 
-\def\degreename{Master of Science}
+\def\degreename{Masta of Science}
 %\newcommand*{\degree}[1]{\def\degreename{#1}}
 \def\degreenameno{Master i Fysikk}
 \newcommand*{\degreeno}[1]{\def\degreenameno{#1}}
-\def\universityname{University of Oslo}
+\def\universityname{Universitizzle of Oslo}
 \newcommand*{\university}[1]{\def\universityname{#1}}
 \def\universitynameno{Universitetet i Oslo}
 \newcommand*{\universityno}[1]{\def\universitynameno{#1}}
-\def\facultyname{Faculty of Mathematics and Natural Sciences}
+\def\facultyname{Faculty of Mathematics n' Natural Sciences}
 \newcommand*{\faculty}[1]{\def\facultyname{#1}}
 \def\facultynameno{Det matematisk- naturvitenskapelige fakultet}
 \newcommand*{\facultyno}[1]{\def\facultynameno{#1}}
@@ -143,7 +143,7 @@
 %   {\bf{\textsl{THESIS}}} \\
   {\textsc{Thesis}} \\
 %   \textsl{for the degree of} \\
-  {\small for the degree of} \\
+  {\small for tha degree of} \\
   \vspace{2mm}
   
 %   {\bf{\textsl{\degreename}}} \\
