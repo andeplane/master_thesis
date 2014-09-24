@@ -1,15 +1,15 @@
-\section{Measuring physical quantities}
+\section{Measurin physical quantities}
 \label{sec:dsmc_measuring_physical_quantities}
-The model, or shall we say, the \textit{simulator} is in principle fully described. The particles move and perform collisions with the surface according to some interaction rule. Then the particles will collide with each other. This process goes on an on until we are satisfied or out of computing time. Within this framework, statistical mechanics happens and particles behave as they should (the model solves the Boltzmann equation). But there is no reason to have a simulator if we're not going to use it to learn physics.
+Da model, or shall we say, tha \textit{simulator} is up in principle straight-up busted lyrics about. Y'all KNOW dat shit, muthafucka! Da particlez move n' big-ass up collisions wit tha surface accordin ta some interaction rule. Then tha particlez will collide wit each other n' shit. This process goes on a on until we is satisfied or outta computin time. Within dis framework, statistical mechanics happens n' particlez behave as they should (the model solves tha Boltzmann equation). But there is no reason ta git a simulator if our asses aint goin ta use it ta learn physics.
 
-The simulator will take the system from some initial state and guide it through the phase space. This was what the ergodicity hypothesis allows us to do (see section \ref{sec:kinetic_theory_ergodicity}). We can evolve the system through time and visit the phase space with probabilities equal to those of the ensemble. The DSMC model is inherently stochastic, so any physical quantity should be computed by averaging many instantaneous measurements. We should assume that there will occur gradients of the physical quantities (for example gradients in density and temperature), so we should calculate local values in the collision cells. In a typical collision cell, there will be maybe ten to a hundred particles, so the instantaneous values will fluctuate significantly. But as we know from statistics, if the system is in equilibrium, the fluctuations (here the standard deviation) in e.g. the energy or temperature will decrease as $1/\sqrt{N_m}$ if measured $N_m$ times assuming that the measurements are uncorrelated. The latter requirement can be obtained by measuring every $n$th timestep. We can measure the correlation between two states through the velocity autocorrelation function given as
+Da simulator will take tha system from some initial state n' guide it all up in tha phase space. This was what tha fuck tha ergodicitizzle hypothesis allows our asses ta do (see section \ref{sec:kinetic_theory_ergodicity}). We can evolve tha system all up in time n' visit tha phase space wit probabilitizzles equal ta dem of tha ensemble. Da DSMC model is inherently stochastic, so any physical quantitizzle should be computed by averagin nuff instantaneous measurements, n' you can put dat on yo' toast. We should assume dat there will occur gradientz of tha physical quantitizzles (for example gradients up in densitizzle n' temperature), so we should calculate local joints up in tha collision cells. In a typical collision cell, there is ghon be maybe ten ta a hundred particles, so tha instantaneous joints will fluctuate significantly. But as we know from statistics, if tha system is up in equilibrium, tha fluctuations (here tha standard deviation) up in e.g. tha juice or temperature will decrease as $1/\sqrt{N_m}$ if measured $N_m$ times assumin dat tha measurements is uncorrelated. Y'all KNOW dat shit, muthafucka! This type'a shiznit happens all tha time. Da latter requirement can be obtained by measurin every last muthafuckin $n$th timestep. We can measure tha correlation between two states all up in tha velocitizzle autocorrelation function given as
 \begin{align}
 	C_v(t) &= \frac{\langle \vec v(t)\vec v(0)\rangle_N}{\langle \vec v(0)\vec v(0)\rangle_N}\\
 	&= \frac{1}{N}\frac{\sum_{n=1}^N \vec v_n(t)\cdot\vec v_n(0)}{\sum_{n=1}^N \vec v_n(0)\cdot\vec v_n(0)},
 \end{align}
-which is equal to one at $t=0$, and decays with time as the system becomes more uncorrelated with the initial state. We should then measure physical quantities with a time interval corresponding to the time where the velocity autocorrelation function has become more or less zero. We will now quickly discuss how to measure the physical quantities we will use in our analysis later on. 
+which is equal ta one at $t=0$, n' decays wit time as tha system becomes mo' uncorrelated wit tha initial state. We should then measure physical quantitizzles wit a time interval correspondin ta tha time where tha velocitizzle autocorrelation function has become mo' or less zero. Us thugs will now quickly say shit bout how tha fuck ta measure tha physical quantitizzles we will use up in our analysis later on. I aint talkin' bout chicken n' gravy biatch. 
 \subsection{Energy}
-The total energy of a system is as usual given by the sum of the kinetic and potential energy. Since we are using the hard sphere model, the potential energy is given as
+Da total juice of a system be as usual given by tha sum of tha kinetic n' potential juice. Right back up in yo muthafuckin ass. Since we is rockin tha hard sphere model, tha potential juice is given as
 \begin{align}
 	V(\vec r_1, \vec r_2) = \left\{
 	\begin{array}{lr}
@@ -18,68 +18,68 @@ The total energy of a system is as usual given by the sum of the kinetic and pot
 	\end{array}
 	\right .
 \end{align}
-where collisions will make sure that the relative distance between any particle pair always remains larger than the diameter. The total energy of our entire system will then only be the kinetic energy
+where collisions will make shizzle dat tha relatizzle distizzle between any particle pair always remains larger than tha diameter n' shit. Da total juice of our entire system will then only be tha kinetic juice
 \begin{align}
 	E = E_k = \sum_{n=1}^N \frac{1}{2}m_nv_n^2
 \end{align}
-where $m_n$ is the mass of particle $n$ and $v_n$ is its scalar velocity. An example implementation of how the instantaneous kinetic energy is calculated is given in listing \ref{lst:dsmc_kinetic_energy}. Remember that in DSMC, each particle represents a given number of real atoms.
+where $m_n$ is tha mass of particle $n$ n' $v_n$ is its scalar velocitizzle fo' realz. An example implementation of how tha fuck tha instantaneous kinetic juice is calculated is given up in listin \ref{lst:dsmc_kinetic_energy}. Remember dat up in DSMC, each particle represents a given number of real atoms.
 
-\begin{lstlisting}[caption=Calculation of kinetic energy., label=lst:dsmc_kinetic_energy]
+\begin{lstlisting}[caption=Calculation of kinetic juice., label=lst:dsmc_kinetic_energy]
 double calculate_kinetic_energy(vector<Vector3> &velocities) {
 	double kinetic_energy = 0;
 	for(int n=0; n<velocities.size(); n++) {
-		Vector3 velocity = velocities.at(n);
+		Vector3 velocitizzle = velocities.at(n);
 		kinetic_energy += 0.5*mass*atoms_per_particle*velocity.NormSquared();
 	}
 
 	return kinetic_energy;
 }
 \end{lstlisting}
-Once we have found the kinetic energy, we can easily compute the temperature.
+Once our crazy asses have found tha kinetic juice, we can easily compute tha temperature.
 \subsection{Temperature}
-The temperature is defined through the equipartition theorem using the three momentum degrees of freedom
+Da temperature is defined all up in tha equipartizzle theorem rockin tha three momentum degreez of freedom
 \begin{align}
 	\langle E_k \rangle = \frac{3}{2}Nk_BT,
 \end{align}
-where $\langle E_k \rangle$ is the average kinetic energy, $N$ is the number of particles, $k_B$ is Boltzmann's constant and $T$ is the temperature. The only unknown quantity in this equation is the temperature
+where $\langle E_k \rangle$ is tha average kinetic juice, $N$ is tha number of particles, $k_B$ is Boltzmannz constant n' $T$ is tha temperature. Da only unknown quantitizzle up in dis equation is tha temperature
 \begin{align}
 	\label{eq:dsmc_temperature}
 	T = \frac{2E_k}{3Nk_B},
 \end{align}
-where we have dropped the average value brackets of the kinetic energy because we use this to define the instantaneous temperature. Note that if the fluid is flowing (the gas has non-zero average velocity), the numerical values of the particle's velocities are higher, which in turn results in higher measured temperatures. But of course, this has to be wrong, the temperature should not depend on the choice of frame of reference. Imagine a bacteria swimming in the flowing fluid, the temperature it feels is proportional to the average kinetic energy compared to the local frame of reference. This indicates that we should define a instantaneous local temperature $T(\vec r, t)$ which we define as
+where our crazy asses have dropped tha average value bracketz of tha kinetic juice cuz we use dis ta define tha instantaneous temperature. Note dat if tha fluid is flowin (the gas has non-zero average velocity), tha numerical jointz of tha particlez velocitizzles is higher, which up in turn thangs up in dis biatch up in higher measured temperatures. But of course, dis has ta be wrong, tha temperature should not depend on tha chizzle of frame of reference. Imagine a funky-ass bacteria swimmin up in tha flowin fluid, tha temperature it feels is proportionizzle ta tha average kinetic juice compared ta tha local frame of reference. This indicates dat we should define a instantaneous local temperature $T(\vec r, t)$ which our phat asses define as
 \begin{align}
 	\label{eq:dsmc_local_temperature}
 	T(\vec r, t) = \frac{2m}{3k_B}\left[\frac{E(\vec r, t)}{\rho(\vec r, t)} - \frac{1}{2}\left(\frac{\vec p(\vec r, t)}{\rho(\vec r, t)}\right)^2\right],
 \end{align}
-where $E(\vec r,t)$, $\rho(\vec r,t)$ and $\vec p(\vec r,t)$ is the average kinetic energy, density and momentum within some volume around the point $\vec r$. This is of course still just the equipartition theorem where we measure the kinetic energy in the frame of reference determined by the fluid around the point $\vec r$. We usually use the collision cells to compute these local values. Now we need to calculate the density.
+where $E(\vec r,t)$, $\rho(\vec r,t)$ n' $\vec p(\vec r,t)$ is tha average kinetic juice, densitizzle n' momentum within some volume round tha point $\vec r$. This iz of course still just tha equipartizzle theorem where we measure tha kinetic juice up in tha frame of reference determined by tha fluid round tha point $\vec r$. We probably use tha collision cells ta compute these local joints, n' you can put dat on yo' toast. Now we need ta calculate tha density.
 \subsection{Density}
-Here we should comment on another detail, a consequence of our intermolecular collision model. Since there are no forces between the particles, all of them can in principle be at the very same point (remember that we used the hard sphere collision model only to calculate the collision rates, not to detect collisions). This will of course not happen, but it is possible to initiate a state in that configuration. The number density $\rho_n$ in any volume $V$ is easily calculated through
+Here we should comment on another detail, a cold-ass lil consequence of our intermolecular collision model. Right back up in yo muthafuckin ass. Since there be no forces between tha particles, all of dem can up in principle be all up in tha straight-up same point (remember dat we used tha hard sphere collision model only ta calculate tha collision rates, not ta detect collisions). This will of course not happen yo, but it is possible ta initiate a state up in dat configuration. I aint talkin' bout chicken n' gravy biatch. Da number densitizzle $\rho_n$ up in any volume $V$ is easily calculated through
 \begin{align}
 	\rho_n = \frac{N}{V},
 \end{align}
-where $N$ is the number of atoms in that volume. This enables us to calculate local densities as well as the global density of the system. Again we must not forget that each simulated particle represents $N_\text{eff}$ real atoms.
+where $N$ is tha number of atoms up in dat volume. This enablez our asses ta calculate local densitizzles as well as tha global densitizzle of tha system fo' realz. Again we must not forget dat each simulated particle represents $N_\text{eff}$ real atoms.
 \subsection{Permeability}
 \label{sec:permeability_dsmc}
-The permeability $k$ is defined through Darcy's law (equation \eqref{eq:darcy_1}) which we discussed in section \ref{sec:darcy_law}
+Da permeabilitizzle $k$ is defined all up in Darcyz law (equation \eqref{eq:darcy_1}) which our phat asses discussed up in section \ref{sec:darcy_law}
 \begin{align}
 	\label{eq:permeability_gas}
 	k = \frac{Q \mu L}{A\Delta P},
 \end{align}
-where $L$ is the length of the system in the flow direction, $\mu$ is the viscosity, $Q$ is the volumetric flow rate, $A$ is the cross sectional area, $\Delta P = P_0 - P_L$ are the pressures at $x=0$ and $x=L$. The viscosity can be computed with the kinetic theory \cite{alexander1998cell}
+where $L$ is tha length of tha system up in tha flow direction, $\mu$ is tha viscosity, $Q$ is tha volumetric flow rate, $A$ is tha cross sectionizzle area, $\Delta P = P_0 - P_L$ is tha pressures at $x=0$ n' $x=L$. Da viscositizzle can be computed wit tha kinetic theory \cite{alexander1998cell}
 \begin{align}
 	\mu = \frac{5}{16d^2}\sqrt{\frac{mk_B T}{\pi}}.
 \end{align}
-Measuring the permeability then introduces to problems we need to figure out how to solve. The first is how we measure the volumetric flow rate. As the name indicates, it is a measure of how many units of volume passes through a surface per unit time. In DSMC, we will measure this by counting how many particles that undergo a periodic boundary condition shift in the flow direction, this is the number flow rate. Assuming we have $N$ particles, each representing $N_\text{eff}$ real atoms in a system with volume $V$, the volume per particle $v$ is given as
+Measurin tha permeabilitizzle then introduces ta problems we need ta figure up how tha fuck ta solve. Da first is how tha fuck we measure tha volumetric flow rate fo' realz. As tha name indicates, it aint nuthin but a measure of how tha fuck nuff unitz of volume passes all up in a surface per unit time. In DSMC, we will measure dis by countin how tha fuck nuff particlez dat undergo a periodic boundary condizzle shift up in tha flow direction, dis is tha number flow rate fo' realz. Assumin our crazy asses have $N$ particles, each representin $N_\text{eff}$ real atoms up in a system wit volume $V$, tha volume per particle $v$ is given as
 \begin{align}
  	v = \frac{V}{NN_\text{eff}} = \rho^{-1}.
 \end{align} 
-The volumetric flow rate $Q$ is then simply the number flow rate multiplied by the volume per particle. The next problem is that the systems we will study are periodic in the flow direction. This implies that the point $x=0$ actually is the \textit{same point} as $x=L$, which gives $P(x=0) = P(x=L)$. Hence, the pressure difference is zero, no matter how we measure the pressure. In the next section, we will have a rather comprehensive discussion about pressure and find that a constant acceleration $g$ can be related to a pressure difference $\Delta P$ as
+Da volumetric flow rate $Q$ is then simply tha number flow rate multiplied by tha volume per particle. Da next problem is dat tha systems we will study is periodic up in tha flow direction. I aint talkin' bout chicken n' gravy biatch. This implies dat tha point $x=0$ straight-up is tha \textit{same point} as $x=L$, which gives $P(x=0) = P(x=L)$ yo. Hence, tha heat difference is zero, no matter how tha fuck we measure tha pressure. In tha next section, we gonna git a rather comprehensive rap bout heat n' find dat a cold-ass lil constant acceleration $g$ can be related ta a heat difference $\Delta P$ as
 \begin{align}
 	g = \frac{\Delta P}{m\rho_n\Delta x},
 \end{align}
-where $m$ is the mass of an atom, $\rho_n$ is the number density and $\Delta x$ is the distance between the two points of the pressure difference, usually the system length $L$. The permeability is then found as
+where $m$ is tha mass of a atom, $\rho_n$ is tha number densitizzle n' $\Delta x$ is tha distizzle between tha two pointz of tha heat difference, probably tha system length $L$. Da permeabilitizzle is then found as
 \begin{align}
 	\label{eq:permeability_measure}
 	k = \frac{Q \mu}{Agm\rho_n},
 \end{align}
-which is how we will measure the permeability.
+which is how tha fuck we will measure tha permeability.

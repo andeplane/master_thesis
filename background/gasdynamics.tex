@@ -1,28 +1,28 @@
-\section{The Klinkenberg effect}
-In 1941, L.J. Klinkenberg published a paper explaining the discrepancies that was found in experiments when measuring the permeability for both liquids and gases in the same material\cite{klinkenberg1941permeability}. His discoveries were of great importance in the oil industry
+\section{Da Klinkenberg effect}
+In 1941, L.J. Klinkenberg published a paper explainin tha discrepancies dat was found up in experiments when measurin tha permeabilitizzle fo' both liquidz n' gases up in tha same material\cite{klinkenberg1941permeability} yo. His discoveries waz of pimped out importizzle up in tha oil industry
 \begin{aquote}{Klinkenberg, 1941}
-	It has become common practice in the oil industry to determine the permeability of core material with dry air; the equipment usually employed for this determination is arranged to operate with the outlet of the sample at or near atmospheric pressure.
+	It has become common practice up in tha oil industry ta determine tha permeabilitizzle of core material wit dry air; tha shiznit probably employed fo' dis determination be arranged ta operate wit tha outlet of tha sample at or near atmospheric pressure.
 \end{aquote}
-He introduced a linear scaling function $f_c(\text{Kn})$ that relates what he called the \textit{apparent permeability} $k_a$ - the permeability measured in the lab for a fluid with arbitrary density - to the \textit{absolute permeability} $k_\infty$, the permeability for a liquid in the high density limit. The absolute permeability is a constant dependent only on the porous medium. The relation is given as
+Dude introduced a linear scalin function $f_c(\text{Kn})$ dat relates what tha fuck his schmoooove ass called tha \textit{apparent permeability} $k_a$ - tha permeabilitizzle measured up in tha lab fo' a gangbangin' fluid wit arbitrary densitizzle - ta tha \textit{absolute permeability} $k_\infty$, tha permeabilitizzle fo' a liquid up in tha high densitizzle limit. Da absolute permeabilitizzle be a cold-ass lil constant dependent only on tha porous medium. Da relation is given as
 \begin{align}
 	k_a = f_c k_\infty = \left(1 + 4\alpha\frac{\lambda}{L}\right)k_\infty = \left(1 + 4\alpha\text{Kn}\right)k_\infty,
 \end{align}
-where $L$ is the diameter of the channel and $\alpha\approx 1.15$ is the no-slip factor in equation \eqref{eq:noslip_sliplength}. Since the mean free path is proportional to the inverse pressure, we can write the scaling function as
+where $L$ is tha diameter of tha channel n' $\alpha\approx 1.15$ is tha no-slip factor up in equation \eqref{eq:noslip_sliplength}. Right back up in yo muthafuckin ass. Since tha mean free path is proportionizzle ta tha inverse pressure, we can write tha scalin function as
 \begin{align}
 	f_c = \left(1 + \frac{b}{\bar P}\right),
 \end{align}
-where $b$ is a constant depending on the material. In figure \ref{fig:klinkenberg_correction_factor}, we see that the Klinkenberg correction factor predicts a permeability that almost fifty times higher for a gas in a material with $\text{Kn}=10$. The figure also contains the Knudsen correction factor which is discussed in the next section. The Klinkenberg correction factor is derived using the first order slip velocity in equation \eqref{eq:linear_slip_velocity} which is not sufficient for high Knudsen numbers as we will see in section \ref{sec:results_for_simple_geometries}. Based on higher order slip velocity models, one can derive better permeability corrections. 
+where $b$ be a cold-ass lil constant dependin on tha material. It aint nuthin but tha nick nack patty wack, I still gots tha bigger sack. In figure \ref{fig:klinkenberg_correction_factor}, we peep dat tha Klinkenberg erection factor predicts a permeabilitizzle dat almost fifty times higher fo' a gas up in a material wit $\text{Kn}=10$. Da figure also gotz nuff tha Knudsen erection factor which is discussed up in tha next section. I aint talkin' bout chicken n' gravy biatch. Da Klinkenberg erection factor is derived rockin tha straight-up original gangsta order slip velocitizzle up in equation \eqref{eq:linear_slip_velocity} which aint sufficient fo' high Knudsen numbers as we will peep up in section \ref{sec:results_for_simple_geometries}. Based on higher order slip velocitizzle models, one can derive mo' betta permeabilitizzle erections. 
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{figures/klinkenberg.eps}
 \end{center}
-\caption{A comparison between the Klinkenberg factor and the Knudsen factor shows that slip velocity leads to even higher corrections to the permeability than what the Klinkenberg factor predicts. We see that in the high Knudsen number limit ($\text{Kn}=10$), we can expect an increase of permeability by a factor 50 compared to a liquid or a high density gas. The line labeled \textit{Relative} shows the ratio between the Knudsen correction and the Klinkenberg correction factors.}
+\caption{A comparison between tha Klinkenberg factor n' tha Knudsen factor shows dat slip velocitizzle leadz ta even higher erections ta tha permeabilitizzle than what tha fuck tha Klinkenberg factor predicts, n' you can put dat on yo' toast. We peep dat up in tha high Knudsen number limit ($\text{Kn}=10$), we can expect a increase of permeabilitizzle by a gangbangin' factor 50 compared ta a liquid or a high densitizzle gas. Da line labeled \textit{Relative} shows tha ratio between tha Knudsen erection n' tha Klinkenberg erection factors.}
 \label{fig:klinkenberg_correction_factor}
 \end{figure}
 
-\section{Knudsen's correction}
+\section{Knudsenz erection}
 \label{sec:knudsen_correction}
-Beskok and Karniadakis (1999) developed another correction factor that uses a second order slip velocity model 
+Beskok n' Karniadakis (1999) pimped another erection factor dat uses a second order slip velocitizzle model 
 \begin{align}
 	\label{eq:knudsen_correction}
 	f_c = [1 + \alpha(\text{Kn})\text{Kn}]\left[1 + \frac{4\text{Kn}}{ 1 + \text{Kn}}\right],
@@ -31,4 +31,4 @@ where $\alpha(\text{Kn})$ is given as\cite{civan2010effective}
 \begin{align}
 	\alpha(\text{Kn}) = \frac{\alpha_0}{1 + \frac{A}{\text{Kn}^B}}
 \end{align} 
-where $A=0.170$, $B=0.4348$, and $\alpha_0=1.358$. These are fitted parameters based on a large dataset of Loyalka and Hamoodi (1990). We see in figure \ref{fig:klinkenberg_correction_factor} that the Knudsen factor predicts approximately 40\% higher correction than the Klinkenberg factor. In chapter \ref{chap:dsmc_results} we will check the validity of this correction factor for a simple cylinder, and discuss the practical problems we meet when studying flow in complex geometries where the system does not simply have one Knudsen number, but rather a distribution of Knudsen numbers.
+where $A=0.170$, $B=0.4348$, n' $\alpha_0=1.358$. These is fitted parametas based on a big-ass dataset of Loyalka n' Hamoodi (1990). We peep up in figure \ref{fig:klinkenberg_correction_factor} dat tha Knudsen factor predicts approximately 40\% higher erection than tha Klinkenberg factor. Shiiit, dis aint no joke. In chapter \ref{chap:dsmc_results} we will check tha validitizzle of dis erection factor fo' a simple cylinder, n' say shit bout tha practical problems we hook up when studyin flow up in complex geometries where tha system do not simply have one Knudsen number yo, but rather a gangbangin' finger-lickin' distribution of Knudsen numbers.

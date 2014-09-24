@@ -1,15 +1,15 @@
-\section{The Boltzmann equation}
+\section{Da Boltzmann equation}
 \label{sec:boltzmann_equation}
-In the section \ref{sec:kinetic_theory_distribution_function}, we introduced the distribution function $f$ that describes the density in a $6N$ dimensional phase space. Now, if we know the distribution function at $t=0$, we could in principle compute any property of the system. But at some later time the distribution function might have changed, unless, of course, $\dm f/\dm t = 0$ in which the system would be in an equilibrium state. We can, by applying conservation of probability, derive an equation of motion for $f$. This equation is called the Boltzmann equation and describes how $f$ evolves through time by assuming that any change of probability around a point $(\vec r, \vec v)$ at the time $t$ must be due to
+In tha section \ref{sec:kinetic_theory_distribution_function}, we introduced tha distribution function $f$ dat raps bout tha densitizzle up in a $6N$ dimensionizzle phase space. Now, if we know tha distribution function at $t=0$, we could up in principle compute any property of tha system. But at some later time tha distribution function might have chizzled, unless, of course, $\dm f/\dm t = 0$ up in which tha system would be up in a equilibrium state. We can, by applyin conservation of probability, derive a equation of motion fo' $f$. This equation is called tha Boltzmann equation n' raps bout how tha fuck $f$ evolves all up in time by assumin dat any chizzle of probabilitizzle round a point $(\vec r, \vec v)$ all up in tha time $t$ must be due to
 \begin{itemize}
-	\item flow through a surface in the phase space,
-	\item an external force, or
+	\item flow all up in a surface up in tha phase space,
+	\item a external force, or
 	\item internal collisions.
 \end{itemize}
-All three will change $f$ in different ways. For simplicity, we will first assume that the particles do not collide and derive the \textit{collisionless Boltzmann equation}. But do not worry, we will add the collision term later and end up with the full Boltzmann equation.
+All three will chizzle $f$ up in different ways. For simplicity, we will first assume dat tha particlez do not collide n' derive tha \textit{collisionless Boltzmann equation}. But do not worry, we will add tha collision term later n' end up wit tha full Boltzmann equation.
 
-\subsection{The collisionless Boltzmann equation}
-Consider the density $f(\vec r, \vec v, t)\dm\vec r\dm\vec v$ around the phase space point $(\vec r,\vec v)$ at the time $t$. Then, at a time $\dm t$ later, if we assume no forces and that the total number of particles has not changed, that \textit{chunk} of density has moved to $(\vec r + \vec v\dm t, \vec v)$. Conservation of probability states that any change of $f$ within a volume $\Omega$ must flow through the boundary $\partial \Omega$
+\subsection{Da collisionless Boltzmann equation}
+Consider tha densitizzle $f(\vec r, \vec v, t)\dm\vec r\dm\vec v$ round tha phase space point $(\vec r,\vec v)$ all up in tha time $t$. Then, at a time $\dm t$ later, if we assume no forces n' dat tha total number of particlez has not chizzled, dat \textit{chunk} of densitizzle has moved ta $(\vec r + \vec v\dm t, \vec v)$. Conservation of probabilitizzle states dat any chizzle of $f$ within a volume $\Omega$ must flow all up in tha boundary $\partial \Omega$
 \begin{align}
 	\frac{\dm }{\dm t}\iint_\Omega\! f\, \dm \vec r \dm \vec v &= -\int_{\Omega_v}\!\dm \vec v\int_{\partial \Omega_r}\! f(\vec v\cdot \vec n_r)\, \dm S_r\\
 	&= -\int_{\Omega_v}\!\dm \vec v\int_{\Omega_r}\! \nabla_\vec r\cdot(f\vec v)\, \dm \vec r = -\iint_{\Omega}\! \nabla_\vec r\cdot(f\vec v)\, \dm \vec r\dm \vec v
@@ -18,129 +18,128 @@ which becomes
 \begin{align}
 	\dpart{f}{t} + \nabla_\vec r \cdot(f\vec v) = \dpart{f}{t} + \vec v\cdot\nabla_\vec r f = 0
 \end{align}
-since $\vec v$ is independent of $\vec r$. We can extend this equation by adding the effects of an external force $\vec F$ that changes the velocity in the same way as the position was changed above (except for the factor $1/m$)
+since $\vec v$ is independent of $\vec r$. We can extend dis equation by addin tha effectz of a external force $\vec F$ dat chizzlez tha velocitizzle up in tha same way as tha posizzle was chizzled above (except fo' tha factor $1/m$)
 \begin{align}
 	\label{eq:collisionless_boltzmann}
 	\dpart{f}{t} + \vec v\cdot\nabla_\vec r f + \nabla_\vec v \cdot \frac{\vec F}{ m}f = 0,
 \end{align}
-which we call the collisionless Boltzmann equation. It is a good approximation to describe the dynamics of very dilute gases where intermolecular collisions occur rarely. But we should not ignore collisions between particles, so as promised, we will now see that by treating collisions will appear as an additional term.
-\subsection{The collision operator}
+which we call tha collisionless Boltzmann equation. I aint talkin' bout chicken n' gravy biatch. Well shiiiit, it aint nuthin but a phat approximation ta describe tha dynamics of straight-up dilute gases where intermolecular collisions occur rarely. But we should not ignore collisions between particles, so as promised, we will now peep dat by treatin collisions will step tha fuck up as a additionizzle term.
+\subsection{Da collision operator}
 \label{sec:boltzmann_collision_operator}
-We consider a dilute gas so we can assume that only binary collisions occur (we ignore the contribution from collisions between three or more particles at a time). We also assume that the total energy, momentum and mass is conserved in all collisions. Then consider two particles $i$ and $j$ moving towards each other with velocities $\vec v_i$ and $\vec v_j$, and relative velocity $\vec v_\text{rel} = \vec v_i - \vec v_j$. We define particle $i$ as the \textit{incident} particle and $j$ as the \textit{target} particle. After the collision, the particles will have velocities $\vec v_i'$ and $\vec v_j'$ with relative velocity $\vec v'_\text{rel} = \vec v_i' - \vec v_j'$.
+We consider a gangbangin' finger-lickin' dilute gas so we can assume dat only binary collisions occur (we ignore tha contribution from collisions between three or mo' particlez at a time). We also assume dat tha total juice, momentum n' mass is conserved up in all collisions. Then consider two particlez $i$ n' $j$ movin towardz each other wit velocitizzles $\vec v_i$ n' $\vec v_j$, n' relatizzle velocitizzle $\vec v_\text{rel} = \vec v_i - \vec v_j$. Us dudes define particle $i$ as tha \textit{incident} particle n' $j$ as tha \textit{target} particle fo' realz. After tha collision, tha particlez gonna git velocitizzles $\vec v_i'$ n' $\vec v_j'$ wit relatizzle velocitizzle $\vec v'_\text{rel} = \vec v_i' - \vec v_j'$.
 
-In order to make the calculations simpler, we change the frame of reference, in which we label the velocities with a tilde so that $\vec v \rightarrow \tilde{\vec v}$. If we choose the target particle as initial frame of reference, we see that the velocity of the incident particle becomes $\tilde {\vec v}_i = \vec v_\text{rel}$ and $\tilde {\vec v}_i' = \vec v'_\text{rel}$. Since momentum is conserved, we know that the relative velocity must remain constant, $|\vec v_\text{rel}| = |\vec v'_\text{rel}|$, during the collision. The direction of $\vec v'_\text{rel}$ is given by the angles $\phi$ and $\theta$ with $\hat {\vec z}$ along $\vec v_\text{rel}$ and $\phi \in [0, 2\pi], \theta \in [0, \pi]$. We can express $\vec v'_\text{rel}$ as
+In order ta make tha calculations simpler, we chizzle tha frame of reference, up in which our slick asses label tha velocitizzles wit a tilde so dat $\vec v \rightarrow \tilde{\vec v}$. If we chizzle tha target particle as initial frame of reference, we peep dat tha velocitizzle of tha incident particle becomes $\tilde {\vec v}_i = \vec v_\text{rel}$ n' $\tilde {\vec v}_i' = \vec v'_\text{rel}$. Right back up in yo muthafuckin ass. Since momentum is conserved, we know dat tha relatizzle velocitizzle must remain constant, $|\vec v_\text{rel}| = |\vec v'_\text{rel}|$, durin tha collision. I aint talkin' bout chicken n' gravy biatch. Da direction of $\vec v'_\text{rel}$ is given by tha anglez $\phi$ n' $\theta$ wit $\hat {\vec z}$ along $\vec v_\text{rel}$ n' $\phi \in [0, 2\pi], \theta \in [0, \pi]$. We can express $\vec v'_\text{rel}$ as
 \begin{align}
 	\vec v_\text{rel}' = \vec v_\text{rel} - 2\unitvector e(\unitvector e\cdot\vec v_\text{rel}),
 \end{align}
-where $\unitvector e$ is an arbitrary unit vector. If we multiply by $\unitvector e$, we see that 
+where $\unitvector e$ be a arbitrary unit vector. Shiiit, dis aint no joke. If we multiply by $\unitvector e$, we peep dat 
 \begin{align}
 	\unitvector e\cdot \vec v_\text{rel}' = \unitvector e\cdot\left[\vec v_\text{rel} - 2\unitvector{e}(\unitvector e\cdot\vec v_\text{rel})\right] = -\unitvector e \cdot \vec v_\text{rel}
 \end{align}
-which gives the symmetric relation
+which gives tha symmetric relation
 \begin{align}
 	\vec v_\text{rel} = \vec v_\text{rel}' - 2\unitvector e(\unitvector e\cdot\vec v_\text{rel}').
 \end{align}
-The angle between $\vec v_\text{rel}$ and $\vec v_\text{rel}'$ is $\theta$, so
+Da angle between $\vec v_\text{rel}$ n' $\vec v_\text{rel}'$ is $\theta$, so
 \begin{align}
 	\vec v_\text{rel}'\cdot \vec v_\text{rel} = v_\text{rel}^2\cos\theta = v_\text{rel}^2(1 - 2\cos \chi),
 \end{align}
-where $\chi$ is the angle between $\unitvector e$ and $\vec v_\text{rel}$, which gives the relation
+where $\chi$ is tha angle between $\unitvector e$ n' $\vec v_\text{rel}$, which gives tha relation
 \begin{align}
 	\theta = \pi - 2\chi.
 \end{align}
-We now define the solid angle element $\dm\Omega=\sin\theta \dm\theta \dm\phi$ about $\vec v_\text{rel}'$ 
+We now define tha solid angle element $\dm\Omega=\sin\theta \dm\theta \dm\phi$ bout $\vec v_\text{rel}'$ 
 \begin{align}
 	v_\text{rel} \dm\Omega &= v_\text{rel}\sin\theta \dm\theta \dm\phi = 2v_\text{rel}\sin(\pi - 2\chi)\dm\chi \dm\phi\\
 	&= 4v_\text{rel}\cos\chi\sin\chi \dm\chi \dm\phi = 4\left|\unitvector e\cdot\vec v_\text{rel}\right|\sin\chi \dm\chi \dm\phi\\
 	&= 4\left|\unitvector e\cdot\vec v_\text{rel}\right|\dm^2e,
 \end{align}
-where $\dm^2e = \sin\chi \dm\chi \dm\phi$ is a solid angle element about $\unitvector e$. In the following, we will calculate the scattering cross section which is the \textit{area} that describes the likelihood of an incident particle being scattered by the target particle. We denote the number density $\rho_n$ and find that the incident flux is $\rho_n v_\text{rel}$. The rate $h_{\dm\Omega}'$ of scattered particles into $\dm\Omega$ is
+where $\dm^2e = \sin\chi \dm\chi \dm\phi$ be a solid angle element bout $\unitvector e$. In tha following, we will calculate tha scatterin cross section which is tha \textit{area} dat raps bout tha likelihood of a incident particle bein scattered by tha target particle. Us dudes denote tha number densitizzle $\rho_n$ n' find dat tha incident flux is $\rho_n v_\text{rel}$. Da rate $h_{\dm\Omega}'$ of scattered particlez tha fuck into $\dm\Omega$ is
 \begin{align}
 	\label{eq:partial_scattering_rate}
 	h_{\dm\Omega}' = \rho_n v_\text{rel}\sigma \dm\Omega,
 \end{align}
-where the proportionality constant $\sigma$ is the cross sectional area. We might have several target particles colliding independently of each other which will contribute to the scattering rate. If we have $n_t$ such particles, we obtain the total scattering rate $h_{\dm\Omega}$ by multiplying \eqref{eq:partial_scattering_rate} by $n_t$
+where tha proportionalitizzle constant $\sigma$ is tha cross sectionizzle area. We might have nuff muthafuckin target particlez collidin independently of each other which will contribute ta tha scatterin rate. If our crazy asses have $n_t$ such particles, we obtain tha total scatterin rate $h_{\dm\Omega}$ by multiplyin \eqref{eq:partial_scattering_rate} by $n_t$
 \begin{align}
 	h_{\dm\Omega} = n_t\rho_n v_\text{rel}\sigma \dm\Omega.
 \end{align}
-The \textit{differential} cross section $\sigma$ depends on $\vec v_\text{rel}$ and $\vec v_\text{rel}'$, so we denote it as $\sigma = \sigma(\vec v_\text{rel}\rightarrow \vec v_\text{rel}')$, whereas the \textit{total} cross section $\sigma_T$ is given by integrating over all solid angles
+Da \textit{differential} cross section $\sigma$ dependz on $\vec v_\text{rel}$ n' $\vec v_\text{rel}'$, so our phat asses denote it as $\sigma = \sigma(\vec v_\text{rel}\rightarrow \vec v_\text{rel}')$, whereas tha \textit{total} cross section $\sigma_T$ is given by integratin over all solid angles
 \begin{align}
 	\sigma_T = \int\! \sigma \, \dm\Omega.
 \end{align}
-We will now look at particles with velocities in the range $[\vec v, \vec v + \dm\vec v]$ incident on target particles with velocities in the range $[\vec v_1, \vec v_1 + \dm\vec v_1]$. The incident flux is $gf(\vec v,\vec r)\dm\vec v$ and the number of target particles is $f(v_1,\vec r)\dm\vec v_1\dm\vec r$. The rate at which particles with velocity $\vec v_1$ are scattered by particles with velocity $\vec v$ is 
+Us thugs will now peep particlez wit velocitizzles up in tha range $[\vec v, \vec v + \dm\vec v]$ incident on target particlez wit velocitizzles up in tha range $[\vec v_1, \vec v_1 + \dm\vec v_1]$. Da incident flux is $gf(\vec v,\vec r)\dm\vec v$ n' tha number of target particlez is $f(v_1,\vec r)\dm\vec v_1\dm\vec r$. Da rate at which particlez wit velocitizzle $\vec v_1$ is scattered by particlez wit velocitizzle $\vec v$ is 
 \begin{align}
 	f(\vec v)f(\vec v_1) v_\text{rel} \sigma \, \dm\Omega \dm\vec v \dm\vec v_1 \dm\vec r = f(\vec v)f(\vec v_1)4\left|\unitvector e\cdot \vec v_\text{rel}\right| \sigma \,\dm^2e \dm \vec v \dm\vec v_1 \dm \vec r.
 \end{align}
-The rate of loss is the rate of which particles in $\dm\vec v\dm\vec r$ are being hit by other particles. We can calculate this by integrating over all solid angles $\dm^2 e$ and incident velocities $\dm \vec v$
+Da rate of loss is tha rate of which particlez up in $\dm\vec v\dm\vec r$ is bein hit by other particles. We can calculate dis by integratin over all solid anglez $\dm^2 e$ n' incident velocitizzles $\dm \vec v$
 \begin{align}
 	\text{rate of loss} = \left[\iiint\! f(\vec r, \vec v, t)f(\vec r, \vec v_1, t)4\left|\unitvector e \cdot \vec v_\text{rel} \right|\sigma \,\dm^2 e\dm \vec v_1\right]\dm \vec v\dm \vec r.
 \end{align}
-We also have the inverse event, incident particles with velocity $\vec v'$ hitting target particles with velocity $\vec v_1'$ so that the final velocity of the target particles is $\vec v$. This is calculated with the same idea
+We also have tha inverse event, incident particlez wit velocitizzle $\vec v'$ hittin target particlez wit velocitizzle $\vec v_1'$ so dat tha final velocitizzle of tha target particlez is $\vec v$. This is calculated wit tha same idea
 \begin{align}
 	\text{rate of gain} = \left[\iiint\! f(\vec r, \vec v', t)f(\vec r, \vec v_1', t)4\left|\unitvector e \cdot \vec v_\text{rel} \right|\sigma \,\dm^2 e\dm \vec v_1\right]\dm\vec v\dm\vec r,
 \end{align}
-since $|\unitvector e\cdot \vec v_\text{rel}| = |\unitvector e\cdot \vec v_\text{rel}'|$ and $\dm\vec v'\dm\vec v_1' = \dm\vec v\dm\vec v_1$. The total change in the distribution function is given by the functional $J[f]$
+since $|\unitvector e\cdot \vec v_\text{rel}| = |\unitvector e\cdot \vec v_\text{rel}'|$ n' $\dm\vec v'\dm\vec v_1' = \dm\vec v\dm\vec v_1$. Da total chizzle up in tha distribution function is given by tha functionizzle $J[f]$
 \begin{align}
 	J[f] &= \iiint\! 4|\unitvector e\cdot\vec v_\text{rel}|\sigma[f'f_1' - ff_1]\,\dm\vec v_1 \dm^2e\\
 	&= \iint\! v_\text{rel} \sigma[f'f_1' - ff_1] \,\dm\vec v_1 \dm\Omega,
 \end{align}
-where $f = f(\vec r, \vec v, t)$ and $f_1 = f(\vec r, \vec v_1, t)$. The full Boltzmann equation is then given by
+where $f = f(\vec r, \vec v, t)$ n' $f_1 = f(\vec r, \vec v_1, t)$. Da full Boltzmann equation is then given by
 \begin{align}
 	\label{eq:boltzmann_equation}
 	\dpart{f}{t} + \vec v\cdot \nabla_\vec r f + \frac{\vec F}{m}\cdot\nabla_\vec v f = J[f].
 \end{align}
-In the derivation of the collision operator $J[f]$, we assumed binary collisions only. This is a decent approximation that holds for low densities. By defining the force range $D$ and the dimensionless parameter $\nu = \rho_n D^3$, the Boltzmann equation is valid when $\nu$ is small \cite{mclennan1989introduction}. $D^3$ defines a volume around a particle in which the forces cannot be neglected. This makes $\nu$ the average number of particles within that volume. If that number is small (less than unity) then we can safely neglect collisions between three or more particles.
+In tha derivation of tha collision operator $J[f]$, we assumed binary collisions only. This be a thugged-out decent approximation dat holdz fo' low densities. Put ya muthafuckin choppers up if ya feel dis! By definin tha force range $D$ n' tha dimensionless parameter $\nu = \rho_n D^3$, tha Boltzmann equation is valid when $\nu$ is lil' small-ass \cite{mclennan1989introduction}. $D^3$ defines a volume round a particle up in which tha forces cannot be neglected. Y'all KNOW dat shit, muthafucka! This type'a shiznit happens all tha time. This make $\nu$ tha average number of particlez within dat volume. If dat number is lil' small-ass (less than unity) then we can safely neglect collisions between three or mo' particles.
 \section{\textit{H}-theorem}
-Now we have an integro-differential equation describing how the distribution function evolves through time. We will now look at Boltzmann's $H$-theorem which is a powerful result that gives us all the theoretical tools we need to implement the DSMC method. We will use this to derive what velocity distribution a gas in equilibrium obeys. In addition, we will find the mean free path and the mean collision time which both will be used in the Direct Simulation Monte Carlo method. Let us define the $H$-function as
+Now our crazy asses have a integro-differential equation describin how tha fuck tha distribution function evolves all up in time. Us thugs will now peep Boltzmannz $H$-theorem which be a bangin result dat gives our asses all tha theoretical tools we need ta implement tha DSMC method. Y'all KNOW dat shit, muthafucka! Us thugs will use dis ta derive what tha fuck velocitizzle distribution a gas up in equilibrium obeys. In addition, we will find tha mean free path n' tha mean collision time which both is ghon be used up in tha Direct Simulation Monte Carlo method. Y'all KNOW dat shit, muthafucka! Let our asses define tha $H$-function as
 \begin{align}
 	\label{eq:h_function}
 	H(t) = \langle \ln f \rangle = \iint\! f(\vec r, \vec v, t)\ln f(\vec r, \vec v, t)\,\dm \vec r \dm\vec v,
 \end{align}
-and differenciate with respect to time
+and differenciate wit respect ta time
 \begin{align}
 	\label{eq:h_theorem_one}
 	\frac{\dm H}{\dm t} = \iint\! \dpart{f}{t}(\ln f) \,\dm\vec r \dm\vec v + \iint\! \dpart{f}{t} \,\dm\vec r \dm\vec v = \iint\! \dpart{f}{t}\ln f \,\dm\vec r \dm\vec v,
 \end{align}
-where the last term vanished since the number of particles is conserved
+where tha last term vanished since tha number of particlez is conserved
 \begin{align}
 	\iint\! \dpart{f}{t} \,\dm\vec r \dm\vec v = \frac{\dm}{\dm t} \iint\! f \,\dm\vec r \dm\vec v = \frac{\dm N}{\dm t} = 0.
 \end{align}
-We multiply the Boltzmann equation by $\ln f$ and integrate over $\vec r$ and $\vec v$
+We multiply tha Boltzmann equation by $\ln f$ n' integrate over $\vec r$ n' $\vec v$
 \begin{align}
 	\nonumber
 	\iint\! \ln f\dpart{f}{t} \,\dm \vec r \dm\vec v &= -\iint\! (\ln f)\vec v\cdot \nabla_\vec r f \,\dm\vec r \dm\vec v - \iint\! (\ln f) \frac{\vec F}{m}\cdot \nabla_\vec v f \,\dm\vec r\dm\vec v\\
 	\label{eq:boltzmann_hell}
 	&+ \iint\! \ln f J[f] \,\dm\vec r \dm\vec v.
 \end{align}
-The first integral on the right can be integrated by parts
+Da first integral on tha right can be integrated by parts
 \begin{align}
 	\nonumber
 	\iint\! (\ln f)\vec v\cdot \nabla_\vec r f \,\dm\vec r \dm\vec v &= \iint\! f(\ln f) (\vec v\cdot \hat{\vec n}) \,\dm \Gamma_\vec r\dm \vec v\\
 	&- \iint\! f\ln f(\nabla_\vec r \cdot \vec v)\,\dm \vec r\dm \vec v = 0,
 \end{align}
-where $\dm \Gamma_\vec r$ indicates the boundary of the spatial domain. The integral is zero if we assume that $f$ is zero at the boundaries and $\vec v$ is independent of $r$. Similarly with the second integral on the right in equation \eqref{eq:boltzmann_hell}
+where $\dm \Gamma_\vec r$ indicates tha boundary of tha spatial domain. I aint talkin' bout chicken n' gravy biatch. Da integral is zero if we assume dat $f$ is zero all up in tha boundaries n' $\vec v$ is independent of $r$. Right back up in yo muthafuckin ass. Similarly wit tha second integral on tha right up in equation \eqref{eq:boltzmann_hell}
 \begin{align}
 	\nonumber
 	\frac{1}{m}\iint\! (\ln f) \vec F\cdot \nabla_\vec v f \,\dm\vec r\dm\vec v &= \frac{1}{m}\iint\! f\ln f (\vec F\cdot \hat{\vec n}) \,\dm \Gamma_\vec v\dm \vec r\\
 	&- \frac{1}{m}\iint\! f\ln f (\nabla_\vec v \cdot \vec F) \,\dm \vec r\dm \vec v = 0,
 \end{align}
-where $\dm \Gamma_\vec v$ indicates the boundary of the velocity space. This integral is also zero since $f$ is zero when $\vec v\rightarrow \pm \infty$ and the force is independent of the velocity. By recognizing that the left hand side of equation \eqref{eq:boltzmann_hell} actually is $\dm H/\dm t$, we end up with
+where $\dm \Gamma_\vec v$ indicates tha boundary of tha velocitizzle space. This integral be also zero since $f$ is zero when $\vec v\rightarrow \pm \infty$ n' tha force is independent of tha velocity. By recognizin dat tha left hand side of equation \eqref{eq:boltzmann_hell} straight-up is $\dm H/\dm t$, we end up with
 \begin{align}
  	\frac{\dm H}{\dm t} = \iiint\! \ln f [f'f_1' - ff_1] g \sigma \,\dm\Omega\dm\vec v_1 \dm\vec v,
 \end{align}
-which can be written as\cite{mcquarrie1973statistical}
+which can be freestyled as\cite{mcquarrie1973statistical}
 \begin{align}
 	\label{eq:h_theorem_integral}
  	\frac{\dm H}{\dm t} = \frac{1}{4}\iiint\! \ln\left[\frac{ff_1}{f'f_1'}\right] [f'f_1' - ff_1]g \sigma \, \dm\Omega\dm\vec v_1 \dm\vec v.
 \end{align}
-The integrand is of the form $-(x-y)\ln(x/y)$ which is negative for $x\neq y$ and zero for $x=y$. This means that
+Da integrand iz of tha form $-(x-y)\ln(x/y)$ which is wack fo' $x\neq y$ n' zero fo' $x=y$. This means that
 \begin{align}
 	\frac{\dm H}{\dm t} \leq 0,
 \end{align}
-which is called the $H$-theorem. Since $H(t)$ is bounded (see equation \eqref{eq:h_function} and remember that $f$ indeed is bounded), in the limit $t\rightarrow\infty$, $H(t)$ reaches an equilibrium state as $\dm H/\dm t = 0$. This in turn means that the integrand in \eqref{eq:h_theorem_integral} must be zero as well which happens if
+which is called tha $H$-theorem. Right back up in yo muthafuckin ass. Since $H(t)$ is bounded (see equation \eqref{eq:h_function} n' remember dat $f$ indeed is bounded), up in tha limit $t\rightarrow\infty$, $H(t)$ reaches a equilibrium state as $\dm H/\dm t = 0$. This up in turn means dat tha integrand up in \eqref{eq:h_theorem_integral} must be zero as well which happens if
 \begin{align}
 	\label{eq:equilibrium_f_relation}
 	f'f_1' = ff_1,
 \end{align}
-which allows us calculate the equilibrium velocity distribution.
-
+which allows our asses calculate tha equilibrium velocitizzle distribution.
