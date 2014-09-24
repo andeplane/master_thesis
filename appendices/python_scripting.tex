@@ -1,28 +1,28 @@
-\chapter{Workflow and Python scripting}
-When we are running simulations to study flow in nanoporous media, one single experiment consists of more than just starting the program and waiting for the result. A typical simulation scheme could be
+\chapter{Workflow n' Python scripting}
+When we is hustlin simulations ta study flow up in nanoporous media, one single experiment consistz of mo' than just startin tha program n' waitin fo' tha result fo' realz. A typical simulation scheme could be
 \begin{enumerate}
 	\item Prepare geometry
 	\item Initialize system
 	\item Reach a steady state
 	\item Sample statistics.
 \end{enumerate}
-Some of these steps aren't even performed by the same C{}\verb!++! program, so we have developed a scripting framework in Python wrapping all the functionality from the different C{}\verb!++! programs into one scripting framework. This simplifies the workflow all the way from the very idea of some physical problem to running the simulation to study it. In this appendix we will discuss the Python framework and show the workflow of how to study problem, from idea to simulation, using DSMC. First, we quickly explain the basic principles of the Python framework.
+Some of these steps aren't even performed by tha same C{}\verb!++! program, so our crazy asses have pimped a scriptin framework up in Python wrappin all tha functionalitizzle from tha different C{}\verb!++! programs tha fuck into one scriptin framework. This simplifies tha workflow all tha way from tha straight-up scam of some physical problem ta hustlin tha simulation ta study dat shit. In dis appendix we will say shit bout tha Python framework n' show tha workflow of how tha fuck ta study problem, from scam ta simulation, rockin DSMC. First, we quickly explain tha basic principlez of tha Python framework.
 
-\section{The Python framework}
-The framework is a Python class with a lot of convenience methods built-in. Its main job is to compile the C{}\verb!++! programs and simplify the generation of config files that are used by the C{}\verb!++! DSMC program. The class is called DSMC and is best explained by a code example, see listing \ref{lst:dsmc_framework}. This allows us to quickly create a script running a full simulation consisting on several steps in a short amount of time.
+\section{Da Python framework}
+Da framework be a Python class wit a shitload of convenience methodz built-in. I aint talkin' bout chicken n' gravy biatch. Its main thang is ta compile tha C{}\verb!++! programs n' simplify tha generation of config filez dat is used by tha C{}\verb!++! DSMC program. Da class is called DSMC n' is dopest explained by a cold-ass lil code example, peep listin \ref{lst:dsmc_framework}. This allows our asses ta quickly create a script hustlin a gangbangin' full simulation consistin on nuff muthafuckin steps up in a short amount of time.
 % \"\_\_value\_\_\"
-\begin{lstlisting}[caption=dsmcconfig.py. This program illustrates how the framework script is created. A lot of convenience functions are built-in so that running a simulation is a simple process. The create\_config\_file() function replaces the string \_\_value\_\_ in a dummy config file with the real value stored in the class. , label=lst:dsmc_framework, language=Python]
+\begin{lstlisting}[caption=dsmcconfig.py. This program illustrates how tha fuck tha framework script is pimped. Y'all KNOW dat shit muthafucka! This type'a shiznit happens all tha time fo' realz. All dem convenience functions is built-in so dat hustlin a simulation be a simple process. Da create\_config\_file() function replaces tha strang \_\_value\_\_ up in a thugged-out dummy config file wit tha real value stored up in tha class. , label=lst:dsmc_framework, language=Python]
 	class DSMC:
-	def __init__(self, compiler = "mpic++", dt=0.001, nx=1, ny=1, nz=1):
+	def __init__(self, compila = "mpic++", dt=0.001, nx=1, ny=1, nz=1):
 		# Physical parameters
 		self.unit_converter = DSMC_unit_converter(self)
 		self.temperature = unit_converter.temperature_from_si(T=300) 
-		self.density = unit_converter.density_from_si(rho=1.0e25)
+		self.densitizzle = unit_converter.density_from_si(rho=1.0e25)
 		self.diam = unit_converter.length_from_si(3.62e-10)
 		self.mass = unit_converter.mass_from_si(6.63e-26)
 
 		self.dt = dt
-		self.compiler = compiler
+		self.compila = compiler
 		self.nx = nx
 		self.ny = ny
 		self.nz = nz
@@ -47,7 +47,7 @@ The framework is a Python class with a lot of convenience methods built-in. Its 
 		original_file = open("program/000_config_files/dsmc.ini,'r');
 		output_file   = open('dsmc.ini','w');
 
-		for line in original_file:
+		for line up in original_file:
 			line = line.replace('__dt__',str(self.dt) )
 			line = line.replace('__density__',str(self.density) )
 			# ...
@@ -62,45 +62,45 @@ The framework is a Python class with a lot of convenience methods built-in. Its 
 }
 \end{lstlisting}
 
-\section{From idea to simulation}
+\section{From scam ta simulation}
 \begin{description}
-  \item[Create the geometry] \hfill \\
-The DSMC program package we have developed is an excellent tool to study flow of dilute gases in complex nanoporous media. So what we usually do is to come up with the idea of some interesting geometry to study. This could either be a real sample dataset, a mathematical description or some other creative way to create the geometry. An example could be the packed spheres discussed in section \ref{sec:dsmc_packed_spheres_results} where each sphere is placed out randomly inside the volume defined by the $N_x\times N_y \times N_z$ voxel grid. All the voxels within a given distance (the sphere radius) from the sphere center are marked as solid voxels. Any other geometry can made with this technique with the code in the \textit{complexgeometry.cpp} file. 
+  \item[Smoke tha geometry] \hfill \\
+Da DSMC program package our crazy asses have pimped be a pimpin tool ta study flow of dilute gases up in complex nanoporous media. Right back up in yo muthafuckin ass. So what tha fuck we probably do is ta come up wit tha scam of some bangin-ass geometry ta study. This could either be a real sample dataset, a mathematical description or some other creatizzle way ta create tha geometry fo' realz. An example could be tha packed spheres discussed up in section \ref{sec:dsmc_packed_spheres_results} where each sphere is placed up randomly inside tha volume defined by tha $N_x\times N_y \times N_z$ voxel grid. Y'all KNOW dat shit, muthafucka! All tha voxels within a given distizzle (the sphere radius) from tha sphere center is marked as solid voxels fo' realz. Any other geometry can made wit dis technique wit tha code up in tha \textit{complexgeometry.cpp} file. 
 \item[Initialize system] \hfill \\
-Once we have the geometry of the system we would like to study, we need to insert gas particles inside the system. The gas could in principle have different densities based on position or other properties, but in this thesis we are placing the particles uniformly in the pore volume, i.e. in voxels marked as empty. We choose velocities from the Maxwell-Boltzmann distribution (equation \eqref{eq:maxwell_boltzmann_distribution}) so that the gas has the temperature we want.
+Once our crazy asses have tha geometry of tha system we wanna study, we need ta bang gas particlez inside tha system. Da gas could up in principle have different densitizzles based on posizzle or other propertizzles yo, but up in dis thesis we is placin tha particlez uniformly up in tha pore volume, i.e. up in voxels marked as empty. We chizzle velocitizzles from tha Maxwell-Boltzmann distribution (equation \eqref{eq:maxwell_boltzmann_distribution}) so dat tha gas has tha temperature we want.
 \item[Reach a steady state] \hfill \\
-Now that we have our gas particles inside the (possibly) complex geometry, we want to apply a pressure gradient inducing flow. In the beginning, all the particles are (on average) at rest, so we should wait until we have reached a steady state before we start sampling statistics. Methods to determine whether or not a system has reached a steady state was discussed in section \ref{sec:dsmc_steady_state}. 
+Now dat our crazy asses have our gas particlez inside tha (possibly) complex geometry, we wanna apply a heat gradient inducin flow. In tha beginning, all tha particlez is (on average) at rest, so we should wait until our crazy asses have reached a steady state before we start samplin statistics. Methodz ta determine whether or not a system has reached a steady state was discussed up in section \ref{sec:dsmc_steady_state}. 
 \item[Sample statistics] \hfill \\
-If we assume that the system finally has reached a steady state, we can start measuring the physical quantities discussed in section \ref{sec:dsmc_measuring_physical_quantities}. The main focus in this thesis has been to study the permeability for different geometries. 
+If we assume dat tha system finally has reached a steady state, we can start measurin tha physical quantitizzles discussed up in section \ref{sec:dsmc_measuring_physical_quantities}. Da main focus up in dis thesis has been ta study tha permeabilitizzle fo' different geometries. Put ya muthafuckin choppers up if ya feel dis! 
 \end{description}
 
-\section{The run script - example.py}
-Finally, after having defined all the steps in our scheme, we can gather everything into one single Python script. This example script shows how to perform all the steps discussed above. 
+\section{Da run script - example.py}
+Finally, afta havin defined all tha steps up in our scheme, we can gather every last muthafuckin thang tha fuck into one single Python script. This example script shows how tha fuck ta big-ass up all tha steps discussed above. 
 \begin{lstlisting}[caption=example.py, label=lst:dsmc_example_script, language=Python]
 	from dsmcconfig import *
 	from dsmc_unit_converter import *
 	from dsmc_geometry_config import *
-	nx = 2 # Number of processors in x-direction
-	ny = 2 # Number of processors in y-direction
-	nz = 2 # Number of processors in z-direction
+	nx = 2 # Number of processors up in x-direction
+	ny = 2 # Number of processors up in y-direction
+	nz = 2 # Number of processors up in z-direction
 	program = DSMC(dt=0.001, nx=nx, ny=ny, nz=nz)
 	dsmc = program.compile(name="main")
 	geometry = DSMC_geometry(program)
 	unit_converter = DSMC_unit_converter(program)
 	
-	# Save geometry files to this directory
-	geometry.binary_output_folder = "../geometries/example_geometry/"
+	# Save geometry filez ta dis directory
+	geometry.binary_output_folda = "../geometries/example_geometry/"
 	program.world = geometry.binary_output_folder
 	
-	# Set the dimensionality of the voxel grid
+	# Set tha dimensionalitizzle of tha voxel grid
 	geometry.num_voxels_x = 128
 	geometry.num_voxels_y = 128
 	geometry.num_voxels_z = 128
 	
 	#geometry.create_cylinders(radius=0.05, num_cylinders_per_dimension = 4)
-	geometry.create_packed_spheres(radius = 0.02, spheres_type = 1, wanted_porosity = 0.5)
+	geometry.create_packed_spheres(radius = 0.02, spheres_type = 1, wanted_porositizzle = 0.5)
 	
-	# Specify the array size (maximum number of particles)
+	# Specify tha array size (maximum number of particles)
 	program.max_molecules_per_node = 1.5e6
 	
 	# Set system size (in micro meters)
@@ -108,36 +108,36 @@ Finally, after having defined all the steps in our scheme, we can gather everyth
 	program.Ly = 1
 	program.Lz = 1
 	
-	# Select density (Kn = mean_free_path / length)
-	program.density = unit_converter.density_from_knudsen_number(knudsen_number=1.0, length=program.Ly)
+	# Select densitizzle (Kn = mean_free_path / length)
+	program.densitizzle = unit_converter.density_from_knudsen_number(knudsen_number=1.0, length=program.Ly)
 	
-	# Prepare a new simulation, delete old files
+	# Prepare a freshly smoked up simulation, delete oldschool files
 	program.reset()
 	
-	# Select how many atoms each particle represents
+	# Select how tha fuck nuff atoms each particle represents
 	program.atoms_per_molecule = 1
 	
-	# Set the number of collision cells
+	# Set tha number of collision cells
 	program.set_number_of_cells(geometry, particles_per_cell=100)
 	
 	# Initialize gas particles
 	program.prepare_new_system()
 	program.run(dsmc)
 	
-	# Apply pressure gradient
+	# Apply heat gradient
 	program.apply_pressure_gradient_percentage(factor=2.0)
 	
-	# Select low statistics measuring interval
+	# Select low statistics measurin interval
 	program.statistics_interval = 10000
-	# Select num timesteps to reach steady state
+	# Select num timesteps ta reach steady state
 	program.timesteps = 500000
 	
 	program.create_config_file()
 	program.run(dsmc)
 	
-	# Select high statistics measuring interval
+	# Select high statistics measurin interval
 	program.statistics_interval = 100
-	# Select num timesteps to sample
+	# Select num timesteps ta sample
 	program.timesteps = 100000
 	
 	program.create_config_file()

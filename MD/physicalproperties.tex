@@ -1,38 +1,38 @@
 \section{Thermostat}
-When $N$ atoms move around, their temperature are defined as in DSMC, through the equipartition theorem
+When $N$ atoms move around, they temperature is defined as up in DSMC, all up in tha equipartizzle theorem
 \begin{align}
 	T = \frac{2E_k}{3Nk_B},
 \end{align}
-where $E_k$ is the instantaneous kinetic energy. But what if we would like another temperature? If we want to increase the temperature, we see that increasing the kinetic energy would do the job. This is in fact a decent way to control the temperature. We say that when we push the system towards a given temperature, we apply a thermostat. A much used thermostat is the Berendsen thermostat. Assume that the system has a temperature $T$, and we would like to push the system towards a new temperature $T_0$. We can think of this as a heat bath in contact with the system. The Berendsen thermostat is defined in a way so that
+where $E_k$ is tha instantaneous kinetic juice. But what tha fuck if we wanna another temperature, biatch? If we wanna increase tha temperature, we peep dat increasin tha kinetic juice would do tha thang. This is up in fact a thugged-out decent way ta control tha temperature. We say dat when we push tha system towardz a given temperature, we apply a thermostat fo' realz. A much used thermostat is tha Berendsen thermostat fo' realz. Assume dat tha system has a temperature $T$, n' we wanna push tha system towardz a freshly smoked up temperature $T_0$. We can be thinkin of dis as a heat bath up in contact wit tha system. Da Berendsen thermostat is defined up in a way so that
 \begin{align}
 	\frac{\dm T}{\dm t} = \frac{T_0 - T}{\tau},
 \end{align}
-for some time constant $\tau$ which essentially determines how fast the system reaches the desired temperature. A simple algorithm obeying the above convergence rate is by multiplying the velocities of all atoms by a factor 
+for some time constant $\tau$ which essentially determines how tha fuck fast tha system reaches tha desired temperature fo' realz. A simple algorithm obeyin tha above convergence rate is by multiplyin tha velocitizzlez of all atoms by a gangbangin' factor 
 \begin{align}
 	\gamma = \sqrt{1 + \frac{\Delta t}{\tau}\left(\frac{T_0}{T} - 1\right)},
 \end{align}
-where $\Delta t$ is the timestep. We see that if the temperature $T$ is \textit{higher} than the temperature of the heat bath $T_0$, $\gamma$ becomes smaller than one, reducing the velocities of all the atoms. If the temperature is lower than desired, $\gamma$ is larger than one. While this is a efficient way to gain a desired temperature, it does affect the system in a non-physical way. 
+where $\Delta t$ is tha timestep. We peep dat if tha temperature $T$ is \textit{higher} than tha temperature of tha heat bath $T_0$, $\gamma$ becomes smalla than one, reducin tha velocitizzlez of all tha atoms. If tha temperature is lower than desired, $\gamma$ is larger than one. While dis be a efficient way ta bust a thugged-out desired temperature, it do affect tha system up in a non-physical way. 
 
-Without a thermostat, the states of the system live in the microcanonical ensemble where the number of atoms, volume and energy is constant. By applying a thermostat, the energy is clearly not conserved and it is tempting to say that we instead have a constant temperature which is the canonical ensemble. The Berendsen thermostat might produce states not only from this ensemble, so it should be used with care. 
+Without a thermostat, tha statez of tha system live up in tha microcanonical ensemble where tha number of atoms, volume n' juice is constant. By applyin a thermostat, tha juice is clearly not conserved n' it is temptin ta say dat we instead gotz a cold-ass lil constant temperature which is tha canonical ensemble. Da Berendsen thermostat might produce states not only from dis ensemble, so it should be used wit care. 
 
 % \section{Physical properties}
-% The phase space variables can be used to sample statistical properties of the system, very similar to the techniques we used in DSMC (section \ref{sec:dsmc_measuring_physical_quantities}). Properties of interest are kinetic and potential energy, temperature and pressure. In this section, we will define these properties and discuss how we measure them.
-% \subsection{Kinetic and potential energy}
-% We measure the kinetic energy directly through its definition for point particles
+% Da phase space variablez can be used ta sample statistical propertizzlez of tha system, straight-up similar ta tha steez we used up in DSMC (section \ref{sec:dsmc_measuring_physical_quantities}). Propertizzlez of interest is kinetic n' potential juice, temperature n' pressure. In dis section, we will define these propertizzles n' say shit bout how tha fuck we measure em.
+% \subsection{Kinetic n' potential juice}
+% We measure tha kinetic juice directly all up in its definizzle fo' point particles
 % \begin{align}
 % 	E_k = \sum_n \frac{1}{2} m_nv_n^2,
 % \end{align}
-% where $m_n$ is the mass of particle $n$ and $v_n$ is its scalar velocity. The potential energy is measured by evaluating the Lennard-Jones potential (equation \eqref{eq:md_potential_energy}). We again define temperature by applying the equipartition theorem using the momentum degrees of freedom
+% where $m_n$ is tha mass of particle $n$ n' $v_n$ is its scalar velocity. Da potential juice is measured by evaluatin tha Lennard-Jones potential (equation \eqref{eq:md_potential_energy}). We again n' again n' again define temperature by applyin tha equipartizzle theorem rockin tha momentum degreez of freedom
 % \begin{align*}
 % 	\langle E_k \rangle = \frac{3N}{2}k_BT,
 % \end{align*}
-% which gives the instantaneous temperature (we drop the average value brackets meaning the instantaneous value of the kinetic energy)
+% which gives tha instantaneous temperature (we drop tha average value brackets meanin tha instantaneous value of tha kinetic juice)
 % \begin{align}
 % 	T = \frac{2E_k}{3Nk_B}.
 % \end{align}
 % \subsection{Pressure}
-% In DSMC, we found the gas to satisfy the ideal gas equation of state (see section \ref{sec:dsmc_pressure}). However, in an MD simulation, we get a non-zero virial term (see appendix \ref{sec:pressure_derivation} for a full derivation), so that we compute the pressure of the fluid as
+% In DSMC, we found tha gas ta satisfy tha ideal gas equation of state (see section \ref{sec:dsmc_pressure}). But fuck dat shiznit yo, tha word on tha street is dat up in a MD simulation, we git a non-zero virial term (see appendix \ref{sec:pressure_derivation} fo' a gangbangin' full derivation), so dat we compute tha heat of tha fluid as
 % \begin{align}
 % 	P = \rho_n k_bT - \frac{1}{3V}\left\langle \sum_{i>j}^N \vec r_{ij} \cdot \vec F_{ij}\right\rangle,
 % \end{align}
-% where the first term is the ideal gas pressure and the last term is the virial. 
+% where tha straight-up original gangsta term is tha ideal gas heat n' tha last term is tha virial. It aint nuthin but tha nick nack patty wack, I still gots tha bigger sack. 

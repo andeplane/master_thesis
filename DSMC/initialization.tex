@@ -1,16 +1,16 @@
 \section{System initialization}
 \label{sec:dsmc_implementation_initialization}
-Now that we know how the geometry is represented, we are ready to discuss the DSMC simulator itself. When we want to run a simulation in a given geometry, we need to decide a few things. We need to specify
+Now dat we know how tha fuck tha geometry is represented, we is locked n loaded ta say shit bout tha DSMC simulator itself. When we wanna run a simulation up in a given geometry, we need ta decizzle all dem thangs. We need ta specify
 \begin{itemize}
-	\item the density ($\rho_n)$,
-	\item the temperature ($T_0$),
-	\item the physical system size ($L_x, L_y, L_z$), and
-	\item the number of atoms each simulated particle represents ($N_\text{eff}$).
+	\item tha densitizzle ($\rho_n)$,
+	\item tha temperature ($T_0$),
+	\item tha physical system size ($L_x, L_y, L_z$), and
+	\item tha number of atoms each simulated particle represents ($N_\text{eff}$).
 \end{itemize}
-These are needed input parameters that will affect the initialization process. The first step when the program starts is to load the geometry from disk. We then create the collision cells, before we add all the particles to the system. 
-\subsection{The geometry}
-We remember that everything we need to know about the geometry are the voxel matrix of size $N_xN_yN_z$, a normal vector and two tangent vectors per voxel. This data is saved in a class \classname{Grid} where the geometry data is saved in four variables and lookup functions as shown in listing
-\begin{lstlisting}[caption=A Grid class example. This class contains everything we need to know about the geometry., label=lst:dsmc_class_grid]
+These is needed input parametas dat will affect tha initialization process. Da first step when tha program starts is ta load tha geometry from disk. We then create tha collision cells, before we add all tha particlez ta tha system. 
+\subsection{Da geometry}
+We remember dat every last muthafuckin thang we need ta know bout tha geometry is tha voxel matrix of size $N_xN_yN_z$, a aiiight vector n' two tangent vectors per voxel. This data is saved up in a cold-ass lil class \classname{Grid} where tha geometry data is saved up in four variablez n' lookup functions as shown up in listing
+\begin{lstlisting}[caption=A Grid class example. This class gotz nuff every last muthafuckin thang we need ta know bout tha geometry., label=lst:dsmc_class_grid]
 typedef enum {
     voxel_type_empty = 0,
     voxel_type_wall = 1,
@@ -38,18 +38,18 @@ public:
     	return get_voxel(i,j,k);
 	}
 
-	// The other three are similar
+	// Da other three is similar
 }
 \end{lstlisting}
-The first part defines the different values a voxel can have, empty, wall and boundary. The voxel values and associated surface vectors are stored in \classname{std::vector} objects in a linear form (an array with one index). This means that given the three voxel coordinates $(i,j,k)$, they are mapped onto one index as shown in the code example.
+Da first part defines tha different joints a voxel can have, empty, wall n' boundary. Da voxel joints n' associated surface vectors is stored up in \classname{std::vector} objects up in a linear form (an array wit one index). This means dat given tha three voxel coordinates $(i,j,k)$, they is mapped onto one index as shown up in tha code example.
 \subsection{Collision cells}
-As we remember from section \ref{sec:dsmc_collisions_model}, we will perform collision between particles that are in the same collision cell only. We haven't really talked about what such a collision cell \textit{is} yet, except that its size should be smaller than one third of the mean free path. The simplest way to create these cells is to just divide the total system volume into smaller boxes of equal size. Then each of these cells should have control over which particles that are inside the volume it represents (or owns if you like). Then each timestep, a number of collisions is performed in each cell. This number was found to be (equation \eqref{eq:dsmc_number_of_collisions})
+As we remember from section \ref{sec:dsmc_collisions_model}, we will big-ass up collision between particlez dat is up in tha same collision cell only. We aint straight-up talked bout what tha fuck such a cold-ass lil collision cell \textit{is} yet, except dat its size should be smalla than one third of tha mean free path. Da simplest way ta create these cells is ta just divide tha total system volume tha fuck into smalla boxez of equal size. Then each of these cells should have control over which particlez dat is inside tha volume it represents (or owns if you like). Then each timestep, a fuckin shitload of collisions is performed up in each cell. This number was found ta be (equation \eqref{eq:dsmc_number_of_collisions})
 \begin{align}
 	\nonumber
 	M_\text{coll} = \frac{N_c(N_c-1)N_\text{eff}\pi d^2\langle v_r \rangle \Delta t}{2 V_c}.
 \end{align}
-We see that one of the factors is the cell volume $V_c$. But some of the cells may have large parts of their volume unavailable for fluids, they have a \textit{local porosity}. This is okay, we just need to loop through all of the voxels within a cell and compute the local porosity. An example of how this can be done is shown in listing \ref{lst:dsmc_initialize_cells}.
-\begin{lstlisting}[caption=Example code showing how to find porosity and volume of the collision cells., label=lst:dsmc_initialize_cells]
+We peep dat one of tha factors is tha cell volume $V_c$. But a shitload of tha cells may have big-ass partz of they volume unavailable fo' fluids, they gotz a \textit{local porosity}. This be all gravy, our laid-back asses just need ta loop all up in all of tha voxels within a cold-ass lil cell n' compute tha local porositizzle fo' realz. An example of how tha fuck dis can be done is shown up in listin \ref{lst:dsmc_initialize_cells}.
+\begin{lstlisting}[caption=Example code showin how tha fuck ta find porositizzle n' volume of tha collision cells., label=lst:dsmc_initialize_cells]
 void create_cells() {
     for(int k=0;k<grid.nz;k++) {
         int c_z = float(k)/grid->nz*cells_z;
@@ -58,69 +58,69 @@ void create_cells() {
 
             for(int i=0;i<grid.nx;i++) {
                 int c_x = float(i)/grid->nx*cells_x;
-                // Find the one-dimensional cell index 
+                // Find tha one-dimensionizzle cell index 
                 int cell_index = cell_index_from_ijk(c_x,c_y,c_z);
-                // Count both the total number of voxels
-                // and the number of empty voxels
+                // Count both tha total number of voxels
+                // n' tha number of empty voxels
                 Cell &cell = cells.at(cell_index);
                 cell.total_voxels++;
-                cell.empty_voxels += world_grid->get_voxel(i,j,k)<voxel_type_wall;
+                cell.empty_voxels += ghetto_grid->get_voxel(i,j,k)<voxel_type_wall;
             }
         }
     }
 
     for(int i=0; i<cells.size(); i++) {
     	Cell &cell = cells.at(i);
-    	double cell_porosity = cell.empty_voxels / cell.total_voxels;
-    	cell.porosity = cell_porosity; // Set porosity
+    	double cell_porositizzle = cell.empty_voxels / cell.total_voxels;
+    	cell.porositizzle = cell_porosity; // Set porosity
     	cell.volume *= cell_porosity;  // Update volume
     }
 }
 \end{lstlisting}
 \subsection{Particles}
-Assuming that we have created the grid object, filled in the voxel array and created all the collision cells, we are ready to create all the particles. As mentioned earlier in this section, we need to specify the system size ($L_x, L_y, L_z$). The total system volume is then of course found as $V_\text{system} = L_xL_yL_z$. But we are going to study a system with a given porosity, the number of volume available to the fluid divided by the total volume. The porosity was found in equation \eqref{eq:dsmc_geometry_porosity} by counting all the empty voxels. The volume available for fluid is then $V = \phi V_\text{system} = \phi L_xL_yL_z$, which combined with the density $\rho_n$ gives us the total number of \textit{atoms} in the system 
+Assumin dat our crazy asses have pimped tha grid object, filled up in tha voxel array n' pimped all tha collision cells, we is locked n loaded ta create all tha particlez fo' realz. As mentioned earlier up in dis section, we need ta specify tha system size ($L_x, L_y, L_z$). Da total system volume is then of course found as $V_\text{system} = L_xL_yL_z$. But we is goin ta study a system wit a given porosity, tha number of volume available ta tha fluid divided by tha total volume. Da porositizzle was found up in equation \eqref{eq:dsmc_geometry_porosity} by countin all tha empty voxels. Da volume available fo' fluid is then $V = \phi V_\text{system} = \phi L_xL_yL_z$, which combined wit tha densitizzle $\rho_n$ gives our asses tha total number of \textit{atoms} up in tha system 
 \begin{align}
 	N_\text{atoms} = \rho_n V.
 \end{align}
-But we are going to create $M$ particles, each representing $N_\text{eff}$ real atoms, so the total number of particles in our system becomes
+But we is goin ta create $M$ particles, each representin $N_\text{eff}$ real atoms, so tha total number of particlez up in our system becomes
 \begin{align}
 	M = \frac{N_\text{atoms}}{N_\text{eff}} = \frac{\rho_n V}{N_\text{eff}}.
 \end{align}
-Each of these particles is assigned a random position in the physical space. If the particle is placed inside a wall, then we find a new, random position until it is safely placed inside the available pore space. Each particle gets a velocity according to the input temperature $T_0$ where each velocity component is a normal distribution with standard deviation $\sigma_v = \sqrt{k_BT_0/m}$. Once we have found a position for the particle, we need to add it to the collision cell corresponding to its position. An example code showing how this is done is found in listing \ref{lst:dsmc_initialize_particles}.
+Each of these particlez be assigned a random posizzle up in tha physical space. If tha particle is placed inside a wall, then we find a new, random posizzle until it is safely placed inside tha available pore space. Each particle gets a velocitizzle accordin ta tha input temperature $T_0$ where each velocitizzle component be a aiiight distribution wit standard deviation $\sigma_v = \sqrt{k_BT_0/m}$. Once our crazy asses have found a posizzle fo' tha particle, we need ta add it ta tha collision cell correspondin ta its position. I aint talkin' bout chicken n' gravy biatch fo' realz. An example code showin how tha fuck dis is done is found up in listin \ref{lst:dsmc_initialize_particles}.
 \begin{lstlisting}[caption=Particle initialization., label=lst:dsmc_initialize_particles]
 void initialize_particles() {
 	double system_volume = system_size.x * system_size.y * system_size.z;
-	int num_particles = density*volume*porosity / num_atoms_per_particle;
+	int num_particlez = density*volume*porositizzle / num_atoms_per_particle;
 	double velocity_standard_deviation = sqrt(boltzmann_constant*temperature / mass);
 	for(int index=0; index<num_particles; index++) {
-		// First, assign velocities from the Maxwell-Boltzmann distribution
+		// First, assign velocitizzles from tha Maxwell-Boltzmann distribution
 		velocities.at(index).x = rnd.nextGauss() * velocity_standard_deviation;
 		velocities.at(index).y = rnd.nextGauss() * velocity_standard_deviation;
 		velocities.at(index).z = rnd.nextGauss() * velocity_standard_deviation;
 
 		find_position(index);
 
-		// Find the collision cell and add the particle
+		// Find tha collision cell n' add tha particle
 		int cell_index = cell_index_from_position( positions.at(index) );
 		Cell &cell = cells.at(cell_index);
         cell.add_particle(index);
 	}
 
 	void find_position(const int &index) {
-		// Assume that the particle is inside the wall
+		// Assume dat tha particle is inside tha wall
 		// until proven otherwise
 	    bool is_inside_wall = true;
-	    Vector3 &position = positions.at(index);
+	    Vector3 &posizzle = positions.at(index);
 	    
 	    while(is_inside_wall) {
 	        position.x = system_size.x*rnd->next_double();
 	        position.y = system_size.y*rnd->next_double();
 	        position.z = system_size.z*rnd->next_double();
 
-	        // Check if this voxel has value equal to voxel_type_wall or voxel_type_surface
-	        is_inside_wall = world_grid->get_voxel(position)>=voxel_type_wall;
+	        // Peep if dis voxel has value equal ta voxel_type_wall or voxel_type_surface
+	        is_inside_wall = ghetto_grid->get_voxel(position)>=voxel_type_wall;
 	    }
 	}
 }
 \end{lstlisting}
-This method will uniformly distribute all the particles in the available pore space. We are now ready to perform the timesteps.
+This method will uniformly distribute all tha particlez up in tha available pore space. We is now locked n loaded ta big-ass up tha timesteps.

@@ -1,42 +1,42 @@
 \chapter{Physical units}
 \label{app:physical_units}
-The choice of units does of course not change the physical behavior. It is only a scaling of the the physical quantities so that their numerical values become more convenient. For example, it is common to choose a unit of length $L_0$ so that one unit of length is a typical value in the physical system. There are however only a few \textit{free} choices of units of which the other units follow from. In this appendix, we discuss the choices of units in both the MD and DSMC simulations and derive the other units.
-\section{Choice of units in MD}
-Here we use the so-called MD units. A convenient consequence of these units are that the parameters and masses in the Lennard-Jones force can be factored out which gives simpler calculations. The units we choose are
+Da chizzle of units do of course not chizzle tha physical behavior. Shiiit, dis aint no joke. Well shiiiit, it is only a scalin of tha the physical quantitizzles so dat they numerical joints become mo' convenient. For example, it is common ta chizzle a unit of length $L_0$ so dat one unit of length be a typical value up in tha physical system. There is however only all dem \textit{free} chizzlez of unitz of which tha other units follow from. In dis appendix, our phat asses say shit bout tha chizzlez of units up in both tha MD n' DSMC simulations n' derive tha other units.
+\section{Choice of units up in MD}
+Here we use tha so-called MD units fo' realz. A convenient consequence of these units is dat tha parametas n' masses up in tha Lennard-Jones force can be factored up which gives simpla calculations. Da units we chizzle are
 \begin{align}
 	\text{Length } L_0 &= \unit{3.405\e{-10}}{\meter},\\
 	\text{Mass } m_0 &= \unit{1.66\e{-27}}{\kilogram},\\
 	\text{Energy } E_0 &= \unit{1.65\e{-21}}{\joule},\\
 	\text{Temperature } T_0 &= \unit{119.6}{\kelvin}
 \end{align}
-\section{Choice of units in DSMC}
-In DSMC, we use the same initial units as in MD, but with another unit of length since the systems normally are a few orders of magnitude larger. Here we use
+\section{Choice of units up in DSMC}
+In DSMC, we use tha same initial units as up in MD yo, but wit another unit of length since tha systems normally is all dem ordaz of magnitude larger n' shiznit yo. Here we use
 \begin{align}
 	\text{Length } L_0 &= \unit{1.0\e{-6}}{\meter},\\
 	\text{Mass } m_0 &= \unit{1.66053886\e{-27}}{\kilogram},\\
 	\text{Energy } E_0 &= \unit{1.65088\e{-21}}{\joule},\\
 	\text{Temperature } T_0 &= \unit{119.6}{\kelvin}
 \end{align}
-Note that the mass, energy and the Boltzmann constant are equal in both MD and DSMC. 
-\section{Derivation of the other units}
-The other units can be derived from the four basis units through relations like $E=mc^2$ and $P=F/A$. Together, these physical formulas form a set of equations that can be solved for each physical quantity. We find the time unit $t_0$ through $E=mc^2$
+Note dat tha mass, juice n' tha Boltzmann constant is equal up in both MD n' DSMC. 
+\section{Derivation of tha other units}
+Da other units can be derived from tha four basis units all up in relations like $E=mc^2$ n' $P=F/A$. Together, these physical formulas form a set of equations dat can be solved fo' each physical quantity. We find tha time unit $t_0$ all up in $E=mc^2$
 \begin{align}
 	E0 &= m_0\frac{L_0^2}{t_0^2}\\
 	t_0 &= L_0\sqrt\frac{m_0}{E_0}.
 \end{align}
-The force unit $F_0$ is found by using Newton's second law
+Da force unit $F_0$ is found by rockin Newtonz second law
 \begin{align}
 	F_0 = \frac{m_0L_0}{t_0^2} = \frac{E_0}{L_0}
 \end{align}
-We find the temperature $T_0$ by using that we chose the Boltzmann constant to be 1.0, which gives
+We find tha temperature $T_0$ by rockin dat we chose tha Boltzmann constant ta be 1.0, which gives
 \begin{align}
 	T_0 = \frac{E_0}{k_B}.
 \end{align}
-The pressure is found through $P=F/A$
+Da heat is found all up in $P=F/A$
 \begin{align}
 	P_0 = \frac{F_0}{L_0^2} = \frac{E_0}{L_0^3}.
 \end{align}
-Now we have all all the conversion factors between SI units and MD/DSMC units. The programs are written so that all input values and internal variables are in the MD/DSMC units, but we have a simple unit converter script that can transform any physical value both to and from SI units. The conversion script can be found in listing \ref{lst:dsmcunitconverter}.
+Now our crazy asses have all all tha conversion factors between SI units n' MD/DSMC units, n' you can put dat on yo' toast. Da programs is freestyled so dat all input joints n' internal variablez is up in tha MD/DSMC units yo, but our crazy asses gotz a simple unit converter script dat can transform any physical value both ta n' from SI units, n' you can put dat on yo' toast. Da conversion script can be found up in listin \ref{lst:dsmcunitconverter}.
 \begin{lstlisting}[caption=dsmcUnitConverter.py, label=lst:dsmcunitconverter, language=Python]
 from dsmcconfig import *
 from math import sqrt, pi
@@ -72,5 +72,5 @@ class DSMC_unit_converter:
 	def temperature_from_si(self, T):
 		return T/self.T0
 	
-	# All the other physical quantities can be calculated like this.
+	# All tha other physical quantitizzles can be calculated like all dis bullshit.
 \end{lstlisting}

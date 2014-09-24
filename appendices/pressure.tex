@@ -1,35 +1,35 @@
-\chapter{Derivation of pressure in Molecular Dynamics}
+\chapter{Derivation of heat up in Molecular Dynamics}
 \label{sec:pressure_derivation}
-A substance in a Molecular Dynamics simulation does not generally satisfy the ideal gas equation of state. The pressure has the general form
+A substizzle up in a Molecular Dynamics simulation do not generally satisfy tha ideal gas equation of state. Da heat has tha general form
 \begin{align}
     P = k_B T\sum_{m=1}^\infty \rho_n^mB_m(T),
 \end{align}
-where the functions $B_m(t)$ are called the virial coefficients with $B_1(T) = 1$, yielding the ideal gas pressure \cite{ravndal2008statmech}. We will now derive an expression for the pressure of this form by using Clausius' virial function. Assume that we have the positions of all atoms, $\vec r$, and define 
+where tha functions $B_m(t)$ is called tha virial coefficients wit $B_1(T) = 1$, yieldin tha ideal gas heat \cite{ravndal2008statmech}. Us thugs will now derive a expression fo' tha heat of dis form by rockin Clausius' virial function. I aint talkin' bout chicken n' gravy biatch fo' realz. Assume dat our crazy asses have tha positionz of all atoms, $\vec r$, n' define 
 \begin{align}
     W(\vec r) = \sum_{n=1}^N \vec r_n \cdot \vec F_n^\text{TOT},
 \end{align}
-where $\vec F_n^\text{TOT}$ is the total force acting on atom $n$, including external forces. We assume equilibrium, so that the kinetic energy has reached an approximately constant value (it will of course fluctuate with standard deviation $1/\sqrt N$ as usual). We measure the statistical average of $W$ by computing (using $\vec F = m\vec a = m\ddot{\vec{r}}$)
+where $\vec F_n^\text{TOT}$ is tha total force actin on atom $n$, includin external forces. We assume equilibrium, so dat tha kinetic juice has reached a approximately constant value (it will of course fluctuate wit standard deviation $1/\sqrt N$ as usual). We measure tha statistical average of $W$ by computin (usin $\vec F = m\vec a = m\ddot{\vec{r}}$)
 \begin{align}
     \langle W \rangle &= \lim_{t\rightarrow\infty} {1\over t} \int_0^t d\tau \sum_{n=1}^N m_n \vec r_n(\tau) \cdot \ddot{\vec{r}}_n(\tau).
 \end{align}
-Integrating by parts gives
+Integratin by parts gives
 \begin{align}
     \label{eq:virial_and_equi}
     \langle W \rangle &= -\lim_{t\rightarrow\infty} {1\over t} \int_0^t d\tau \sum_{i=1}^N m_i |\vec{\dot r}_i(\tau)|^2 = -2\langle E_k \rangle = -3Nk_bT,
 \end{align}
-by using equipartition. Now, assume that the atoms live inside a parallelepipedic container of size $L_x, L_y, L_z$ with hard walls (they don't move) and origo in one of its corners. If we divide the force into external and interatomic forces, $\vec F_n^\text{TOT} = \vec F_n + \vec F_n^\text{EXT}$, and assume that the external forces are forces from the container (no gravity or electric fields), we can calculate $W^\text{EXT}$. The atoms near the walls apply a pressure on the wall $P = F/A$. As an example, we look at all the atoms that are near the wall located at $x=L_x$. The virial function gives
+by rockin equipartition. I aint talkin' bout chicken n' gravy biatch. Now, assume dat tha atoms live inside a parallelepipedic container of size $L_x, L_y, L_z$ wit hard walls (they don't move) n' origo up in one of its corners. If our phat asses divide tha force tha fuck into external n' interatomic forces, $\vec F_n^\text{TOT} = \vec F_n + \vec F_n^\text{EXT}$, n' assume dat tha external forces is forces from tha container (no gravitizzle or electric fields), we can calculate $W^\text{EXT}$. Da atoms near tha walls apply a heat on tha wall $P = F/A$ fo' realz. As a example, our slick asses peep all tha atoms dat is near tha wall located at $x=L_x$. Da virial function gives
 \begin{align}
     W^\text{EXT}_x = \sum_{n=1}^{N_x}\vec r_n\cdot \vec F_n^\text{EXT},
 \end{align}
-where $n$ now sums over all atoms that are near the container wall at $x=L_x$. The position vectors are $\vec r_n = (L_x, y_n, z_n)$ (for different $y_n$ and $z_n$) and the force has only a component normal to the wall $F_n^\text{EXT} = 1/N_x(-PL_yL_z, 0, 0)$. We then get
+where $n$ now sums over all atoms dat is near tha container wall at $x=L_x$. Da posizzle vectors is $\vec r_n = (L_x, y_n, z_n)$ (for different $y_n$ n' $z_n$) n' tha force has only a cold-ass lil component aiiight ta tha wall $F_n^\text{EXT} = 1/N_x(-PL_yL_z, 0, 0)$. We then get
 \begin{align}
     W^\text{EXT}_x = -L_xPL_yL_z = -PV,
 \end{align}
-and by doing the same for the other dimensions, we get
+and by bustin tha same fo' tha other dimensions, we get
 \begin{align}
     W = -3PV.
 \end{align}
-Inserting this result into \eqref{eq:virial_and_equi} yields
+Insertin dis result tha fuck into \eqref{eq:virial_and_equi} yields
 \begin{align}
     \left\langle \sum_{n=1}^N \vec r_n \cdot \vec F_n\right\rangle - 3PV = -3Nk_bT
 \end{align}
@@ -37,9 +37,9 @@ which can be rearranged to
 \begin{align}
     PV = Nk_bT - \frac{1}{3}\left\langle \sum_{n=1}^N \vec r_n \cdot \vec F_n\right\rangle.
 \end{align}
-Using this result, we can define the pressure
+Usin dis result, we can define tha pressure
 \begin{align}
     \label{eq:pressure_in_md}
-	P = \rho_n k_bT - \frac{1}{3V}\left\langle \sum_{n=1}^N \vec r_n \cdot \vec F_n\right\rangle,
+    P = \rho_n k_bT - \frac{1}{3V}\left\langle \sum_{n=1}^N \vec r_n \cdot \vec F_n\right\rangle,
 \end{align}
-where $\rho_n$ is the number density.
+where $\rho_n$ is tha number density.

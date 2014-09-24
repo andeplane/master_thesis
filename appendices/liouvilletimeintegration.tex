@@ -1,23 +1,23 @@
-\chapter{The Liouville operator and time integrators}
+\chapter{Da Liouville operator n' time integrators}
 \label{app:liouville}
-The derivation of time integrator schemes are usually done in a mathematical sense using Taylor expansions. Given a Taylor expansion $f(x+h) = f(x) + hf'(x) + h^2/2f''(x) + ...$, we often truncate at some term, yielding a truncation error $O(h^n)$. In physics, there are other properties of a system of which the error doesn't scale as the truncation error. A typical example is the energy of a particle system. Two different time integrators may have the same truncation error, but have very different long term behavior if one has a drift in the energy whereas the other doesn't.
+Da derivation of time integrator schemes is probably done up in a mathematical sense rockin Tay-Tay expansions. Given a Tay-Tay expansion $f(x+h) = f(x) + hf'(x) + h^2/2f''(x) + ...$, we often truncate at some term, yieldin a truncation error $O(h^n)$. In physics, there be other propertizzlez of a system of which tha error don't scale as tha truncation error fo' realz. A typical example is tha juice of a particle system. Two different time integrators may have tha same truncation error yo, but have straight-up different long term behavior if one has a thugged-out drift up in tha juice whereas tha other don't.
 
-There are other properties that might be difficult to measure through a mathematical analysis of the Taylor expansion that may be more important than the truncation error itself. In the Hamiltonian formulation of classical mechanics, we obtain the equations of motion through the energy operator $\vec H = \vec T + \vec V$, where $\vec T$ and $\vec V$ are operators measuring the kinetic and potential energy. Using the physical description of a system can help developing better integration schemes.
+There is other propertizzles dat might be hard as fuck ta measure all up in a mathematical analysiz of tha Tay-Tay expansion dat may be mo' blingin than tha truncation error itself. In tha Hamiltonian formulation of old-ass mechanics, we obtain tha equationz of motion all up in tha juice operator $\vec H = \vec T + \vec V$, where $\vec T$ n' $\vec V$ is operators measurin tha kinetic n' potential juice. Usin tha physical description of a system can help pimpin mo' betta integration schemes.
 
-In this chapter we will address the equations of motion by using the Liouville operator to derive a way to create time integration schemes. We start by looking at the phase space coordinates and define the Liouville operator in section \ref{sec:liouville_operator}. We then define the time evolution operator and split the Liouville operator into two operators; one operator acting on the positions and one acting on the momenta.  These operators do not commute, so we use the Trotter identity to introduce time discretization and derive the Velocity Verlet algorithm, which is the one used in the Molecular Dynamics code. We then do an analysis of the mathematical error to find the local error (which is the same as the truncation error) in section \ref{sec:velocity_verlet_error}. This derivation is done as in \cite{frenkel2001understanding}. 
+In dis chapter we will address tha equationz of motion by rockin tha Liouville operator ta derive a way ta create time integration schemes. We start by lookin all up in tha phase space coordinates n' define tha Liouville operator up in section \ref{sec:liouville_operator}. We then define tha time evolution operator n' split tha Liouville operator tha fuck into two operators; one operator actin on tha positions n' one actin on tha momenta.  These operators do not commute, so we use tha Trotter identitizzle ta introduce time discretization n' derive tha Velocitizzle Verlet algorithm, which is tha one used up in tha Molecular Dynamics code. We then do a analysiz of tha mathematical error ta find tha local error (which is tha same ol' dirty as tha truncation error) up in section \ref{sec:velocity_verlet_error}. This derivation is done as up in \cite{frenkel2001understanding}. 
 
-%In section \ref{sec:multiple_timestep_schemes} we use the Liouville formulation to derive a multiple timestep integration scheme that can be used if the Molecular Dynamics system consists of both light and heavy atoms. Light atoms like hydrogen need a small timestep in order to accurately integrate vibrations of high frequency, whereas the heavier atoms tolerate a higher timestep. 
+%In section \ref{sec:multiple_timestep_schemes} we use tha Liouville formulation ta derive a multiple timestep integration scheme dat can be used if tha Molecular Dynamics system consistz of both light n' heavy atoms. Light atoms like hydrogen need a lil' small-ass timestep up in order ta accurately integrate vibrationz of high frequency, whereas tha heavier atoms tolerate a higher timestep. 
 \section{Liouville operator}
 \label{sec:liouville_operator}
-The physical system consists of $N$ particles, each having three positions and three momenta defining the phase space point $(\vec r, \vec p)$. Now assume some function of these variables $f(\vec r(t), \vec p(t)) = f(t)$ (the function is indirectly a function of time) that has the time derivative
+Da physical system consistz of $N$ particles, each havin three positions n' three momenta definin tha phase space point $(\vec r, \vec p)$. Now assume some function of these variablez $f(\vec r(t), \vec p(t)) = f(t)$ (the function is indirectly a gangbangin' function of time) dat has tha time derivative
 \begin{align}
 	\dot f(t) = \dot {\vec r}\frac{\partial f(t)}{\partial \vec r} + \dot {\vec p}\frac{\partial f(t)}{\partial \vec p} \equiv \liouville f(t),
 \end{align}
-where we have defined the Liouville operator
+where our crazy asses have defined tha Liouville operator
 \begin{align}
 	\liouville = \dot{\vec r}\frac{\partial }{\partial \vec r} + \dot{\vec p}\frac{\partial }{\partial \vec p}.
 \end{align}
-This allows us to define the time evolution operator $\hat{\mathcal U}(t)$
+This allows our asses ta define tha time evolution operator $\hat{\mathcal U}(t)$
 \begin{align}
 	\label{eq:liouville_time_evolution}
 	f(t) = \hat{\mathcal U}(t)f(0) = e^{\liouville t}f(0),
@@ -26,7 +26,7 @@ which is easily verified
 \begin{align}
 	\dot f(t) = \liouville \left[e^{\liouville t}f(0)\right] = \liouville f(t).
 \end{align}
-If we now split the Liouville operator into two parts
+If we now split tha Liouville operator tha fuck into two parts
 \begin{align}
 	\liouville = \liouviller + \liouvillep,
 \end{align}
@@ -34,23 +34,23 @@ so that
 \begin{align}
 	\liouviller = \dot{\vec r(0)}\frac{\partial }{\partial \vec r}.
 \end{align}
-Let us see what this operator can do if we insert it into equation \eqref{eq:liouville_time_evolution} and expand the exponential
+Let our asses peep what tha fuck dis operator can do if we bang it tha fuck into equation \eqref{eq:liouville_time_evolution} n' expand tha exponential
 \begin{align}
 	f(t) &= \exp\left(\liouviller t\right) f(0)\\
 	&= \exp\left(\dot{\vec r}t\frac{\partial }{\partial \vec r}\right)f(0)\\
 	&= \sum_{n=0}^\infty \frac{(\dot{\vec r}(0)t)^n}{n!}\frac{\partial^n}{\partial \vec r^n} f(0)\\
 	&= f\left[\left(\vec r(0) + \dot{\vec r}(0)t\right), \vec p(0)\right].
 \end{align}
-It does just what we expect it to do, it is a displacement operator, moving the points in the phase space according to their time derivative. The momentum Liouville operator does of course exactly the same, so that by applying the total time evolution operator, we do indeed get
+It do just what tha fuck we expect it ta do, it aint nuthin but a gangbangin' finger-lickin' displacement operator, movin tha points up in tha phase space accordin ta they time derivative. Da momentum Liouville operator do of course exactly tha same, so dat by applyin tha total time evolution operator, our phat asses do indeed get
 \begin{align}
 	f(t) &= e^{\liouville t}f(0) = f\left[\left(\vec r(0) + \dot{\vec r}(0)t\right), \left(\vec p(0) + \dot{\vec p}(0)t\right)\right].
 \end{align}
 
-If we were to use this in a simulation, we normally do not apply the full operator at the same time, we might first treat the positions, then the momenta. So ideally, we would want to first apply one operator, then the next one
+If we was ta use dis up in a simulation, we normally do not apply tha full operator all up in tha same time, we might first treat tha positions, then tha momenta. Right back up in yo muthafuckin ass. So ideally, we would wanna first apply one operator, then tha next one
 \begin{align}
 	e^{\liouville} = e^{\liouvillep + \liouviller} \neq e^{\liouvillep}e^{\liouviller},
 \end{align}
-but this is not the case since the operators do necessarily commute. However, for two operators $\vec A$ and $\vec B$, we can use the \textit{Trotter identity}\cite{frenkel2001understanding}
+but dis aint tha case since tha operators do necessarily commute. But fuck dat shiznit yo, tha word on tha street is dat fo' two operators $\vec A$ n' $\vec B$, we can use tha \textit{Trotter identity}\cite{frenkel2001understanding}
 \begin{align}
 	e^{A + B} = \lim_{N\rightarrow\infty}\left(e^{A/2M}e^{B/M}e^{A/2M}\right)^N,
 \end{align}
@@ -58,14 +58,14 @@ which can be truncated
 \begin{align}
 	e^{A + B} = \left(e^{A/2N}e^{B/N}e^{A/2N}\right)^Ne^{O(1/N^2)}.
 \end{align}
-This can be used to derive different time integrator schemes. We will now derive the Velocity Verlet scheme which is used in the Molecular Dynamics code.
-\section{Derivation of the Velocity Verlet algorithm}
-The truncated Trotter identity is neat, we can replace $A$ with the $\liouvillep$ and $B$ with $\liouviller$
+This can be used ta derive different time integrator schemes. Us thugs will now derive tha Velocitizzle Verlet scheme which is used up in tha Molecular Dynamics code.
+\section{Derivation of tha Velocitizzle Verlet algorithm}
+Da truncated Trotter identitizzle is neat, we can replace $A$ wit tha $\liouvillep$ n' $B$ wit $\liouviller$
 \begin{align}
 	\frac{\liouvillep}{M} &\equiv \Delta t\dot{\vec p}(0)\frac{\partial}{\partial \vec p}\\
 	\frac{\liouviller}{M} &\equiv \Delta t\dot{\vec r}(0)\frac{\partial}{\partial \vec r}
 \end{align}
-defining the timestep $\Delta t = t/N$. The truncated time evolution operator now reads
+definin tha timestep $\Delta t = t/N$. Da truncated time evolution operator now reads
 \begin{align}
 	\hat {\mathcal U} (t) = \left(e^{\liouvillep \Delta t/2}e^{\liouviller \Delta t}e^{\liouvillep \Delta t/2}\right)^N
 \end{align}
@@ -73,47 +73,47 @@ where we identify one timestep iteration
 \begin{align}
 	\hat {\mathcal U} (\Delta t) = e^{\liouvillep \Delta t/2}e^{\liouviller \Delta t}e^{\liouvillep \Delta t/2}.
 \end{align}
-If we now apply this operator on $f(0)$, we first apply the rightmost operator
+If we now apply dis operator on $f(0)$, we first apply tha rightmost operator
 \begin{align}
 	e^{\liouvillep \Delta t/2}f\left[\vec p(0), \vec r(0)\right] = f\left\{\vec r(0), \left[\vec p(0) + \frac{\Delta t}{2}\dot{\vec p}(0)\right] \right\},
 \end{align}
-before applying $\exp(\liouviller t)$
+before applyin $\exp(\liouviller t)$
 \begin{align}
 	e^{\liouviller t}f\left\{\vec r(0), \left[\vec p(0) + \frac{\Delta t}{2}\dot{\vec p}(0)\right] \right\}\\
 	= f\left\{\left[\vec r(0) + \Delta t \dot{\vec r}(\Delta t/2)\right], \left[\vec p(0) + \frac{\Delta t}{2}\dot{\vec p}(0)\right] \right\}.
 \end{align}
-Our last operator gives the final result
+Our last operator gives tha final result
 \begin{align}
 	f\left\{\left[\vec r(0) + \Delta t \dot{\vec r}(\Delta t/2)\right], \left[\vec p(0) + \frac{\Delta t}{2}\dot{\vec p}(0) + \frac{\Delta t}{2}\dot{\vec p}(\Delta t)\right] \right\}.
 \end{align}
-These steps can be summarized as one usually does with time integrators
+These steps can be summarized as one probably do wit time integrators
 \begin{align}
 	\vec v(\Delta t/2) &= \vec v(0) + \frac{\vec F(0)}{m}\frac{\Delta t}{2}\\
 	\vec r(\Delta t) &= \vec r(0) + \vec v(\Delta t/2)\Delta t\\
 	\vec v(\Delta t) &= \vec v(\Delta t/2) + \frac{\vec F(\Delta t)}{m}\frac{\Delta t}{2},
 \end{align}
-where we have replaced $\dot{\vec p}$ with the equivalent $(\vec F/m)$ and $\dot{\vec r}$ with $\vec v$ which is valid if the forces can be calculated from the position. These steps are called the Velocity Verlet algorithm and has, as we now will see, an error $O(\Delta t^3)$.
+where our crazy asses have replaced $\dot{\vec p}$ wit tha equivalent $(\vec F/m)$ n' $\dot{\vec r}$ wit $\vec v$ which is valid if tha forces can be calculated from tha position. I aint talkin' bout chicken n' gravy biatch. These steps is called tha Velocitizzle Verlet algorithm n' has, as we now will see, a error $O(\Delta t^3)$.
 
 \section{Truncation error}
 \label{sec:velocity_verlet_error}
-During one timestep iteration, we approximate the Liouville operator
+Durin one timestep iteration, we approximate tha Liouville operator
 \begin{align}
 	e^{\liouville \Delta t} \approx e^{\liouvillep \Delta t/2}e^{\liouviller \Delta t}e^{\liouvillep \Delta t/2} = e^{\liouville \Delta t + \hat{\vec \epsilon}},
 \end{align}
-where we have introduced the \textit{error operator} $\hat{\vec \epsilon}$ that represents our truncation error. These are linear operators on which we can use the Campbell-Baker-Hausdorff expansion of general, non-commuting linear operators
+where our crazy asses have introduced tha \textit{error operator} $\hat{\vec \epsilon}$ dat represents our truncation error. Shiiit, dis aint no joke. These is linear operators on which we can use tha Campbell-Baker-Hausdorff expansion of general, non-commutin linear operators
 \begin{align}
 	e^{\lambda\hat{\vec A}}e^{\lambda\hat{\vec B}} = e^{\lambda\hat{\vec A} + \lambda\hat{\vec B} + \frac{\lambda^2}{2}[\hat{\vec A},\hat{\vec B}] + \frac{\lambda^3}{12}[\hat{\vec A},[\hat{\vec A},\hat{\vec B}]] + \frac{\lambda^3}{12}[\hat{\vec B},[\hat{\vec A},\hat{\vec B}]] + ...}
 \end{align}
-together with 
+together wit 
 \begin{align}
 	e^{\oper A}e^{\oper B} = e^{\oper B + [\oper A,\oper B] + \frac{1}{2!}[\oper A,[\oper A,\oper B]] + \frac{1}{3!}[\oper A,[\oper A,[\oper A,\oper B]]] + ...}e^{\oper A}
 \end{align}
-to find the leading term in $\hat{\vec \epsilon}$
+to find tha leadin term up in $\hat{\vec \epsilon}$
 \begin{align}
 	-(\Delta t)^3\left(\frac{1}{24}[\liouviller, [\liouviller, \liouvillep]] + \frac{1}{12}[\liouvillep, [\liouviller, \liouvillep]]\right),
 \end{align}
-where we see that $\Delta t^3$ is the global truncation error in the Velocity Verlet algorithm after $n$ timesteps. The local truncation error is then $\Delta t^4$.
+where we peep dat $\Delta t^3$ is tha global truncation error up in tha Velocitizzle Verlet algorithm afta $n$ timesteps. Da local truncation error is then $\Delta t^4$.
 % \section{Multiple timestep integration schemes}
 % \label{sec:multiple_timestep_schemes}
-% We will now address a situation that may occur in an advanced Molecular Dynamics simulation. Let's say we will simulate a system with several atom types, like silica and water. In such a system, we have both hydrogen, oxygen and silicon, which all may feel the appearance of all the other atom types. Hydrogen atoms are 28 times lighter than silicon. A consequence of this is that hydrogen will have much higher velocities than the other atom types, they will typically vibrate very quickly in the water molecules. This will require a much smaller timestep than those of the silicon and oxygen atoms would need. Long range forces like the Coulomb force are other examples of interactions that are accurate with higher timesteps. We will now use the Liouville formulation to derive a scheme that will allow multiple timesteps.\\
-% Again we split the Liouville operator into the sum of operators. \todo{Derive this.}
+% Us thugs will now address a thang dat may occur up in a advanced Molecular Dynamics simulation. I aint talkin' bout chicken n' gravy biatch. Letz say we will simulate a system wit nuff muthafuckin atom types, like silica n' gin n juice n' shit. In such a system, our crazy asses have both hydrogen, oxygen n' silicon, which all may feel tha appearizzle of all tha other atom types yo. Hydrogen atoms is 28 times lighter than silicon. I aint talkin' bout chicken n' gravy biatch fo' realz. A consequence of dis is dat hydrogen gonna git much higher velocitizzles than tha other atom types, they will typically vibrate straight-up quickly up in tha gin n juice molecules. This will require a much smalla timestep than dem of tha silicon n' oxygen atoms would need. Y'all KNOW dat shit, muthafucka! Long range forces like tha Coulomb force is other examplez of interactions dat is accurate wit higher timesteps. Us thugs will now use tha Liouville formulation ta derive a scheme dat will allow multiple timesteps.\\
+% Again we split tha Liouville operator tha fuck into tha sum of operators. \todo{Derive all dis bullshit.}

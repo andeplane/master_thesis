@@ -1,20 +1,20 @@
 \section{Parallelization performance}
 \label{sec:dsmc_parallelization_performance}
-No matter how many processors we distribute the work load to, the total computation time needed to perform a simulation is obviously not reduced. There are still as many collisions as before as the physical problem is identical. The idea is to do many calculations at the same time so that the \textit{real} time we actually wait is reduced. Parallelizing comes with a cost, as we need more logic to allow the processors communicate with each other (exchanging particles and waiting for each other to finish each time step). As the number of processors increases, the total computation time \textit{per processor} is reduced, but the time spent on communication often increases. We will measure what's called \textit{parallel scalability} which indicates how efficient a program is when the number of processors is increased. There are two different kinds of scalability - weak and strong scaling
+No matter how tha fuck nuff processors our phat asses distribute tha work load to, tha total computation time needed ta big-ass up a simulation is obviously not reduced. Y'all KNOW dat shit, muthafucka! There is still as nuff collisions as before as tha physical problem is identical. It aint nuthin but tha nick nack patty wack, I still gots tha bigger sack. Da scam is ta do nuff calculations all up in tha same time so dat tha \textit{real} time we straight-up wait is reduced. Y'all KNOW dat shit, muthafucka! Parallelizin comes wit a cold-ass lil cost, as we need mo' logic ta allow tha processors rap wit each other (exchangin particlez n' waitin fo' each other ta finish each time step) fo' realz. As tha number of processors increases, tha total computation time \textit{per processor} is reduced yo, but tha time dropped on communication often increases. Us thugs will measure whatz called \textit{parallel scalability} which indicates how tha fuck efficient a program is when tha number of processors is increased. Y'all KNOW dat shit, muthafucka! There is two different kindz of scalabilitizzle - weak n' phat scaling
 \begin{itemize}
-	\item strong scaling is how the computation time changes with an increased number of processors on a fixed system size, whereas the
-	\item weak scaling is how the computation time changes with an increased number of processors on a fixed system size \textit{per processor}.
+    \item phat scalin is how tha fuck tha computation time chizzlez wit a increased number of processors on a gangbangin' fixed system size, whereas the
+    \item weak scalin is how tha fuck tha computation time chizzlez wit a increased number of processors on a gangbangin' fixed system size \textit{per processor}.
 \end{itemize}
 \subsection{Strong scaling}
-To see how the program efficiency scales with a fixed system size while increasing the number of processors is important if we want to study a specific system (a given system size and geometry, e.g. scanned from real data), but we would like to reduce the simulation run time. With a fixed system size, the total number of particles per CPU is reduced while increasing the total number of processors. We define the \textit{strong scaling efficiency} $\eta_s$ as
+To peep how tha fuck tha program efficiency scalez wit a gangbangin' fixed system size while increasin tha number of processors is blingin if we wanna study a specific system (a given system size n' geometry, e.g. scanned from real data) yo, but we wanna reduce tha simulation run time. With a gangbangin' fixed system size, tha total number of particlez per CPU is reduced while increasin tha total number of processors. Us dudes define tha \textit{strong scalin efficiency} $\eta_s$ as
 \begin{align}
-	\eta_s = \frac{t_1}{Nt_N},
+    \eta_s = \frac{t_1}{Nt_N},
 \end{align}
-where $t_1$ is the total run time using one processor and $t_N$ is the total run time using $N$ processors. We see that $\eta_s\in (0,1)$ since $Nt_N$ is the ideal scaling without any communication overhead. In this benchmark, we have run the simulation in an empty geometry - there are no surfaces to collide with.
+where $t_1$ is tha total run time rockin one processor n' $t_N$ is tha total run time rockin $N$ processors. We peep dat $\eta_s\in (0,1)$ since $Nt_N$ is tha ideal scalin without any communication overhead. Y'all KNOW dat shit, muthafucka! In dis benchmark, our crazy asses have run tha simulation up in a empty geometry - there be no surfaces ta collide with.
 
-The physical system is a cube with side length $L=$\unit{1.0}{\micro\meter} with a density $\rho_n=\unit{1.0\e{27}}{\meter^{-3}}$ which gives a total of one billion atoms. We choose that one DSMC particle represents 50 atoms, yielding a total of 20 million particles in the whole system. The benchmark was performed for 10000 timesteps ($\Delta t = 0.005$) with $2^N$ processors from 1 CPU to 512 CPUs yielding a good estimate of how efficient the program scales for a relatively large number of processors. In table \ref{tab:dsmc_strong_scaling} we have the scaling results with additional information like the number of intermolecular collisions per processor. This indicates the amount of computation each processor has to perform. 
+Da physical system be a cold-ass lil cube wit side length $L=$\unit{1.0}{\micro\meter} wit a thugged-out densitizzle $\rho_n=\unit{1.0\e{27}}{\meter^{-3}}$ which gives a total of one bazillion atoms. We chizzle dat one DSMC particle represents 50 atoms, yieldin a total of 20 mazillion particlez up in tha whole system. Da benchmark was performed fo' 10000 timesteps ($\Delta t = 0.005$) wit $2^N$ processors from 1 CPU ta 512 CPUs yieldin a phat estimate of how tha fuck efficient tha program scalez fo' a relatively big-ass number of processors. In table \ref{tab:dsmc_strong_scaling} our crazy asses have tha scalin thangs up in dis biatch wit additionizzle shiznit like tha number of intermolecular collisions per processor. Shiiit, dis aint no joke. This indicates tha amount of computation each processor has ta perform. 
 
-The strong scaling efficiency is plotted together with the weak scaling against the number of processors in figure \ref{fig:dsmc_scaling}. We see that the program scales great with only 30\% overhead for 512 processors. The weird behavior we see at 128 processors, where the efficiency \textit{increases} to 0.9, is probably due to random luck on the supercomputer where all nodes are physically close to each other. In order to get better statistics, this benchmark should be run several times.
+Da phat scalin efficiency is plotted together wit tha weak scalin against tha number of processors up in figure \ref{fig:dsmc_scaling}. We peep dat tha program scalez pimped out wit only 30\% overhead fo' 512 processors. Da weird behavior we peep at 128 processors, where tha efficiency \textit{increases} ta 0.9, is probably cuz of random luck on tha supercomputer where all nodes is physically close ta each other n' shit. In order ta git mo' betta statistics, dis benchmark should be run nuff muthafuckin times.
 \begin{table}[h]
 \begin{center}
     \begin{tabular}{|l|l|l|l|l|l}
@@ -37,17 +37,17 @@ The strong scaling efficiency is plotted together with the weak scaling against 
     512 & 3.9\e{4} & 2.27\e{8} &  \unit{250}{\second} & 0.71\\
     \hline
     \end{tabular}
-    \caption{Benchmark results showing the strong scaling efficiency $\eta_s$ for the DSMC program. We see that the program scales great with only 30\% overhead for 512 processors. The weird behavior we see at 128 processors, where the efficiency \textit{increases} to 0.9, is probably due to random luck on the supercomputer where all nodes are physically close to each other. In order to get better statistics, this benchmark should be run several times.}
+    \caption{Benchmark thangs up in dis biatch showin tha phat scalin efficiency $\eta_s$ fo' tha DSMC program. We peep dat tha program scalez pimped out wit only 30\% overhead fo' 512 processors. Da weird behavior we peep at 128 processors, where tha efficiency \textit{increases} ta 0.9, is probably cuz of random luck on tha supercomputer where all nodes is physically close ta each other n' shit. In order ta git mo' betta statistics, dis benchmark should be run nuff muthafuckin times.}
     \label{tab:dsmc_strong_scaling}
     \end{center}
 \end{table}
 
 \subsection{Weak scaling}
-Another important scaling problem appears when we want to maximize the simulated system size. If we keep a constant system size \textit{per CPU}, and increase the number of processors, the limitation of how big we efficiently can create the system is controlled by the weak scaling. We then introduce the \textit{weak scaling efficiency} $\eta_w$ defined as
+Another blingin scalin problem appears when we wanna maximize tha simulated system size. If we keep a cold-ass lil constant system size \textit{per CPU}, n' increase tha number of processors, tha limitation of how tha fuck big-ass we efficiently can create tha system is controlled by tha weak scaling. We then introduce tha \textit{weak scalin efficiency} $\eta_w$ defined as
 \begin{align}
-	\eta_w = \frac{t_1}{t_N},
+    \eta_w = \frac{t_1}{t_N},
 \end{align}
-where again $t_1$ is the total run time using one processor and $t_N$ is the run time using $N$ processors. If the algorithm scales perfectly, the total run time would remain constant while increasing the number of processors (each CPU is ideally independent), but we expect some overhead. This implies that the range for $\eta_w$ also is between zero and one. We have run the same geometry as for the strong scaling, but each processor controls a volume of \unit{1}{\micro\meter^3} so that the largest system is \unit{512}{\micro\meter^3}. Keeping the same density, but using 500 atoms per particle, gives a total of 2 million particles per processor. In table \ref{tab:dsmc_weak_scaling} and figure \ref{fig:dsmc_scaling}, we see the results for the weak scaling efficiency simulation. The weak scaling also shows promising results with a reasonable low overhead.
+where again n' again n' again $t_1$ is tha total run time rockin one processor n' $t_N$ is tha run time rockin $N$ processors. If tha algorithm scalez perfectly, tha total run time would remain constant while increasin tha number of processors (each CPU is ideally independent) yo, but we expect some overhead. Y'all KNOW dat shit, muthafucka! This implies dat tha range fo' $\eta_w$ also is between zero n' one. Our thugged-out asses have run tha same geometry as fo' tha phat scalin yo, but each processor controls a volume of \unit{1}{\micro\meter^3} so dat tha phattest system is \unit{512}{\micro\meter^3}. Keepin tha same densitizzle yo, but rockin 500 atoms per particle, gives a total of 2 mazillion particlez per processor. Shiiit, dis aint no joke. In table \ref{tab:dsmc_weak_scaling} n' figure \ref{fig:dsmc_scaling}, we peep tha thangs up in dis biatch fo' tha weak scalin efficiency simulation. I aint talkin' bout chicken n' gravy biatch. Da weak scalin also shows promisin thangs up in dis biatch wit a reasonable low overhead.
 \begin{table}[h]
 \begin{center}
     \begin{tabular}{|l|l|l|l|l|l}
@@ -75,7 +75,7 @@ where again $t_1$ is the total run time using one processor and $t_N$ is the run
     512 & 1.02\e{9} & 2.98\e{12} & \unit{5450}{\second} & 0.63\\
     \hline
     \end{tabular}
-    \caption{Benchmark results showing the weak scaling efficiency $\eta_w$ for the DSMC program.}
+    \caption{Benchmark thangs up in dis biatch showin tha weak scalin efficiency $\eta_w$ fo' tha DSMC program.}
     \label{tab:dsmc_weak_scaling}
     \end{center}
 \end{table}
@@ -84,70 +84,70 @@ where again $t_1$ is the total run time using one processor and $t_N$ is the run
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/scaling.eps}
 \end{center}
-\caption{The weak and strong scaling efficiency, $\eta_w$ and $\eta_s$, as a function of the number of processors $N_\text{CPU}$. We see that at 512 processors, both efficiencies are reduced to 60-70\% because of the MPI communication overhead. Despite the bad statistics, it seems like the efficiency has more or less converged to a satisfactory level.}
+\caption{Da weak n' phat scalin efficiency, $\eta_w$ n' $\eta_s$, as a gangbangin' function of tha number of processors $N_\text{CPU}$. We peep dat at 512 processors, both efficiencies is reduced ta 60-70\% cuz of tha MPI communication overhead. Y'all KNOW dat shit, muthafucka! Despite tha wack statistics, it seems like tha efficiency has mo' or less converged ta a satisfactory level.}
 \label{fig:dsmc_scaling}
 \end{figure}
 
-\section{Results for simple geometries}
+\section{Results fo' simple geometries}
 \label{sec:results_for_simple_geometries}
-In this section, we study flow in a simple geometry where the permeability is known from theory. The expression for the permeability is only valid for small Knudsen numbers (which we called the absolute permeability; the permeability for fluids in the continuum limit), so it is a perfect test case for the Knudsen correction factor $f_c$ in equation \eqref{eq:knudsen_correction}. 
-\subsection{Flow in a cylinder, varying Knudsen number}
-We have induced flow in a cylinder with radius \unit{0.45}{\micro\meter} with an applied acceleration corresponding to a pressure difference $\Delta P = 0.1P_0$, where $P_0$ is the ideal gas pressure at \unit{300}{\kelvin}. While varying the density, we adjusted $N_\text{eff}$ so that the total number of simulated particles was approximately one million. We expect an apparent permeability satisfying the Knudsen correction
+In dis section, we study flow up in a simple geometry where tha permeabilitizzle is known from theory. Da expression fo' tha permeabilitizzle is only valid fo' lil' small-ass Knudsen numbers (which we called tha absolute permeability; tha permeabilitizzle fo' fluidz up in tha continuum limit), so it aint nuthin but a slick test case fo' tha Knudsen erection factor $f_c$ up in equation \eqref{eq:knudsen_correction}. 
+\subsection{Flow up in a cold-ass lil cylinder, varyin Knudsen number}
+Our thugged-out asses have induced flow up in a cold-ass lil cylinder wit radius \unit{0.45}{\micro\meter} wit a applied acceleration correspondin ta a heat difference $\Delta P = 0.1P_0$, where $P_0$ is tha ideal gas heat at \unit{300}{\kelvin}. While varyin tha density, we adjusted $N_\text{eff}$ so dat tha total number of simulated particlez was approximately one million. I aint talkin' bout chicken n' gravy biatch. We expect a apparent permeabilitizzle satisfyin tha Knudsen erection
 \begin{align}
-	k_a = k_\infty f_c = k_\infty[1 + \alpha(\text{Kn})\text{Kn}]\left[1 + {4\text{Kn}\over 1 + \text{Kn}}\right].
+    k_a = k_\infty f_c = k_\infty[1 + \alpha(\text{Kn})\text{Kn}]\left[1 + {4\text{Kn}\over 1 + \text{Kn}}\right].
 \end{align}
-The analytical absolute permeability for a cylinder with radius $r$ is given by\cite{karniadakis2005microflows}
+Da analytical absolute permeabilitizzle fo' a cold-ass lil cylinder wit radius $r$ is given by\cite{karniadakis2005microflows}
 \begin{align}
-	\label{eq:permeability_cylinder}
-	k_\infty = {r^2\over 8},
+    \label{eq:permeability_cylinder}
+    k_\infty = {r^2\over 8},
 \end{align}
-which gives the following prediction for the apparent permeability
+which gives tha followin prediction fo' tha apparent permeability
 \begin{align}
     \label{eq:knudsen_corrected_cylinder}
-	k_a = [1 + \alpha(\text{Kn})\text{Kn}]\left[1 + {4\text{Kn}\over 1 + \text{Kn}}\right] {r^2\over 8}.
+    k_a = [1 + \alpha(\text{Kn})\text{Kn}]\left[1 + {4\text{Kn}\over 1 + \text{Kn}}\right] {r^2\over 8}.
 \end{align}
-After 200k timesteps with sampling, the permeability was calculated according to equation \ref{eq:permeability_measure}. In figure \ref{fig:one_cylinder_varying_knudsen} we have plotted the measured permeability as a function of Knudsen number with the Knudsen corrected analytical solution. The left figure has the Knudsen numbers on a logarithmic $x$-axis to emphasize the lower Knudsen numbers. We see that the measured permeability is slightly lower than predicted for the higher Knudsen numbers. This is probably an effect from the voxelization of the cylinder where the effective radius is slightly smaller than desired. By reducing the radius by a factor $0.99$ in equation \eqref{eq:knudsen_corrected_cylinder}, the measured permeability perfectly overlaps the analytical solution.
+After 200k timesteps wit sampling, tha permeabilitizzle was calculated accordin ta equation \ref{eq:permeability_measure}. In figure \ref{fig:one_cylinder_varying_knudsen} our crazy asses have plotted tha measured permeabilitizzle as a gangbangin' function of Knudsen number wit tha Knudsen erected analytical solution. I aint talkin' bout chicken n' gravy biatch. Da left figure has tha Knudsen numbers on a logarithmic $x$-axis ta emphasize tha lower Knudsen numbers. We peep dat tha measured permeabilitizzle is slightly lower than predicted fo' tha higher Knudsen numbers. This is probably a effect from tha voxelization of tha cylinder where tha effectizzle radius is slightly smalla than desired. Y'all KNOW dat shit, muthafucka! By reducin tha radius by a gangbangin' factor $0.99$ up in equation \eqref{eq:knudsen_corrected_cylinder}, tha measured permeabilitizzle perfectly overlaps tha analytical solution.
 
 \begin{figure}[H]
 \begin{center}
 \includegraphics[width=\textwidth, trim=5cm 0cm 5cm 0cm, clip]{DSMC/figures/cylinder_knudsen_permeability.eps}
 \end{center}
-\caption{Permeability as a function of Knudsen number for a cylinder with radius \unit{0.45}{\micro\meter} and length \unit{1}{\micro\meter} with an applied pressure difference $\Delta P = 0.1P_0$, $P_0$ being the ideal gas pressure. We control the Knudsen number by varying the density. The blue line is the Knudsen corrected analytical solution in equation \eqref{eq:knudsen_corrected_cylinder}. We see a slightly lower permeability than the analytical solution, which probably is an effect from the voxelization of the cylinder where the effective radius is slightly smaller than desired. By reducing the radius by a factor $0.99$ in equation \eqref{eq:knudsen_corrected_cylinder}, the measured permeability perfectly overlaps the analytical solution.}
+\caption{Permeabilitizzle as a gangbangin' function of Knudsen number fo' a cold-ass lil cylinder wit radius \unit{0.45}{\micro\meter} n' length \unit{1}{\micro\meter} wit a applied heat difference $\Delta P = 0.1P_0$, $P_0$ bein tha ideal gas pressure. We control tha Knudsen number by varyin tha density. Da blue line is tha Knudsen erected analytical solution up in equation \eqref{eq:knudsen_corrected_cylinder}. We peep a slightly lower permeabilitizzle than tha analytical solution, which probably be a effect from tha voxelization of tha cylinder where tha effectizzle radius is slightly smalla than desired. Y'all KNOW dat shit, muthafucka! By reducin tha radius by a gangbangin' factor $0.99$ up in equation \eqref{eq:knudsen_corrected_cylinder}, tha measured permeabilitizzle perfectly overlaps tha analytical solution.}
 \label{fig:one_cylinder_varying_knudsen}
 \end{figure}
 
-\subsection{Flow in a cylinder, varying radius}
-If we instead keep the Knudsen number constant ($\text{Kn}=1.0$), we can vary the radius to verify equation \eqref{eq:permeability_cylinder}. We have studied radii in the range \unit{0.1}{\micro\meter} to \unit{0.45}{\micro\meter} with the same pressure difference as in the previous simulation ($\Delta P = 0.1P_0)$. In figure \ref{fig:one_cylinder_varying_radii_result} we have plotted the measured permeability as a function of cylinder radius. The straight line confirms the quadratic dependency in equation \eqref{eq:permeability_cylinder}.
+\subsection{Flow up in a cold-ass lil cylinder, varyin radius}
+If we instead keep tha Knudsen number constant ($\text{Kn}=1.0$), we can vary tha radius ta verify equation \eqref{eq:permeability_cylinder}. Our thugged-out asses have studied radii up in tha range \unit{0.1}{\micro\meter} ta \unit{0.45}{\micro\meter} wit tha same heat difference as up in tha previous simulation ($\Delta P = 0.1P_0)$. In figure \ref{fig:one_cylinder_varying_radii_result} our crazy asses have plotted tha measured permeabilitizzle as a gangbangin' function of cylinder radius. Da straight line confirms tha quadratic dependency up in equation \eqref{eq:permeability_cylinder}.
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/cylinder_radius_permeability.eps}
 \end{center}
-\caption{Logarithmic plot of the permeability for different cylinders with radii in the range \unit{0.1}{\micro\meter} to \unit{0.45}{\micro\meter} with an applied pressure difference $\Delta P = 0.1P_0$, $P_0$ being the ideal gas pressure. The blue line is the Knudsen corrected analytical solution from \cite{karniadakis2005microflows}. The permeability scales with the radius as $r^2$.}
+\caption{Logarithmic deal of tha permeabilitizzle fo' different cylindaz wit radii up in tha range \unit{0.1}{\micro\meter} ta \unit{0.45}{\micro\meter} wit a applied heat difference $\Delta P = 0.1P_0$, $P_0$ bein tha ideal gas pressure. Da blue line is tha Knudsen erected analytical solution from \cite{karniadakis2005microflows}. Da permeabilitizzle scalez wit tha radius as $r^2$.}
 \label{fig:one_cylinder_varying_radii_result}
 \end{figure}
 
-\section{Results for complicated geometries}
+\section{Results fo' fucked up geometries}
 \label{sec:dsmc_packed_spheres_results}
-We have now seen that the Knudsen correction factor works well for systems with a well defined Knudsen number. It does however need \textit{one} Knudsen number to be able to predict the permeability, but for more complex geometries, there is rather a distribution of Knudsen numbers than a single number. It could work as a lower and an upper limit of the permeabilities for two different input Knudsen numbers, but they could possibly differ by an order of magnitude. Another approach could be to find the average distance $\langle L\rangle$ to the surface and use that distance to estimate the Knudsen number as
+Our thugged-out asses have now peeped dat tha Knudsen erection factor works well fo' systems wit a well defined Knudsen number n' shit. Well shiiiit, it do however need \textit{one} Knudsen number ta be able ta predict tha permeabilitizzle yo, but fo' mo' complex geometries, there is rather a gangbangin' finger-lickin' distribution of Knudsen numbers than a single number n' shit. Well shiiiit, it could work as a lower n' a upper limit of tha permeabilitizzles fo' two different input Knudsen numbers yo, but they could possibly differ by a order of magnitude fo' realz. Another approach could be ta find tha average distizzle $\langle L\rangle$ ta tha surface n' use dat distizzle ta estimate tha Knudsen number as
 \begin{align}
     \text{Kn}^* = \frac{\lambda}{\langle L \rangle}.
 \end{align}
-In this section we will study a system consisting of randomly packed spheres  that does not have a well defined Knudsen number. The spheres may overlap, so their positions are completely independent of each other. The distribution and expectation value of distances to sphere surfaces is derived in appendix \ref{app:knudsen_number_packed_spheres} also providing a suggestion to the estimated Knudsen number $\text{Kn}(r,\phi)^*$ for packed spheres of radius $r$ and porosity $\phi$. First we discuss the Carman-Kozeny equation which is an analytical expression for the permeability for packed spheres. Then we discuss how the simulation is run and discuss the result.
-\subsection{The Carman-Kozeny equation}
-In 1927, Kozeny proposed an equation predicting the (absolute) permeability of packed spheres of radius $r$ forming a system with porosity $\phi$ given as
+In dis section we will study a system consistin of randomly packed spheres  dat aint gots a well defined Knudsen number n' shit. Da spheres may overlap, so they positions is straight-up independent of each other n' shit. Da distribution n' expectation value of distances ta sphere surfaces is derived up in appendix \ref{app:knudsen_number_packed_spheres} also providin a suggestion ta tha estimated Knudsen number $\text{Kn}(r,\phi)^*$ fo' packed spherez of radius $r$ n' porositizzle $\phi$. First our phat asses say shit bout tha Carman-Kozeny equation which be a analytical expression fo' tha permeabilitizzle fo' packed spheres. Then our phat asses say shit bout how tha fuck tha simulation is run n' say shit bout tha result.
+\subsection{Da Carman-Kozeny equation}
+In 1927, Kozeny proposed a equation predictin tha (absolute) permeabilitizzle of packed spherez of radius $r$ formin a system wit porositizzle $\phi$ given as
 \begin{align}
-	k_\infty = {r^2 \over 9K} {\phi^3 \over (1 - \phi)^2},
+    k_\infty = {r^2 \over 9K} {\phi^3 \over (1 - \phi)^2},
 \end{align}
-where $K$ is the Kozeny constant which is experimentally measured to be around five for equally size spheres\cite{carman1937fluid}. This result has been verified to predict permeabilities in many macro scale experiments since its discovery. However, at the nanometer scale, we expect deviations due to high Knudsen numbers. Using the Knudsen correction factor with the estimated Knudsen number $f_c(\text{Kn}(r,\phi)^*)$ (equations \eqref{eq:knudsen_correction} and \eqref{eq:packed_sphere_estimated_knudsen}), we expect the permeability to be
+where $K$ is tha Kozeny constant which is experimentally measured ta be round five fo' equally size spheres\cite{carman1937fluid}. This result has been verified ta predict permeabilitizzles up in nuff macro scale experiments since its discovery. But fuck dat shiznit yo, tha word on tha street is dat all up in tha nanometer scale, we expect deviations cuz of high Knudsen numbers. Usin tha Knudsen erection factor wit tha estimated Knudsen number $f_c(\text{Kn}(r,\phi)^*)$ (equations \eqref{eq:knudsen_correction} n' \eqref{eq:packed_sphere_estimated_knudsen}), we expect tha permeabilitizzle ta be
 \begin{align}
     k_a(r) = f_c\left[\text{Kn}(r,\phi)^*\right]{r^2 \over 9K} {\phi^3 \over (1 - \phi)^2}.
 \end{align}
-\subsection{The simulation and results}
-We ran the simulation for spheres with radii from \unit{0.01}{\micro\meter} to \unit{0.08}{\micro\meter} while keeping approximately constant porosity, $\phi\approx 0.3$. This was done by adding spheres until the desired porosity was obtained. For each radius, ten geometries were created with different seeds yielding better statistics. The permeability for each sphere radius is then averaged over the ten different geometries. In figure \ref{fig:packed_spheres_permeability}, we have plotted the permeabilities measured in the simulations with the average value of the ten runs per sphere radius. We have also plotted the Knudsen corrected Carman-Kozeny permeability which gives a pretty good estimate for the permeability. 
+\subsection{Da simulation n' thangs up in dis biatch}
+We ran tha simulation fo' spheres wit radii from \unit{0.01}{\micro\meter} ta \unit{0.08}{\micro\meter} while keepin approximately constant porosity, $\phi\approx 0.3$. This was done by addin spheres until tha desired porositizzle was obtained. Y'all KNOW dat shit, muthafucka! For each radius, ten geometries was pimped wit different seedz yieldin mo' betta statistics. Da permeabilitizzle fo' each sphere radius is then averaged over tha ten different geometries. Put ya muthafuckin choppers up if ya feel dis! In figure \ref{fig:packed_spheres_permeability}, our crazy asses have plotted tha permeabilitizzles measured up in tha simulations wit tha average value of tha ten runs per sphere radius. Our thugged-out asses have also plotted tha Knudsen erected Carman-Kozeny permeabilitizzle which gives a pimpin' phat estimate fo' tha permeability. 
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/permeability_packed_spheres.eps}
 \end{center}
-\caption{Permeability for different sphere radii in a system consisting of packed spheres. The red dots show the numerical results whereas the red line shows the average value for each sphere radius. The black line is the Knudsen corrected Carman-Kozeny expression for the permeability with the estimated Knudsen number (equation \eqref{eq:packed_sphere_estimated_knudsen}). We see that due to the large statistical spread in the sphere configurations, the spread in permeability is also quite large. While the Knudsen corrected Carman-Kozeny expression does give a good estimate of the permeability, it is clear when the spread in Knudsen numbers is large, it is not sufficient with one single average value.}
+\caption{Permeabilitizzle fo' different sphere radii up in a system consistin of packed spheres. Da red dots show tha numerical thangs up in dis biatch whereas tha red line shows tha average value fo' each sphere radius. Da black line is tha Knudsen erected Carman-Kozeny expression fo' tha permeabilitizzle wit tha estimated Knudsen number (equation \eqref{eq:packed_sphere_estimated_knudsen}). We peep dat cuz of tha big-ass statistical spread up in tha sphere configurations, tha spread up in permeabilitizzle be also like large. While tha Knudsen erected Carman-Kozeny expression do give a phat estimate of tha permeability, it is clear when tha spread up in Knudsen numbers is large, it aint sufficient wit one single average value.}
 \label{fig:packed_spheres_permeability}
 \end{figure}

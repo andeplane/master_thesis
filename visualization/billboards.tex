@@ -1,47 +1,47 @@
-\section{Billboards}
+\section{Bizzleboards}
 \label{sec:vis_billboards}
-We could in principle create a spherical shape by connecting triangles or other primitives as illustrated in figure \ref{fig:visualization_glut_spheres}. The figure contains two spheres with different numbers of primitives. We need a substantial number of primitives to get a shape that looks like a sphere (200 in the left sphere in the figure), but we can cheat a bit, by instead rendering something that \textit{looks} like a sphere
+We could up in principle create a spherical shape by connectin trianglez or other primitives as illustrated up in figure \ref{fig:visualization_glut_spheres}. Da figure gotz nuff two spheres wit different numberz of primitives. We need a substantial number of primitives ta git a shape dat be lookin like a sphere (200 up in tha left sphere up in tha figure) yo, but we can cheat a funky-ass bit, by instead renderin suttin' dat \textit{looks} like a sphere
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=0.8\textwidth, trim=0cm 0cm 0cm 0cm, clip]{visualization/figures/glut_spheres.png}
 \end{center}
-\caption{A sphere can be created by connecting triangles or other primitives. The sphere to the left is made of 200 primitives whereas the one to the right is made of 25 primitives. It is clear that we need a certain number, more than 25, of primitives before we are convinced that the object should represent a sphere.}
+\caption{A sphere can be pimped by connectin trianglez or other primitives. Da sphere ta tha left is made of 200 primitives whereas tha one ta tha right is made of 25 primitives. Well shiiiit, it is clear dat we need a cold-ass lil certain number, mo' than 25, of primitives before we is convinced dat tha object should represent a sphere.}
 \label{fig:visualization_glut_spheres}
 \end{figure}
-A billboard is, as the name suggests, a rectangle filled with a texture, always pointing towards the camera. The texture is going to be a circle (a sphere does indeed look like a circle when rendered on the screen anyway). It is quite easy to render such a rectangle with OpenGL, we already have a primitive called \textit{GL\_QUADS} which is exactly what we need. The only thing we need to do is provide four vertices, the corners in the rectangle, and give each vertex a texture coordinate. The four vertices $\vec v_i$ can be calculated from one single vertex $\vec r$, the particle position, by
+A billboard is, as tha name suggests, a rectangle filled wit a texture, always pointin towardz tha camera. Da texture is goin ta be a cold-ass lil circle (a sphere do indeed be lookin like a cold-ass lil circle when rendered on tha screen anyway). Well shiiiit, it is like easy as fuck  ta render such a rectangle wit OpenGL, we already gotz a primitizzle called \textit{GL\_QUADS} which is exactly what tha fuck we need. Y'all KNOW dat shit, muthafucka! Da only thang we need ta do is provide four vertices, tha corners up in tha rectangle, n' give each vertex a texture coordinate. Da four vertices $\vec v_i$ can be calculated from one single vertex $\vec r$, tha particle position, by
 \begin{align}
-	\label{eq:vis_vertices_billboard}
-	\vec v_1 &= \vec r + (-\Delta x, -\Delta y)\\
-	\nonumber
-	\vec v_2 &= \vec r + (-\Delta x, \Delta y)\\
-	\nonumber
-	\vec v_3 &= \vec r + (\Delta x, \Delta y)\\
-	\nonumber
-	\vec v_4 &= \vec r + (\Delta x, -\Delta y),
+  \label{eq:vis_vertices_billboard}
+  \vec v_1 &= \vec r + (-\Delta x, -\Delta y)\\
+  \nonumber
+  \vec v_2 &= \vec r + (-\Delta x, \Delta y)\\
+  \nonumber
+  \vec v_3 &= \vec r + (\Delta x, \Delta y)\\
+  \nonumber
+  \vec v_4 &= \vec r + (\Delta x, -\Delta y),
 \end{align}
-where ($L_x = 2\Delta x, L_y = 2\Delta y$) is the size of the billboard, see figure \ref{fig:visualization_billboard_vertices}.
+where ($L_x = 2\Delta x, L_y = 2\Delta y$) is tha size of tha billboard, peep figure \ref{fig:visualization_billboard_vertices}.
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=0.7\textwidth, trim=0cm 0cm 0cm 0cm, clip]{visualization/figures/billboard.eps}
 \end{center}
-\caption{A billboard is made of four vertices $\vec v_1, \vec v_2, \vec v_3$ and $\vec v_4$ that can be calculated from one vertex $\vec r$ (equation \eqref{eq:vis_vertices_billboard}).}
+\caption{A billboard is made of four vertices $\vec v_1, \vec v_2, \vec v_3$ n' $\vec v_4$ dat can be calculated from one vertex $\vec r$ (equation \eqref{eq:vis_vertices_billboard}).}
 \label{fig:visualization_billboard_vertices}
 \end{figure}
-This is already what Ovito does\footnote{See the source code at \url{http://www.ovito.org/index.php/download2}}, but we are going to improve this even more. Instead of computing the four vertices and uploading these as \textit{GL\_QUADS} to the GPU, we will only upload the positions of the particles, and exploit the geometry shader to create the billboard vertices on the GPU.
+This be already what tha fuck Ovito do\footnote{See tha source code at \url{http://www.ovito.org/index.php/download2}} yo, but we is goin ta improve dis even mo' n' mo' n' mo'. Instead of computin tha four vertices n' uploadin these as \textit{GL\_QUADS} ta tha GPU, we will only upload tha positionz of tha particles, n' exploit tha geometry shader ta create tha billboard vertices on tha GPU.
 
-Before we start visualizing the data, all timesteps of a simulation are uploaded as VBO's on the GPU so that we don't need to upload data every frame. The VBO is rendered as \textit{GL\_POINTS} so each vertex represents the center position of a particle. We will now follow a single vertex through the pipeline
-\subsection{The pipeline}
-The VBO can now be seen as one OpenGL model containing the positions of all the particles. The vertices are then in the \textit{model space}. Every single vertex starts its life in the pipeline by going into the vertex shader. The vertex shader is pretty simple in this case, it just transforms the input vertex from the model space to the projection space as we can see in listing \ref{lst:simplevertexshaderbillboard}.
+Before we start visualizin tha data, all timestepz of a simulation is uploaded as VBOz on tha GPU so dat our phat asses don't need ta upload data every last muthafuckin frame. Da VBO is rendered as \textit{GL\_POINTS} so each vertex represents tha center posizzle of a particle. Us thugs will now follow a single vertex all up in tha pipeline
+\subsection{Da pipeline}
+Da VBO can now be peeped as one OpenGL model containin tha positionz of all tha particles. Da vertices is then up in tha \textit{model space}. Every single vertex starts its game up in tha pipeline by goin tha fuck into tha vertex shader n' shit. Da vertex shader is pretty simple up in dis case, it just transforms tha input vertex from tha model space ta tha projection space as we can peep up in listin \ref{lst:simplevertexshaderbillboard}.
 \begin{lstlisting}[caption=billboardVertexShader.glsl, label=lst:simplevertexshaderbillboard, language=GLSL]
 #version 330\n"
 uniform mat4 qt_ModelViewProjectionMatrix;
 in vec4 qt_Vertex;
 void main(void)
 {
-    gl_Position = qt_ModelViewProjectionMatrix * qt_Vertex;
+    gl_Posizzle = qt_ModelViewProjectionMatrix * qt_Vertex;
 }
 \end{lstlisting}
-This position is then sent to the geometry shader as an instance of the \textit{GL\_POINTS} primitive. The geometry shader will, from that single vertex (the position, now in the projection space), create and emit \textit{four} vertices that are displaced from the input vertex as explained in equation \eqref{eq:vis_vertices_billboard} and figure \ref{fig:visualization_billboard_vertices}. The output primitive is here the \textit{GL\_TRIANGLE\_STRIP} which will create two triangles with vertices $\{\vec v_1, \vec v_2, \vec v_3\}$ and $\{\vec v_2, \vec v_3, \vec v_4\}$. The size of the billboard is available as a uniform (as explained in subsection \ref{sec:opengl_uniforms}) in the geometry shader. If we want to visualize particles with different sizes (e.g. two atom types with different atomic radii), we just render different VBO's with the corresponding size. We want the four vertices to form a rectangle pointing towards the camera, so the operation in equation \eqref{eq:vis_vertices_billboard} should be done in the view space (here the $z$-direction is orthogonal on the camera plane which forms the $xy$-plane). Since the position vertex now is in the projection space, we should transform the four displacement vectors to the projection space by applying the \textit{qt\_ProjectionMatrix} before we add them together. We then set the texture coordinate (the local coordinate in the texture image) on each vertex and emit it with the \textit{EmitVertex()} function. The algorithm might be easier to understand with a code example, see listing \ref{lst:simplegeometryshaderbillboard}.
+This posizzle is then busted ta tha geometry shader as a instizzle of tha \textit{GL\_POINTS} primitive. Da geometry shader will, from dat single vertex (the position, now up in tha projection space), create n' emit \textit{four} vertices dat is displaced from tha input vertex as explained up in equation \eqref{eq:vis_vertices_billboard} n' figure \ref{fig:visualization_billboard_vertices}. Da output primitizzle is here tha \textit{GL\_TRIANGLE\_STRIP} which will create two trianglez wit vertices $\{\vec v_1, \vec v_2, \vec v_3\}$ n' $\{\vec v_2, \vec v_3, \vec v_4\}$. Da size of tha billboard be available as a uniform (as explained up in subsection \ref{sec:opengl_uniforms}) up in tha geometry shader n' shit. If we wanna visualize particlez wit different sizes (e.g. two atom types wit different atomic radii), our laid-back asses just render different VBOz wit tha correspondin size. Us thugs want tha four vertices ta form a rectangle pointin towardz tha camera, so tha operation up in equation \eqref{eq:vis_vertices_billboard} should be done up in tha view space (here tha $z$-direction is orthogonal on tha camera plane which forms tha $xy$-plane). Right back up in yo muthafuckin ass. Since tha posizzle vertex now is up in tha projection space, we should transform tha four displacement vectors ta tha projection space by applyin tha \textit{qt\_ProjectionMatrix} before we add dem together n' shit. We then set tha texture coordinizzle (the local coordinizzle up in tha texture image) on each vertex n' emit it wit tha \textit{EmitVertex()} function. I aint talkin' bout chicken n' gravy biatch. Da algorithm might be easier ta KNOW wit a cold-ass lil code example, peep listin \ref{lst:simplegeometryshaderbillboard}.
 
 \begin{lstlisting}[caption=billboardGeometryShader.glsl, label=lst:simplegeometryshaderbillboard, language=GLSL]
 #version 400
@@ -53,37 +53,37 @@ out vec2 texCoord;
 
 void main(void) {
     vec4 pos = gl_in[0].gl_Position;
-    gl_Position = pos + qt_ProjectionMatrix*vec4(-size.x, -size.y, 0.0, 0.0);
+    gl_Posizzle = pos + qt_ProjectionMatrix*vec4(-size.x, -size.y, 0.0, 0.0);
     texCoord = vec2(0.0, 0.0);
     EmitVertex();
-    gl_Position = pos + qt_ProjectionMatrix*vec4(-size.x, size.y, 0.0, 0.0);
+    gl_Posizzle = pos + qt_ProjectionMatrix*vec4(-size.x, size.y, 0.0, 0.0);
     texCoord = vec2(0.0, 1.0);
     EmitVertex();
-    gl_Position = pos + qt_ProjectionMatrix*vec4(size.x, -size.y, 0.0, 0.0);
+    gl_Posizzle = pos + qt_ProjectionMatrix*vec4(size.x, -size.y, 0.0, 0.0);
     texCoord = vec2(1.0, 0.0);
     EmitVertex();
-    gl_Position = pos + qt_ProjectionMatrix*vec4(size.x, size.y, 0.0, 0.0);
+    gl_Posizzle = pos + qt_ProjectionMatrix*vec4(size.x, size.y, 0.0, 0.0);
     texCoord = vec2(1.0, 1.0);
     EmitVertex();
     EndPrimitive();
 }
 \end{lstlisting}
-This is done with every single position vertex in the VBO (once per particle per frame) and all the output primitives from the geometry shader will be rasterized, clipped and texture coordinates are interpolated into the fragment shader that is run once per pixel per visible primitive. Before we discuss the fragment shader, we should take a look at the texture that each billboard will have.
+This is done wit every last muthafuckin single posizzle vertex up in tha VBO (once per particle per frame) n' all tha output primitives from tha geometry shader is ghon be rasterized, clipped n' texture coordinates is interpolated tha fuck into tha fragment shader dat is run once per pixel per visible primitive. Before our phat asses say shit bout tha fragment shader, we should take a peep tha texture dat each billboard will have.
 
-We didn't lie before, we will use a circle that actually is a real sphere rendered in the 3D modeling program Blender\footnote{Available from \url{http://www.blender.org/}.}. With some lighting, we get this nice shiny effect making the \"spheres\" look more interesting. This texture is shown in figure \ref{fig:visualization_billboard_texture}, where we also see that all the pixels outside the circles are transparent. This is very important so that we can discard these contributions in the fragment shader.
+Us dudes didn't lie before, we will bust a cold-ass lil circle dat straight-up be a real sphere rendered up in tha 3D modelin program Blender\footnote{Available from \url{http://www.blender.org/}.}. With some lighting, we git dis sick shiny effect makin tha \"spheres\" look mo' interesting. This texture is shown up in figure \ref{fig:visualization_billboard_texture}, where we also peep dat all tha pixels outside tha circlez is transparent. This is straight-up blingin so dat we can discard these contributions up in tha fragment shader.
 \begin{figure}[h]
 \begin{center}
 \includegraphics[width=0.7\textwidth, trim=0cm 0cm 0cm 0cm, clip]{visualization/figures/texture_transparent.png}
 \end{center}
-\caption{The texture used on the billboards is an image of a real sphere rendered with Blender. Notice that the pixels outside the circle are transparent. This allows us to discard these texture pixels in the fragment shader.}
+\caption{Da texture used on tha billboardz be a image of a real sphere rendered wit Blender n' shit. Notice dat tha pixels outside tha circle is transparent. This allows our asses ta discard these texture pixels up in tha fragment shader.}
 \label{fig:visualization_billboard_texture}
 \end{figure}
-The fragment shader will then get an interpolated texture coordinate as input, which we will use to look up what RGBA value this pixel gets from the texture. If the alpha value (the opacity) is smaller than one, it means that the pixel contribution comes from a texture pixel outside the circle. In that case we just discard it. We almost forgot one last detail, the \textit{color} of the particles. Again we assume that all particles have the same color (if not, we just use multiple VBO's per timestep), so as we did with the billboard size variable, the color is available as a uniform. The final pixel color is then found by equation \eqref{eq:opengl_combining_colors_textures}
+Da fragment shader will then git a interpolated texture coordinizzle as input, which we will use ta look up what tha fuck RGBA value dis pixel gets from tha texture. If tha alpha value (the opacity) is smalla than one, it means dat tha pixel contribution be reppin a texture pixel outside tha circle. In dat case our laid-back asses just discard dat shit. We almost forgot one last detail, tha \textit{color} of tha particlez fo' realz. Again we assume dat all particlez have tha same color (if not, our laid-back asses just use multiple VBOz per timestep), so as our phat asses did wit tha billboard size variable, tha color be available as a uniform. Da final pixel color is then found by equation \eqref{eq:opengl_combining_colors_textures}
 \begin{align}
-	\nonumber
-	\vec C(\vec p) = \vec c_t[\vec t(\vec p)] \odot \vec c(\vec p).
+  \nonumber
+  \vec C(\vec p) = \vec c_t[\vec t(\vec p)] \odot \vec c(\vec p).
 \end{align}
-The fragment shader code is shown in listing \ref{lst:simplefragmentshaderbillboard} with the final rendering result in figure \ref{fig:visualization_billboard_md}. In this rendered image, we also added light effects making atoms that are far away from the camera appear darker. This increases the feeling of depth which clarifies the pores.
+Da fragment shader code is shown up in listin \ref{lst:simplefragmentshaderbillboard} wit tha final renderin result up in figure \ref{fig:visualization_billboard_md}. In dis rendered image, we also added light effects makin atoms dat is far away from tha camera step tha fuck up darker n' shit. This increases tha feelin of depth which clarifies tha pores.
 \begin{lstlisting}[caption=billboardFragmentShader.glsl, label=lst:simplefragmentshaderbillboard, language=GLSL]
 #version 330
 uniform vec4 color;
@@ -105,30 +105,30 @@ void main(void) {
 \begin{center}
 \includegraphics[width=\textwidth, trim=0cm 0cm 0cm 0cm, clip]{visualization/figures/billboards_md_visualization.png}
 \end{center}
-\caption{The final rendered image with an MD simulation using billboards. In the rendering, light effects are added to increase the feeling of depth, clarifying the pore structure. The atoms form a nanoporous SiO$_2$ system simulated with a MD code developed at the University of Southern California.}
+\caption{Da final rendered image wit a MD simulation rockin billboards. In tha rendering, light effects is added ta increase tha feelin of depth, clarifyin tha pore structure. Da atoms form a nanoporous SiO$_2$ system simulated wit a MD code pimped all up in tha Universitizzle of Downtown California.}
 \label{fig:visualization_billboard_md}
 \end{figure}
 
 \subsection{Periodic copies}
-We used the geometry shader to create a \textit{GL\_TRIANGLE\_STRIP} creating the billboard from one single vertex (the particle position). Then, one may ask, why not use the geometry shader to create \textit{several} billboards, adding periodic copies of every particle in the system? This makes sense if the simulation operates with periodic boundary conditions so we have periodic symmetry on all directions. So, if the system is a box of size $L_x\times L_y \times L_z$, we can create 26 copies of the whole system giving a larger box of size $3L_x\times 3L_y\times 3L_z$, making the impression that the system is larger. This provides an important effect near the boundaries of the system, see figure \ref{fig:visualization_billboard_periodic_copies}.
+We used tha geometry shader ta create a \textit{GL\_TRIANGLE\_STRIP} bustin tha billboard from one single vertex (the particle position). Then, one may ask, why not use tha geometry shader ta create \textit{several} billboards, addin periodic copiez of every last muthafuckin particle up in tha system, biatch? This make sense if tha simulation operates wit periodic boundary conditions so our crazy asses have periodic symmetry on all directions. Right back up in yo muthafuckin ass. So, if tha system be a funky-ass box of size $L_x\times L_y \times L_z$, we can create 26 copiez of tha whole system givin a larger box of size $3L_x\times 3L_y\times 3L_z$, makin tha impression dat tha system is larger n' shit. This serves up a blingin effect near tha boundariez of tha system, peep figure \ref{fig:visualization_billboard_periodic_copies}.
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.9\textwidth, trim=0cm 0cm 0cm 0cm, clip]{visualization/figures/periodic_copies.png}
 \end{center}
-\caption{Adding periodic copies of the system provides an important effect when looking at atoms near the boundary. The upper image shows a visualization with no periodic copies of the atoms. This shows that the system clearly has a finite size. In the lower image, by adding 26 periodic copies of the whole system, it is not obvious that we are at the edge of the system.}
+\caption{Addin periodic copiez of tha system serves up a blingin effect when lookin at atoms near tha boundary. Da upper image shows a visualization wit no periodic copiez of tha atoms. This shows dat tha system clearly has a gangbangin' finite size. In tha lower image, by addin 26 periodic copiez of tha whole system, it aint obvious dat we is all up in tha edge of tha system.}
 \label{fig:visualization_billboard_periodic_copies}
 \end{figure}
-We will use a feature in OpenGL called geometry shader instancing to add all the copies. With instancing, the geometry shader is executed 27 times per input vertex. We can use the variable \textit{gl\_InvocationID} to identify which of the 27 instances we are running. The system coordinate $(S_x, S_y, S_z), S_i \in \{-1, 0, 1\}$ for invocation id $i$ is calculated as
+Us thugs will bust a gangbangin' feature up in OpenGL called geometry shader instancin ta add all tha copies. Put ya muthafuckin choppers up if ya feel dis! With instancing, tha geometry shader is executed 27 times per input vertex. We can use tha variable \textit{gl\_InvocationID} ta identify which of tha 27 instances we is hustlin. Da system coordinizzle $(S_x, S_y, S_z), S_i \in \{-1, 0, 1\}$ fo' invocation id $i$ is calculated as
 \begin{align}
-	S_x =& (i\bmod 3) - 1\\
-	S_y =& (\ceil{i/3}\bmod 3) - 1\\
-	S_z =& (\ceil{i/9}) - 1,
+  S_x =& (i\bmod 3) - 1\\
+  S_y =& (\ceil{i/3}\bmod 3) - 1\\
+  S_z =& (\ceil{i/9}) - 1,
 \end{align}
-where $\ceil{a}$ is the ceiling function. One instance of the geometry shader should then render a billboard displaced with 
+where $\ceil{a}$ is tha ceilin function. I aint talkin' bout chicken n' gravy biatch. One instizzle of tha geometry shader should then render a funky-ass billboard displaced wit 
 \begin{align}
-	\vec d = (L_x\cdot S_x, L_y\cdot S_y, L_z\cdot S_z),
+  \vec d = (L_x\cdot S_x, L_y\cdot S_y, L_z\cdot S_z),
 \end{align}
-where the system size $(L_x, L_y, L_z)$ is available as a uniform. The displacement $\vec d$ is given in the model space, so we must transform it the projection space before we add it to the position vertex (which, as we remember, already is in the projection space). The full geometry shader code using instancing to add periodic copies is found in listing \ref{lst:fullgeometryshaderbillboard}.
+where tha system size $(L_x, L_y, L_z)$ be available as a uniform. Da displacement $\vec d$ is given up in tha model space, so we must transform it tha projection space before we add it ta tha posizzle vertex (which, as we remember, already is up in tha projection space). Da full geometry shader code rockin instancin ta add periodic copies is found up in listin \ref{lst:fullgeometryshaderbillboard}.
 \begin{lstlisting}[caption=billboardGeometryShaderWithPeriodicCopies.glsl, label=lst:fullgeometryshaderbillboard, language=GLSL]
 #version 400
 layout(invocations=27) in;
@@ -146,25 +146,25 @@ void main(void) {
   int z = (gl_InvocationID/9)-1;
     
   vec4 displacement = vec4(systemSize.x*x,systemSize.y*y,systemSize.z*z,0);
-  vec4 pos = gl_in[0].gl_Position + qt_ModelViewProjectionMatrix * displacement;
-  gl_Position = pos + qt_ProjectionMatrix*vec4(-size.x, -size.y, 0.0, 0.0);
+  vec4 pos = gl_in[0].gl_Posizzle + qt_ModelViewProjectionMatrix * displacement;
+  gl_Posizzle = pos + qt_ProjectionMatrix*vec4(-size.x, -size.y, 0.0, 0.0);
   texCoord = vec2(0.0, 0.0);
   EmitVertex();
-  gl_Position = pos + qt_ProjectionMatrix*vec4(-size.x, size.y, 0.0, 0.0);
+  gl_Posizzle = pos + qt_ProjectionMatrix*vec4(-size.x, size.y, 0.0, 0.0);
   texCoord = vec2(0.0, 1.0);
   EmitVertex();
-  gl_Position = pos + qt_ProjectionMatrix*vec4(size.x, -size.y, 0.0, 0.0);
+  gl_Posizzle = pos + qt_ProjectionMatrix*vec4(size.x, -size.y, 0.0, 0.0);
   texCoord = vec2(1.0, 0.0);
   EmitVertex();
-  gl_Position = pos + qt_ProjectionMatrix*vec4(size.x, size.y, 0.0, 0.0);
+  gl_Posizzle = pos + qt_ProjectionMatrix*vec4(size.x, size.y, 0.0, 0.0);
   texCoord = vec2(1.0, 1.0);
   EmitVertex();
   EndPrimitive();
 }
 \end{lstlisting}
-\subsection{Rendering benchmark}
+\subsection{Renderin benchmark}
 \label{sec:vis_benchmark}
-A typical benchmark for a visualization program is the number of frames per second (FPS) the program is able to render a given amount of primitives. In this benchmark, we have used the multibillboard class\footnote{Source code available from \url{http://github.com/ComputationalPhysics/compphys-qt3d-additions}.} that has implemented the shader pipeline explained above. It renders a box with $N$ billboard spheres and adds 26 copies in the geometry shader making the total number of visible spheres $N_\text{spheres} = 27N$. In table \ref{tab:vis_fps_scaling} we have shown a representable subset of the data showing the performance of the billboard class. We have run the program with the number of visible spheres in the range a few thousand to more than one billion. In figure \ref{fig:rendering_benchmark} we have plotted the data from table \ref{tab:vis_fps_scaling} with more data points near the sudden drops of frame rate. We assume that these drops can be explained by meeting different limits on the graphics card. It seems to happen at specific number of vertices emitted by the geometry shader, so our guess would be the bandwidth on the GPU. We have not used any shader profiling tools, so we cannot draw any conclusion without further investigation. 
+A typical benchmark fo' a visualization program is tha number of frames per second (FPS) tha program be able ta render a given amount of primitives. In dis benchmark, our crazy asses have used tha multibillboard class\footnote{Source code available from \url{http://github.com/ComputationalPhysics/compphys-qt3d-additions}.} dat has implemented tha shader pipeline explained above. Well shiiiit, it rendaz a funky-ass box wit $N$ billboard spheres n' addz 26 copies up in tha geometry shader makin tha total number of visible spheres $N_\text{spheres} = 27N$. In table \ref{tab:vis_fps_scaling} our crazy asses have shown a representable subset of tha data showin tha performizzle of tha billboard class. Our thugged-out asses have run tha program wit tha number of visible spheres up in tha range all dem thousand ta mo' than one billion. I aint talkin' bout chicken n' gravy biatch. In figure \ref{fig:rendering_benchmark} our crazy asses have plotted tha data from table \ref{tab:vis_fps_scaling} wit mo' data points near tha sudden dropz of frame rate. We assume dat these drops can be explained by meetin different limits on tha graphics card. Y'all KNOW dat shit, muthafucka! Well shiiiit, it seems ta happen at specific number of vertices emitted by tha geometry shader, so our guess would be tha bandwidth on tha GPU. We aint used any shader profilin tools, so we cannot draw any conclusion without further investigation. I aint talkin' bout chicken n' gravy biatch. 
 \begin{table}[htb]
 \begin{center}
     \begin{tabular}{|l|l|}
@@ -197,7 +197,7 @@ A typical benchmark for a visualization program is the number of frames per seco
     1,061,208,000 & $1.40 \pm 0.2386$\\
     \hline
     \end{tabular}
-    \caption{Benchmark showing the number of frames per second (FPS) the billboard class is able to render with the number of billboard spheres from a few thousand to more than one billion visible spheres. The benchmark is performed on an NVIDIA GTX Titan.}
+    \caption{Benchmark showin tha number of frames per second (FPS) tha billboard class be able ta render wit tha number of billboard spheres from all dem thousand ta mo' than one bazillion visible spheres. Da benchmark is performed on a NVIDIA GTX Titan.}
     \label{tab:vis_fps_scaling}
     \end{center}
 \end{table}
@@ -206,7 +206,7 @@ A typical benchmark for a visualization program is the number of frames per seco
 \begin{center}
 \includegraphics[width=0.8\textwidth, trim=0cm 0cm 0cm 0cm, clip]{visualization/figures/benchmark.eps}
 \end{center}
-\caption{Benchmark showing the number of frames per second (FPS) the billboard class is able to render with the number of billboard spheres from a few thousand to more than one billion visible spheres. The benchmark is performed on an NVIDIA GTX Titan. The sudden drops in FPS at specific number of spheres are probably explained by reaching the bandwidth limit in the different shader stages.}
+\caption{Benchmark showin tha number of frames per second (FPS) tha billboard class be able ta render wit tha number of billboard spheres from all dem thousand ta mo' than one bazillion visible spheres. Da benchmark is performed on a NVIDIA GTX Titan. I aint talkin' bout chicken n' gravy biatch. Da sudden drops up in FPS at specific number of spheres is probably explained by reachin tha bandwidth limit up in tha different shader stages.}
 \label{fig:rendering_benchmark}
 \end{figure}
-The visualization tool for an MD state does not need anything else than what we now have presented. The timesteps containing the positions of all the atoms are uploaded to the graphics card as VBOs and the atoms are rendered as points into the rendering pipeline where the billboards are created in the geometry shader. This same rendering technique can of course be used to render the particles in a DSMC simulation, but we want to render the complex geometry that the particles interact with. We will use what's called marching cubes for this.
+Da visualization tool fo' a MD state do not need anythang else than what tha fuck we now have presented. Y'all KNOW dat shit, muthafucka! This type'a shiznit happens all tha time. Da timesteps containin tha positionz of all tha atoms is uploaded ta tha graphics card as VBOs n' tha atoms is rendered as points tha fuck into tha renderin pipeline where tha billboardz is pimped up in tha geometry shader n' shit. This same renderin technique can of course be used ta render tha particlez up in a DSMC simulation yo, but we wanna render tha complex geometry dat tha particlez interact with. Us thugs will use whatz called marchin cubes fo' all dis bullshit.

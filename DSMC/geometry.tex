@@ -1,13 +1,13 @@
 \section{Complex geometries}
 \label{sec:dsmc_complex_geometries}
-All the surface interaction models from section \ref{sec:surface_interactions} use the surface normal and tangent vectors to calculate the reflected velocities. These vectors are easy to determine if the system consists of two parallel plates in the xy-plane, or any other mathematically well described geometry. Such systems are interesting as validation test cases, but most real world materials have a more complex geometry without any simple mathematical description. A very much used representation of such geometries is a triangle mesh in which the surface consists of many connected triangles. The triangles have a well defined normal vector and tangent plane which is easy to calculate. With this method, collision detection is done by checking intersection with each triangle and is rather computationally expensive. In this thesis, we have chosen another approach by representing the system as a large, binary three-dimensional matrix consisting of voxels, each having the value \textit{filled} or \textit{empty}. With this model, collision detection is done by a quick memory lookup to check if the voxel corresponding to the position of a particle is filled or not. In this section we discuss how to create such a matrix, how to identify the surface voxels and how we calculate the normal and tangent vectors. 
+All tha surface interaction models from section \ref{sec:surface_interactions} use tha surface aiiight n' tangent vectors ta calculate tha reflected velocities. Put ya muthafuckin choppers up if ya feel dis! These vectors is easy as fuck  ta determine if tha system consistz of two parallel plates up in tha xy-plane, or any other mathematically well busted lyrics bout geometry. Right back up in yo muthafuckin ass. Such systems is bangin-ass as validation test cases yo, but most real ghetto shiznit gotz a mo' complex geometry without any simple mathematical description. I aint talkin' bout chicken n' gravy biatch fo' realz. A straight-up much used representation of such geometries be a triangle mesh up in which tha surface consistz of nuff connected triangles. Da trianglez gotz a well defined aiiight vector n' tangent plane which is easy as fuck  ta calculate. With dis method, collision detection is done by checkin intersection wit each triangle n' is rather computationally expensive. In dis thesis, our crazy asses have chosen another approach by representin tha system as a large, binary three-dimensionizzle matrix consistin of voxels, each havin tha value \textit{filled} or \textit{empty}. With dis model, collision detection is done by a quick memory lookup ta check if tha voxel correspondin ta tha posizzle of a particle is filled or not. In dis section our phat asses say shit bout how tha fuck ta create such a matrix, how tha fuck ta identify tha surface voxels n' how tha fuck we calculate tha aiiight n' tangent vectors. 
 
 \subsection{Binary representation}
 \label{sec:dsmc_binary_representation}
-Any system geometry is fully described by a three dimensional matrix with dimensions $m\times n\times l$. Each matrix element represents a voxel in the physical space, and can take values 0 or 1. A value of one means that the voxel is filled, whereas zero means the voxel is empty. Since the particles only will collide directly with the voxels defining the surface, these are given the value 2. The idea is best explained with an example.
-\subsection{Example - a cylinder}
-We will now show how to create a cylinder with radius $r$ with this model. The idea is very simple, we just loop through every voxel in the system and check whether or not the voxel should be marked as filled or empty. We define that no matter how many voxels we have, the radius $r$ is given in the range $[0, 0.5]$ so that the system is a $1\times 1\times 1$ cube. The algorithm should be easy to understand from the code example in listing \ref{lst:dsmc_geometry_cylinder}.
-\begin{lstlisting}[caption=An example showing how to create a cylinder., label=lst:dsmc_geometry_cylinder]
+Any system geometry is straight-up busted lyrics bout by a three dimensionizzle matrix wit dimensions $m\times n\times l$. Each matrix element represents a voxel up in tha physical space, n' can take joints 0 or 1 fo' realz. A value of one means dat tha voxel is filled, whereas zero means tha voxel is empty. Right back up in yo muthafuckin ass. Since tha particlez only will collide directly wit tha voxels definin tha surface, these is given tha value 2. Da scam is dopest explained wit a example.
+\subsection{Example - a cold-ass lil cylinder}
+Us thugs will now show how tha fuck ta create a cold-ass lil cylinder wit radius $r$ wit dis model. Da scam is straight-up simple, our laid-back asses just loop all up in every last muthafuckin voxel up in tha system n' check whether or not tha voxel should be marked as filled or empty. Us dudes define dat no matter how tha fuck nuff voxels our crazy asses have, tha radius $r$ is given up in tha range $[0, 0.5]$ so dat tha system be a $1\times 1\times 1$ cube. Da algorithm should be easy as fuck  ta KNOW from tha code example up in listin \ref{lst:dsmc_geometry_cylinder}.
+\begin{lstlisting}[caption=An example showin how tha fuck ta create a cold-ass lil cylinder., label=lst:dsmc_geometry_cylinder]
 void create_cylinder(double radius) {
 	float voxel_size_x = 1.0 / num_voxels_x;
 	float voxel_size_y = 1.0 / num_voxels_y;
@@ -41,10 +41,10 @@ void create_cylinder(double radius) {
 	calculate_normals_tangents_and_inner_points();
 }
 \end{lstlisting}
-Notice the last line there, the function \textit{calculate\_normals\_tangents\_and\_inner\_points()}. After all voxels are marked as filled or empty, we need to identify the surface voxels and calculate their tangent and normal vectors.
-\subsection{Identifying the surface voxels}
-A voxel that is filled, but not part of the surface, will be completely surrounded by filled voxels. We \textit{define} the surface voxels as \textit{the filled voxels that have less than 26 neighboring filled voxels}. The algorithm can be implemented like in listing \ref{lst:dsmc_geometry_identify_surface} (we also need to take care of the periodic boundary conditions, but the idea is best illustrated without that complication).
-\begin{lstlisting}[caption=An example showing how to identify the surface voxels. The world\_matrix contains all the voxel values (zeros and ones)., label=lst:dsmc_geometry_identify_surface]
+Notice tha last line there, tha function \textit{calculate\_normals\_tangents\_and\_inner\_points()} fo' realz. After all voxels is marked as filled or empty, we need ta identify tha surface voxels n' calculate they tangent n' aiiight vectors.
+\subsection{Identifyin tha surface voxels}
+A voxel dat is filled yo, but not part of tha surface, is ghon be straight-up surrounded by filled voxels. We \textit{define} tha surface voxels as \textit{the filled voxels dat have less than 26 neighborin filled voxels}. Da algorithm can be implemented like up in listin \ref{lst:dsmc_geometry_identify_surface} (we also need ta take care of tha periodic boundary conditions yo, but tha scam is dopest illustrated without dat complication).
+\begin{lstlisting}[caption=An example showin how tha fuck ta identify tha surface voxels. Da ghetto\_matrix gotz nuff all tha voxel joints (zeros n' ones)., label=lst:dsmc_geometry_identify_surface]
 bool is_surface(int voxel_index_i, int voxel_index_j, int voxel_index_k) {
 	for(int i=-1;i<=1;i++) {
     	for(int j=-1;j<=1;j++) {
@@ -63,37 +63,37 @@ bool is_surface(int voxel_index_i, int voxel_index_j, int voxel_index_k) {
     return false;
 }
 \end{lstlisting}
-This has to be done for every voxel in the system, but only once per geometry. When we have identified all surface voxels, we need to calculate the normal and tangent vectors for each of them. Once this is done, we can save and use the geometry in a simulation.
-\subsection{Calculating normal and tangent vectors}
-Each surface voxel is a cube with six faces, each having a normal vector pointing out from the cube. Each face then defines the tangent plane orthogonal to this normal vector. When a particle collides with a surface voxel, we can calculate which face the particle passed through and use those vectors to calculate the reflected velocity. However, in this thesis, we have developed a new way of describing the surface vectors. We will use the neighboring voxels so that the normal vector of a surface voxel contains information of the curvature of the surface in order to have more realistic collisions.
+This has ta be done fo' every last muthafuckin voxel up in tha system yo, but only once per geometry. When our crazy asses have identified all surface voxels, we need ta calculate tha aiiight n' tangent vectors fo' each of em. Once dis is done, we can save n' use tha geometry up in a simulation.
+\subsection{Calculatin aiiight n' tangent vectors}
+Each surface voxel be a cold-ass lil cube wit six faces, each havin a aiiight vector pointin up from tha cube. Each grill then defines tha tangent plane orthogonal ta dis aiiight vector. Shiiit, dis aint no joke. When a particle collides wit a surface voxel, we can calculate which grill tha particle passed all up in n' use dem vectors ta calculate tha reflected velocity. But fuck dat shiznit yo, tha word on tha street is dat up in dis thesis, our crazy asses have pimped a freshly smoked up way of describin tha surface vectors. Us thugs will use tha neighborin voxels so dat tha aiiight vector of a surface voxel gotz nuff shiznit of tha curvature of tha surface up in order ta have mo' realistic collisions.
 
-The idea is simpler to illustrate for a two dimensional square, but the concept can easily be generalized to three dimensions. A square consisting of 9 pixels has a geometric center $\vec r_\text{gc}$, plus a center of mass $\vec r_\text{cm}$ which can be defined by the values, the mass, of the voxels
+Da scam is simpla ta illustrate fo' a two dimensionizzle square yo, but tha concept can easily be generalized ta three dimensions fo' realz. A square consistin of 9 pixels has a geometric center $\vec r_\text{gc}$, plus a cold-ass lil center of mass $\vec r_\text{cm}$ which can be defined by tha joints, tha mass, of tha voxels
 \begin{align}
 	\vec r_\text{cm} = \sum_{i,j} \vec r_{ij}m_{ij},
 \end{align}
-where $m_{ij} \in \{1,0\}$ and $\vec r_{ij}$ is the coordinate of the voxel with $\vec r_\text{gc}$ as the origin. We \textit{define} the normal vector to be the normalized local center of mass vector
+where $m_{ij} \in \{1,0\}$ n' $\vec r_{ij}$ is tha coordinizzle of tha voxel wit $\vec r_\text{gc}$ as tha origin. I aint talkin' bout chicken n' gravy biatch. We \textit{define} tha aiiight vector ta be tha normalized local center of mass vector
 \begin{align}
 	\label{eq:dsmc_normal_vector}
 	\vec n = \frac{\vec{r_\text{cm}}}{|\vec{r_\text{cm}}|}.
 \end{align}
-In figure \ref{fig:dsmc_normal_vectors}, we have computed the normal vector for four different voxel configurations where we see that the direction of the normal vectors seems reasonable. 
+In figure \ref{fig:dsmc_normal_vectors}, our crazy asses have computed tha aiiight vector fo' four different voxel configurations where we peep dat tha direction of tha aiiight vectors seems reasonable. 
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.9\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/normal_vectors.png}
 \end{center}
-\caption{Four different pixels configurations in a $3\times 3$ grid. The filled pixels are marked black whereas the empty pixels are white. We compute the normal vector of the center surface pixels (marked gray) based in its neighbors following equation \eqref{eq:dsmc_normal_vector}. We see that this algorithm generates normal vectors that behave as expected.}
+\caption{Four different pixels configurations up in a $3\times 3$ grid. Y'all KNOW dat shit, muthafucka! Da filled pixels is marked black whereas tha empty pixels is white. We compute tha aiiight vector of tha center surface pixels (marked gray) based up in its neighbors followin equation \eqref{eq:dsmc_normal_vector}. We peep dat dis algorithm generates aiiight vectors dat behave as expected.}
 \label{fig:dsmc_normal_vectors}
 \end{figure}
-In the three dimensional case, we find the normal vectors in exactly the same way, but by using the 26 neighbors. The only thing we need to calculate are the tangent vectors. These can be found by first choosing a random vector $\vec v$ and apply the Gram-Schmidt process making it orthogonal on the normal vector so that
+In tha three dimensionizzle case, we find tha aiiight vectors up in exactly tha same way yo, but by rockin tha 26 neighbors. Da only thang we need ta calculate is tha tangent vectors. These can be found by first choosin a random vector $\vec v$ n' apply tha Gram-Schmidt process makin it orthogonal on tha aiiight vector so that
 \begin{align}
 	\tilde{\vec t}_1 = \vec v - (\vec n\cdot \vec v)\vec n,
 \end{align}
-which gives the normalized tangent vectors
+which gives tha normalized tangent vectors
 \begin{align}
 	\vec t_1 &= \frac{ \tilde{\vec t}_1}{|\tilde{\vec t}_1|}\\
 	\vec t_2 &= \vec n\times \vec t_1.
 \end{align}
-The porosity $\phi$ is found by counting the number of empty voxels divided by the total number of voxels
+Da porositizzle $\phi$ is found by countin tha number of empty voxels divided by tha total number of voxels
 \begin{align}
 	\label{eq:dsmc_geometry_porosity}
 	\phi = \frac{N_\text{empty}}{N_\text{voxels}}.

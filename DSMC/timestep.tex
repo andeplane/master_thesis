@@ -1,63 +1,63 @@
 \section{Timestep}
 \label{sec:dsmc_implementation_timestep}
-The idea of a timestep is to evolve the system a small amount of time $\Delta t$. During this process, the particles are first accelerated before they are moved according to their velocity. If the particles collide with the surface, we will pick a new velocity before they finish the timestep (which may contain many surface collisions). When they have reached their final position, we update the collision cells before particle collisions are performed in each cell. We will now explain each of these stages.
+Da scam of a timestep is ta evolve tha system a lil' small-ass amount of time $\Delta t$. Durin dis process, tha particlez is first accelerated before they is moved accordin ta they velocity. If tha particlez collide wit tha surface, we will pick a freshly smoked up velocitizzle before they finish tha timestep (which may contain nuff surface collisions). When they have reached they final position, we update tha collision cells before particle collisions is performed up in each cell. Us thugs will now explain each of these stages.
 \subsection{Acceleration}
-The magnitude of the acceleration is determined by the choice of pressure difference in equation \eqref{eq:acceleration_to_pressure_difference}. The velocity is determined using forward Euler
+Da magnitude of tha acceleration is determined by tha chizzle of heat difference up in equation \eqref{eq:acceleration_to_pressure_difference}. Da velocitizzle is determined rockin forward Euler
 \begin{align}
-	\vec v_i(t + \Delta t) = \vec v_i(t) + \vec a\Delta t,
+    \vec v_i(t + \Delta t) = \vec v_i(t) + \vec a\Delta t,
 \end{align}
-for every particle $i$. 
-\subsection{Moving and surface interactions}
-All our particles now have some velocity, and we can in principle integrate the position with Euler's method
+for every last muthafuckin particle $i$. 
+\subsection{Movin n' surface interactions}
+All our particlez now have some velocity, n' we can up in principle integrate tha posizzle wit Eulerz method
 \begin{align}
-	\vec r_i(t + \Delta t) = \vec r_i(t) + \vec v_i(t)\Delta t.
+    \vec r_i(t + \Delta t) = \vec r_i(t) + \vec v_i(t)\Delta t.
 \end{align}
-But if a particle is very close to the surface, and has a velocity towards it, it might fly into the wall during the timestep. It might even move through a boundary voxel and land into the \textit{inner wall}. We don't want to perform collisions with an inner wall voxel, because it does not have well defined normal and tangent vectors. Instead, we have to back trace and identify which boundary voxel the particle hits first. It is done by a recursive bisection method.
+But if a particle is straight-up close ta tha surface, n' has a velocitizzle towardz it, it might fly tha fuck into tha wall durin tha timestep. Well shiiiit, it might even move all up in a funky-ass boundary voxel n' land tha fuck into tha \textit{inner wall}. Us dudes don't wanna big-ass up collisions wit a inner wall voxel, cuz it aint gots well defined aiiight n' tangent vectors. Instead, we gotta back trace n' identify which boundary voxel tha particle hits first. Well shiiiit, it is done by a recursive bisection method.
 
-Assume that we have moved our particle from an empty voxel into an inner wall voxel using the whole timestep $\Delta t$, see figure \ref{fig:dsmc_collision_detection}. We then move it back half a timestep to see whether or not it now is in a 1) empty voxel, 2) boundary voxel or 3) wall voxel. If it still is in an inner wall voxel, we move back \textit{another} $\Delta t/4$ (and so on, halfing the distance each step) until we either find the boundary voxel or hit an empty voxel again. If we while moving back hit an empty voxel, we accept the move. We haven't used the full timestep $\Delta t$, but a smaller amount of time, $\tau$. This means that we can continue the timestep that now is a bit shorter, $\Delta t - \tau$. If the particle at any point in the algorithm hits the boundary voxel, we're almost done. We then have to compute the exact time $\delta t$ the particle will use before it collides with the surface of the boundary voxel (the boundary voxel has six faces of which the particle can hit). After the particle is moved to that point, we choose a new, random velocity based on the normal and tanget vectors of that boundary voxel.
+Assume dat our crazy asses have moved our particle from a empty voxel tha fuck into a inner wall voxel rockin tha whole timestep $\Delta t$, peep figure \ref{fig:dsmc_collision_detection}. We then move it back half a timestep ta peep whether or not it now is up in a 1) empty voxel, 2) boundary voxel or 3) wall voxel. If it still is up in a inner wall voxel, we move back \textit{another} $\Delta t/4$ (and so on, halfin tha distizzle each step) until we either find tha boundary voxel or hit a empty voxel again. I aint talkin' bout chicken n' gravy biatch. If we while movin back hit a empty voxel, we accept tha move. We aint used tha full timestep $\Delta t$ yo, but a smalla amount of time, $\tau$. This means dat we can continue tha timestep dat now be a lil' bit shorter, $\Delta t - \tau$. If tha particle at any point up in tha algorithm hits tha boundary voxel, we almost done. We then gotta compute tha exact time $\delta t$ tha particle will use before it collides wit tha surface of tha boundary voxel (the boundary voxel has six facez of which tha particle can hit) fo' realz. After tha particle is moved ta dat point, we chizzle a new, random velocitizzle based on tha aiiight n' tanget vectorz of dat boundary voxel.
 \newpage
 \begin{figure}[htb]
 \begin{center}
 \includegraphics[width=0.7\textwidth, trim=0cm 0cm 0cm 0cm, clip]{DSMC/figures/collision_detection.eps}
 \end{center}
-\caption{The collision detection algorithm. A particle first moves the full timestep $\Delta t$ (step 1) from an empty voxel to an inner wall voxel. It is then moved back half a timestep  $\Delta t/2$ (step 2) to see whether or not it is still in the wall. In step 3 we have accepted step 2 and move the particle another $\Delta t/4$. Now it is in a boundary voxel. We then move back (step 4) to the previous position and compute the amount of time $\delta t$ it is until collision with the surface of that boundary voxel. In step 5 we choose a new velocity based on the normal and tangent vectors that boundary voxel has. Then we continue the timestep. This whole process may happen several times during one timestep.}
+\caption{Da collision detection algorithm fo' realz. A particle first moves tha full timestep $\Delta t$ (step 1) from a empty voxel ta a inner wall voxel. Well shiiiit, it is then moved back half a timestep  $\Delta t/2$ (step 2) ta peep whether or not it is still up in tha wall. In step 3 our crazy asses have accepted step 2 n' move tha particle another $\Delta t/4$. Now it is up in a funky-ass boundary voxel. We then move back (step 4) ta tha previous posizzle n' compute tha amount of time $\delta t$ it is until collision wit tha surface of dat boundary voxel. In step 5 we chizzle a freshly smoked up velocitizzle based on tha aiiight n' tangent vectors dat boundary voxel has. Then we continue tha timestep. This whole process may happen nuff muthafuckin times durin one timestep.}
 \label{fig:dsmc_collision_detection}
 \end{figure}
 
-The code performing this recursive collision process is found in listing \ref{lst:dsmc_collision_detection}. This function is called for every particle in the system.
-\begin{lstlisting}[caption=The collision detection algorithm., label=lst:dsmc_collision_detection]
+Da code struttin dis recursive collision process is found up in listin \ref{lst:dsmc_collision_detection}. This function is called fo' every last muthafuckin particle up in tha system.
+\begin{lstlisting}[caption=Da collision detection algorithm., label=lst:dsmc_collision_detection]
 void move_particle(int &index, double dt, Random &rnd) {
-    double tau = dt; // Time left in the timestep
-    Vector3 &position = positions.at(index);
-    Vector3 &velocity = velocities.at(index);
+    double tau = dt; // Time left up in tha timestep
+    Vector3 &posizzle = positions.at(index);
+    Vector3 &velocitizzle = velocities.at(index);
     unsigned char &voxel_value = grid.get_voxel(position);
     do_move(position, velocity, tau);
     voxel_value = grid.get_voxel(position);
     // We now have three possible outcomes
     if(voxel_value >= voxel_type_wall) {
-        // We hit a wall. First, move back to find boundary
+        // Our thugged-out asses hit a wall. First, move back ta find boundary
         while(voxel_value != voxel_type_boundary) {
             if(voxel_value == voxel_type_wall) {
-                do_move(position, velocity, -tau/2); // Move back half the timestep
+                do_move(position, velocity, -tau/2); // Move back half tha timestep
                 tau /= 2;
                 voxel_value = grid.get_voxel(position);
             } else {
-                // We have now used tau of the total timestep dt
+                // Our thugged-out asses have now used tau of tha total timestep dt
                 dt -= tau;
-                // We hit an empty voxel, continue timestep if
-                // there is anything left in timestep
+                // Our thugged-out asses hit a empty voxel, continue timestep if
+                // there be anythang left up in timestep
                 if(dt > 1e-5 && depth < 10) {
                     move_particle(index,dt,rnd);
                     return;
                 }
             }
         }
-        // This is a boundary voxel
+        // This be a funky-ass boundary voxel
         unsigned char collision_voxel_index = voxel_index;
         while(voxel_value == voxel_type_boundary) {
             collision_voxel_index = voxel_index;
             do_move(position, velocity, -tau); // Move back
-            // Compute time until collision with voxel boundary surface
+            // Compute time until collision wit voxel boundary surface
             tau = grid.get_time_until_collision(position, velocity, tau, collision_voxel_index); 
             do_move(position, velocity, tau);
             voxel_value = grid.get_voxel(position);
@@ -67,7 +67,7 @@ void move_particle(int &index, double dt, Random &rnd) {
         Vector3 &tangent1 = grid.get_tangent1(collision_voxel_index);
         Vector3 &tangent2 = grid.get_tangent2(collision_voxel_index);
         surface_collider.collide(rnd, velocity, normal, tangent1, tangent2);
-    } else dt = 0; // Didn't hit any surface during the timestep
+    } else dt = 0; // Didn't hit any surface durin tha timestep
 
     if(dt > 1e-5) {
         move_particle(index,dt,rnd);
@@ -75,49 +75,49 @@ void move_particle(int &index, double dt, Random &rnd) {
 }
 \end{lstlisting}
 \subsection{Update collision cells}
-Now that all the particles have new positions, we need to update the collision cells so that they are aware of the changes. We loop through all particles and see if they have moved into a new collision cell. It is easily understood by a code example, see listing \ref{lst:dsmc_update_collision_cell}.
-\begin{lstlisting}[caption=Updating the collision cell particle lists., label=lst:dsmc_update_collision_cell]
+Now dat all tha particlez have freshly smoked up positions, we need ta update tha collision cells so dat they is aware of tha chizzles. We loop all up in all particlez n' peep if they have moved tha fuck into a freshly smoked up collision cell. Well shiiiit, it is easily understood by a cold-ass lil code example, peep listin \ref{lst:dsmc_update_collision_cell}.
+\begin{lstlisting}[caption=Uppimpin tha collision cell particle lists., label=lst:dsmc_update_collision_cell]
 void update_collision_cells() {
-	for(int index=0; index<num_particles;index++) {
-	    Cell &old_cell = cell_currently_containing_particle(n);
-	    Cell &new_cell = cell_that_should_contain_particle(n);
+    for(int index=0; index<num_particles;index++) {
+        Cell &old_cell = cell_currently_containing_particle(n);
+        Cell &new_cell = cell_that_should_contain_particle(n);
 
-	    if(old_cell.index != new_cell.index) {
-	        old_cell.remove_particle(index);
-	        new_cell.add_particle(index);
-	    }
-	}
+        if(old_cell.index != new_cell.index) {
+            old_cell.remove_particle(index);
+            new_cell.add_particle(index);
+        }
+    }
 }
 \end{lstlisting}
 \subsection{Perform particle collision}
-The final part of the timestep is to perform collisions within each collision cell. We assume that each cell knows how many collision partner candidates it should try to collide. Each candidate pair is chosen randomly (a particle cannot, of course, collide with itself) and we calculate the relative velocity. This is compared to the maximum relative velocity in that cell (as described in section \ref{sec:dsmc_collisions_model}) to decide whether or not the pair should collide. If we do get a collision, new random velocities are chosen (conserving both energy and momentum). Again, we illustrate the implementation with a code example, see listing \ref{lst:dmsc_collisions}.
-\begin{lstlisting}[caption=Example code showing how to perform collisions., label=lst:dmsc_collisions]
+Da final part of tha timestep is ta big-ass up collisions within each collision cell. We assume dat each cell knows how tha fuck nuff collision partner muthafuckas it should try ta collide. Each muthafucka pair is chosen randomly (a particle cannot, of course, collide wit itself) n' we calculate tha relatizzle velocity. This is compared ta tha maximum relatizzle velocitizzle up in dat cell (as busted lyrics bout up in section \ref{sec:dsmc_collisions_model}) ta decizzle whether or not tha pair should collide. If our phat asses do git a cold-ass lil collision, freshly smoked up random velocitizzles is chosen (conservin both juice n' momentum) fo' realz. Again, we illustrate tha implementation wit a cold-ass lil code example, peep listin \ref{lst:dmsc_collisions}.
+\begin{lstlisting}[caption=Example code showin how tha fuck ta big-ass up collisions., label=lst:dmsc_collisions]
 void collide(Random &rnd) {
-	// Loop over the candidate collision pairs
+    // Loop over tha muthafucka collision pairs
     for(int collision=0; collision<collision_pairs; collision++ ) {
-		// Pick two particles at random
+        // Pick two particlez at random
         int index_0 = (int)(rnd.next_double()*num_particles);
         int index_1 = ((int)(index_0+1+rnd.next_double()*(num_particles-1))) % num_particles;
 
-        // These indices are local indices in this cell. Find the global indices.
+        // These indices is local indices up in dis cell. Find tha global indices.
         index_0 = global_particle_indices[index_0];
         index_1 = global_particle_indices[index_1];
 
-		// Calculate pair's relative speed
+        // Calculate pairz relatizzle speed
         Vector3 &v0 = velocities.at(index_0);
         Vector3 &v1 = velocities.at(index_1);
         double v_rel = (v0 - v1).length();
 
-        // Update if new maximum relative velocity
+        // Update if freshly smoked up maximum relatizzle velocity
         if( v_rel > vr_max ) { 
             vr_max = v_rel;
         }
 
-		// Accept or reject candidate pair according to relative speed
+        // Accept or reject muthafucka pair accordin ta relatizzle speed
         if( v_rel > rnd.next_double()*vr_max ) {
             collide_particles(v0, v1, v_rel, rnd);
-		}
-	}
+        }
+    }
 }
 
 void collide_particles(Vector3 &v0, Vector3 &v1, Random &rnd) {
@@ -137,4 +137,4 @@ void collide_particles(Vector3 &v0, Vector3 &v1, Random &rnd) {
 }
 \end{lstlisting}
 \subsection{Final comments}
-We have now discussed the implementation and explained the details about every step in the algorithm. The sampling of statistics is trivial and is done as explained in section \ref{sec:dsmc_measuring_physical_quantities}. After the simulation is completed, the state containing all positions and velocities of the particles is saved to disk so we can continue the simulation at a later time, or, as we will discuss in chapter \ref{chap:particle_visualizer}, visualize the particles and their trajectories. Now we just need to explain how the parallelization is implemented. 
+Our thugged-out asses have now discussed tha implementation n' explained tha details bout every last muthafuckin step up in tha algorithm. Da samplin of statistics is trivial n' is done as explained up in section \ref{sec:dsmc_measuring_physical_quantities} fo' realz. After tha simulation is completed, tha state containin all positions n' velocitizzlez of tha particlez is saved ta disk so we can continue tha simulation at a later time, or, as we will say shit bout up in chapter \ref{chap:particle_visualizer}, visualize tha particlez n' they trajectories. Put ya muthafuckin choppers up if ya feel dis! Now our laid-back asses just need ta explain how tha fuck tha parallelization is implemented. Y'all KNOW dat shit, muthafucka! This type'a shiznit happens all tha time. 
